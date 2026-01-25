@@ -55,14 +55,6 @@ export const Header = () => {
         <nav className="flex items-center gap-6">
           {isAuthenticated ? (
             <>
-              {/* My courses link */}
-              <Link
-                to={ROUTES.CATEGORIES}
-                className="text-sm text-gray-600 hover:text-indigo-600 transition-colors"
-              >
-                My courses
-              </Link>
-
               {/* User avatar with dropdown */}
               <div className="relative" ref={dropdownRef}>
                 <button
@@ -88,7 +80,15 @@ export const Header = () => {
                       onClick={() => setIsDropdownOpen(false)}
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                     >
-                      Profile
+                      My Profile
+                    </Link>
+
+                    <Link
+                      to={ROUTES.CATEGORIES}
+                      onClick={() => setIsDropdownOpen(false)}
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                    >
+                      My Courses
                     </Link>
 
                     {/* My History link */}
@@ -98,6 +98,15 @@ export const Header = () => {
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                     >
                       My History
+                    </Link>
+
+                    {/* My Goals link */}
+                    <Link
+                      to="/goals"
+                      onClick={() => setIsDropdownOpen(false)}
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                    >
+                      My Goals
                     </Link>
 
                     {/* Logout button */}

@@ -24,3 +24,17 @@ export type {
   TestHistoryStats,
   TestHistoryResponse,
 } from './history'
+
+// Goal types
+export type {
+  Goal,
+  GoalStatus,
+  AwardTier,
+  TargetType,
+  PriorityLevel,
+  GoalExamScore,
+  CreateGoalPayload,
+  GoalFilters,
+  GoalsStats,
+  GoalsResponse,
+} from './goal'

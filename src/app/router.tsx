@@ -11,6 +11,7 @@ import {
   ExamListPage,
   ProfilePage,
   TestHistoryPage,
+  GoalsPage,
 } from '@/pages'
 
 export const router = createBrowserRouter([
@@ -58,6 +59,10 @@ export const router = createBrowserRouter([
           {
             path: '/history',
             element: <TestHistoryPage />,
+          },
+          {
+            path: '/goals',
+            element: <GoalsPage />,
           },
         ],
       },
