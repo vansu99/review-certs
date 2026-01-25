@@ -11,6 +11,7 @@ export const ROUTES = {
   DASHBOARD: '/dashboard',
   CATEGORIES: '/categories',
   CATEGORY_DETAIL: '/categories/:categoryId',
+  HISTORY: '/history',
 
   // Test routes
   TEST: '/tests/:id',

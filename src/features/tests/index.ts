@@ -7,6 +7,7 @@ export {
   useTestsByCategory,
   useSubmitTest,
   useTestAttempt,
+  useTestHistory,
   TEST_QUERY_KEYS,
   useExamTimer,
 } from './hooks'

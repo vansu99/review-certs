@@ -16,3 +16,11 @@ export type {
 
 // API types
 export type { ApiResponse, PaginatedResponse, ApiError } from './api'
+
+// History types
+export type {
+  TestHistoryItem,
+  TestHistoryFilters,
+  TestHistoryStats,
+  TestHistoryResponse,
+} from './history'

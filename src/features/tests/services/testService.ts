@@ -1,4 +1,12 @@
-import type { Test, TestAttempt, SubmitTestPayload, TestResult } from '@/types'
+import type {
+  Test,
+  TestAttempt,
+  SubmitTestPayload,
+  TestResult,
+  TestHistoryFilters,
+  TestHistoryResponse,
+  TestHistoryItem,
+} from '@/types'
 
 // Mock delay for simulating API calls
 const mockDelay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
@@ -175,5 +183,189 @@ export const testService = {
     // Real API call:
     // const response = await axiosInstance.get<TestResult>(`/attempts/${attemptId}`)
     // return response.data
+  },
+
+  /**
+   * Get test history for user
+   */
+  getTestHistory: async (
+    filters: TestHistoryFilters = {},
+    page = 1,
+    limit = 10
+  ): Promise<TestHistoryResponse> => {
+    await mockDelay(500)
+
+    // Mock history data
+    const mockHistoryItems: TestHistoryItem[] = [
+      {
+        id: '1',
+        attemptId: 'attempt-1',
+        testId: '1',
+        testTitle: 'AWS Solutions Architect - Practice Exam 1',
+        categoryId: 'aws',
+        categoryName: 'AWS',
+        categoryIcon: '☁️',
+        score: 85,
+        totalQuestions: 20,
+        correctAnswers: 17,
+        duration: 45,
+        completedAt: '2026-01-25T10:30:00Z',
+        isPassed: true,
+      },
+      {
+        id: '2',
+        attemptId: 'attempt-2',
+        testId: '2',
+        testTitle: 'JavaScript Fundamentals',
+        categoryId: 'frontend',
+        categoryName: 'Frontend',
+        categoryIcon: '💻',
+        score: 62,
+        totalQuestions: 15,
+        correctAnswers: 9,
+        duration: 25,
+        completedAt: '2026-01-24T14:20:00Z',
+        isPassed: false,
+      },
+      {
+        id: '3',
+        attemptId: 'attempt-3',
+        testId: '3',
+        testTitle: 'React Hooks Deep Dive',
+        categoryId: 'frontend',
+        categoryName: 'Frontend',
+        categoryIcon: '💻',
+        score: 92,
+        totalQuestions: 10,
+        correctAnswers: 9,
+        duration: 18,
+        completedAt: '2026-01-23T09:15:00Z',
+        isPassed: true,
+      },
+      {
+        id: '4',
+        attemptId: 'attempt-4',
+        testId: '4',
+        testTitle: 'TypeScript Generics',
+        categoryId: 'frontend',
+        categoryName: 'Frontend',
+        categoryIcon: '💻',
+        score: 70,
+        totalQuestions: 12,
+        correctAnswers: 8,
+        duration: 30,
+        completedAt: '2026-01-22T16:45:00Z',
+        isPassed: true,
+      },
+      {
+        id: '5',
+        attemptId: 'attempt-5',
+        testId: '5',
+        testTitle: 'Node.js Performance',
+        categoryId: 'backend',
+        categoryName: 'Backend',
+        categoryIcon: '🖥️',
+        score: 55,
+        totalQuestions: 20,
+        correctAnswers: 11,
+        duration: 40,
+        completedAt: '2026-01-21T11:00:00Z',
+        isPassed: false,
+      },
+      {
+        id: '6',
+        attemptId: 'attempt-6',
+        testId: '6',
+        testTitle: 'Docker & Kubernetes Basics',
+        categoryId: 'devops',
+        categoryName: 'DevOps',
+        categoryIcon: '🐳',
+        score: 78,
+        totalQuestions: 15,
+        correctAnswers: 12,
+        duration: 35,
+        completedAt: '2026-01-20T08:30:00Z',
+        isPassed: true,
+      },
+      {
+        id: '7',
+        attemptId: 'attempt-7',
+        testId: '7',
+        testTitle: 'SQL Query Optimization',
+        categoryId: 'database',
+        categoryName: 'Database',
+        categoryIcon: '🗄️',
+        score: 88,
+        totalQuestions: 18,
+        correctAnswers: 16,
+        duration: 42,
+        completedAt: '2026-01-19T13:20:00Z',
+        isPassed: true,
+      },
+      {
+        id: '8',
+        attemptId: 'attempt-8',
+        testId: '8',
+        testTitle: 'AWS Lambda & Serverless',
+        categoryId: 'aws',
+        categoryName: 'AWS',
+        categoryIcon: '☁️',
+        score: 45,
+        totalQuestions: 20,
+        correctAnswers: 9,
+        duration: 50,
+        completedAt: '2026-01-18T15:10:00Z',
+        isPassed: false,
+      },
+    ]
+
+    // Apply filters
+    let filteredItems = [...mockHistoryItems]
+
+    if (filters.categoryId) {
+      filteredItems = filteredItems.filter((item) => item.categoryId === filters.categoryId)
+    }
+
+    if (filters.status === 'passed') {
+      filteredItems = filteredItems.filter((item) => item.isPassed)
+    } else if (filters.status === 'failed') {
+      filteredItems = filteredItems.filter((item) => !item.isPassed)
+    }
+
+    // Apply sorting
+    const sortBy = filters.sortBy || 'date'
+    const sortOrder = filters.sortOrder || 'desc'
+
+    filteredItems.sort((a, b) => {
+      if (sortBy === 'date') {
+        const dateA = new Date(a.completedAt).getTime()
+        const dateB = new Date(b.completedAt).getTime()
+        return sortOrder === 'desc' ? dateB - dateA : dateA - dateB
+      } else {
+        return sortOrder === 'desc' ? b.score - a.score : a.score - b.score
+      }
+    })
+
+    // Calculate stats from all items (before pagination)
+    const stats = {
+      totalTests: mockHistoryItems.length,
+      passedTests: mockHistoryItems.filter((item) => item.isPassed).length,
+      failedTests: mockHistoryItems.filter((item) => !item.isPassed).length,
+      averageScore: Math.round(
+        mockHistoryItems.reduce((sum, item) => sum + item.score, 0) / mockHistoryItems.length
+      ),
+    }
+
+    // Apply pagination
+    const startIndex = (page - 1) * limit
+    const paginatedItems = filteredItems.slice(startIndex, startIndex + limit)
+    const totalPages = Math.ceil(filteredItems.length / limit)
+
+    return {
+      items: paginatedItems,
+      stats,
+      totalPages,
+      currentPage: page,
+    }
   },
 }

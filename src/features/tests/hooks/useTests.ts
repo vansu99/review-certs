@@ -44,3 +44,14 @@ export const useTestAttempt = (attemptId: string) => {
     enabled: !!attemptId,
   })
 }
+
+export const useTestHistory = (
+  filters: import('@/types').TestHistoryFilters = {},
+  page = 1,
+  limit = 10
+) => {
+  return useQuery({
+    queryKey: ['testHistory', filters, page, limit] as const,
+    queryFn: () => testService.getTestHistory(filters, page, limit),
+  })
+}

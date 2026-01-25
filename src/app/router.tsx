@@ -9,6 +9,8 @@ import {
   DashboardPage,
   TestExamPage,
   ExamListPage,
+  ProfilePage,
+  TestHistoryPage,
 } from '@/pages'
 
 export const router = createBrowserRouter([
@@ -48,6 +50,14 @@ export const router = createBrowserRouter([
           {
             path: '/tests/:id/result',
             element: <TestResultPage />,
+          },
+          {
+            path: '/profile',
+            element: <ProfilePage />,
+          },
+          {
+            path: '/history',
+            element: <TestHistoryPage />,
           },
         ],
       },

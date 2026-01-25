@@ -45,7 +45,6 @@ export const LoginPage = () => {
         <div className="text-center mb-8">
           <span className="text-5xl mb-4 block">📚</span>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">ReviewCerts</h1>
-          <p className="text-gray-600">Sign in to continue learning</p>
         </div>
 
         <div className="bg-white rounded-2xl shadow-xl p-8">
