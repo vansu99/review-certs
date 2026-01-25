@@ -4,6 +4,7 @@ import { z } from 'zod'
 import { useAuthStore } from '@/features/auth'
 import { UserCircleIcon } from '@heroicons/react/24/solid'
 import { RHFInput, RHFRadio, RHFSelect } from '@/components/ui/form'
+import { Loader2 } from 'lucide-react'
 
 const profileSchema = z.object({
   firstName: z.string().min(1, 'First name is required'),
@@ -155,7 +156,7 @@ export const ProfilePage = () => {
                   disabled={isSubmitting}
                   className="px-8 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {isSubmitting ? 'Saving...' : 'Save'}
+                  {isSubmitting ? <Loader2 className="animate-spin size-4" /> : 'Save'}
                 </button>
               </div>
             </form>

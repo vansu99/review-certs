@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom'
 import { useCategories } from '@/features/categories'
+import { ChartBarStacked, LayoutDashboard } from 'lucide-react'
 
 export const Sidebar = () => {
   const { data: categories, isLoading } = useCategories()
@@ -21,7 +22,7 @@ export const Sidebar = () => {
               }`
             }
           >
-            <span>📊</span>
+            <LayoutDashboard className="size-5" />
             Dashboard
           </NavLink>
           <NavLink
@@ -34,7 +35,7 @@ export const Sidebar = () => {
               }`
             }
           >
-            <span>📁</span>
+            <ChartBarStacked className="size-5" />
             All Categories
           </NavLink>
         </nav>

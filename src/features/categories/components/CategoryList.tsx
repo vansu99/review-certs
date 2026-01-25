@@ -6,7 +6,7 @@ interface CategoryListProps {
 }
 
 export const CategoryList = ({ categories }: CategoryListProps) => {
-  if (categories.length === 0) {
+  if (categories?.length === 0) {
     return (
       <div className="text-center py-12">
         <p className="text-gray-500">No categories available</p>

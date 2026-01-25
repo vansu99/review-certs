@@ -2,6 +2,7 @@ import { useParams, Link } from 'react-router-dom'
 import { useTestsByCategory } from '@/features/tests'
 import { useCategories } from '@/features/categories'
 import { ChevronLeftIcon, ClockIcon, DocumentTextIcon } from '@heroicons/react/24/outline'
+import { ROUTES } from '@/constants'
 
 export const ExamListPage = () => {
   const { categoryId } = useParams<{ categoryId: string }>()
@@ -36,7 +37,7 @@ export const ExamListPage = () => {
       {/* Back link and header */}
       <div>
         <Link
-          to="/categories"
+          to={ROUTES.CATEGORIES}
           className="inline-flex items-center gap-1 text-indigo-600 hover:text-indigo-700 mb-4"
         >
           <ChevronLeftIcon className="w-4 h-4" />

@@ -156,7 +156,7 @@ export const TestHistoryPage = () => {
                   {/* Status indicator + Title */}
                   <div className="flex items-center gap-3 mb-2">
                     <span
-                      className={`flex-shrink-0 w-3 h-3 rounded-full ${
+                      className={`shrink-0 w-3 h-3 rounded-full ${
                         item.isPassed ? 'bg-green-500' : 'bg-red-500'
                       }`}
                     />
@@ -210,7 +210,7 @@ export const TestHistoryPage = () => {
                 </div>
 
                 {/* Review button */}
-                <div className="flex-shrink-0">
+                <div className="shrink-0">
                   <span className="px-4 py-2 bg-indigo-50 text-indigo-600 text-sm font-medium rounded-lg hover:bg-indigo-100 transition-colors">
                     Review →
                   </span>

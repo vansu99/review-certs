@@ -6,6 +6,7 @@ import {
   EyeIcon,
 } from '@heroicons/react/24/outline'
 import type { Question } from '@/types'
+import { Eye, EyeOff } from 'lucide-react'
 
 interface QuestionPanelProps {
   question: Question
@@ -102,7 +103,7 @@ export const QuestionPanel = ({
             onClick={handleToggleShowAnswer}
             className="flex items-center gap-2 text-indigo-600 hover:text-indigo-700 font-medium mb-4"
           >
-            <EyeIcon className="w-5 h-5" />
+            {showAnswer ? <Eye className="size-5" /> : <EyeOff className="size-5" />}
             {showAnswer ? 'Hide Answer' : 'Show Answer'}
           </button>
         )}

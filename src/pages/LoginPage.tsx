@@ -3,7 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { Navigate } from 'react-router-dom'
 import { useLogin, useAuthStore } from '@/features/auth'
-import { Button } from '@/components/ui/Button'
+import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/Input'
 import { ROUTES } from '@/constants'
 
@@ -47,11 +47,12 @@ export const LoginPage = () => {
           <h1 className="text-3xl font-bold text-gray-900 mb-2">ReviewCerts</h1>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-xl p-8">
+        <div className="bg-white rounded-2xl shadow-xl border p-8">
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             <Input
               label="Email"
               type="email"
+              maxLength={191}
               placeholder="Enter your email"
               error={errors.email?.message}
               {...register('email')}
@@ -60,6 +61,7 @@ export const LoginPage = () => {
             <Input
               label="Password"
               type="password"
+              maxLength={50}
               placeholder="Enter your password"
               error={errors.password?.message}
               {...register('password')}
@@ -73,7 +75,7 @@ export const LoginPage = () => {
               </div>
             )}
 
-            <Button type="submit" className="w-full" size="lg" isLoading={isPending}>
+            <Button type="submit" className="w-full" size="lg" disabled={isPending}>
               Sign In
             </Button>
           </form>

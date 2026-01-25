@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { authService } from '../services'
 import { useAuthStore } from '../store'
 import type { LoginCredentials } from '@/types'
+import { ROUTES } from '@/constants'
 
 export const useLogin = () => {
   const navigate = useNavigate()
@@ -25,7 +26,7 @@ export const useLogout = () => {
     mutationFn: () => authService.logout(),
     onSuccess: () => {
       logout()
-      navigate('/login')
+      navigate(ROUTES.LOGIN)
     },
   })
 }

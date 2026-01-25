@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useTest, useSubmitTest, QuestionCard } from '@/features/tests'
-import { Button } from '@/components/ui/Button'
+import { Button } from '@/components/ui/button'
 
 export const TestTakingPage = () => {
   const { id: testId } = useParams<{ id: string }>()
   const { data: test, isLoading, error } = useTest(testId || '')
-  const { mutate: submitTest, isPending: isSubmitting } = useSubmitTest()
+  const { mutate: submitTest } = useSubmitTest()
 
   // Track selected answers: questionId -> array of selected option ids
   const [answers, setAnswers] = useState<Record<string, string[]>>({})
@@ -98,12 +98,7 @@ export const TestTakingPage = () => {
 
       {/* Submit */}
       <div className="mt-8 flex justify-end">
-        <Button
-          onClick={handleSubmit}
-          size="lg"
-          isLoading={isSubmitting}
-          disabled={answeredCount < totalQuestions}
-        >
+        <Button onClick={handleSubmit} size="lg" disabled={answeredCount < totalQuestions}>
           Submit Test
         </Button>
       </div>

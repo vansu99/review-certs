@@ -1,6 +1,6 @@
 import { useSearchParams, Link } from 'react-router-dom'
 import { useTestAttempt } from '@/features/tests'
-import { Button } from '@/components/ui/Button'
+import { Button } from '@/components/ui/button'
 import { ROUTES } from '@/constants'
 
 export const TestResultPage = () => {

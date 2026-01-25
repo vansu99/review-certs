@@ -3,6 +3,7 @@ import { XMarkIcon } from '@heroicons/react/24/outline'
 import { useCreateGoal } from '@/features/goals'
 import { useCategories } from '@/features/categories'
 import type { TargetType, PriorityLevel } from '@/types'
+import { Loader2 } from 'lucide-react'
 
 interface CreateGoalModalProps {
   isOpen: boolean
@@ -252,7 +253,7 @@ export const CreateGoalModal = ({ isOpen, onClose }: CreateGoalModalProps) => {
               disabled={isPending}
               className="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-50"
             >
-              {isPending ? 'Creating...' : 'Create Goal'}
+              {isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Create Goal'}
             </button>
           </div>
         </form>

@@ -1,8 +1,8 @@
+import { ROUTES } from '@/constants'
 import axios, { type AxiosError, type InternalAxiosRequestConfig } from 'axios'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000/api'
 
-// Custom error types for better error handling
 export interface ApiErrorResponse {
   message: string
   statusCode: number
@@ -88,14 +88,14 @@ function handleUnauthorized(): void {
   localStorage.removeItem('auth-storage') // Clear Zustand persisted state
 
   // Only redirect if not already on login page
-  if (!window.location.pathname.includes('/login')) {
+  if (!window.location.pathname.includes(ROUTES.LOGIN)) {
     // Store the current path to redirect back after login
     const currentPath = window.location.pathname + window.location.search
-    if (currentPath !== '/' && currentPath !== '/login') {
+    if (currentPath !== '/' && currentPath !== ROUTES.LOGIN) {
       sessionStorage.setItem('redirectAfterLogin', currentPath)
     }
 
-    window.location.href = '/login'
+    window.location.href = ROUTES.LOGIN
   }
 }
 

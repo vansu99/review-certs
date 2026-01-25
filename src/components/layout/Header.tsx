@@ -48,7 +48,6 @@ export const Header = () => {
     <header className="bg-white border-b border-gray-200 px-6 py-4">
       <div className="flex items-center justify-between">
         <Link to={ROUTES.HOME} className="flex items-center gap-2">
-          <span className="text-2xl">📚</span>
           <span className="text-xl font-bold text-indigo-600">ReviewCerts</span>
         </Link>
 
@@ -67,7 +66,6 @@ export const Header = () => {
                 {/* Dropdown menu */}
                 {isDropdownOpen && (
                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 py-2 z-50">
-                    {/* Greeting */}
                     <div className="px-4 py-2 border-b border-gray-100">
                       <p className="text-sm font-medium text-gray-900">
                         Hi, {getFirstName(user?.name)}
@@ -76,13 +74,14 @@ export const Header = () => {
 
                     {/* Profile link */}
                     <Link
-                      to="/profile"
+                      to={ROUTES.PROFILE}
                       onClick={() => setIsDropdownOpen(false)}
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                     >
                       My Profile
                     </Link>
 
+                    {/* My Courses link */}
                     <Link
                       to={ROUTES.CATEGORIES}
                       onClick={() => setIsDropdownOpen(false)}
@@ -93,7 +92,7 @@ export const Header = () => {
 
                     {/* My History link */}
                     <Link
-                      to="/history"
+                      to={ROUTES.HISTORY}
                       onClick={() => setIsDropdownOpen(false)}
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                     >
@@ -102,7 +101,7 @@ export const Header = () => {
 
                     {/* My Goals link */}
                     <Link
-                      to="/goals"
+                      to={ROUTES.GOALS}
                       onClick={() => setIsDropdownOpen(false)}
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                     >

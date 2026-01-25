@@ -13,6 +13,7 @@ export const ROUTES = {
   CATEGORY_DETAIL: '/categories/:categoryId',
   HISTORY: '/history',
   GOALS: '/goals',
+  PROFILE: '/profile',
 
   // Test routes
   TEST: '/tests/:id',
