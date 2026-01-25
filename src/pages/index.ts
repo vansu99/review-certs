@@ -1,0 +1,7 @@
+export { LoginPage } from './LoginPage'
+export { CategoryListPage } from './CategoryListPage'
+export { TestTakingPage } from './TestTakingPage'
+export { TestResultPage } from './TestResultPage'
+export { DashboardPage } from './DashboardPage'
+export { TestExamPage } from './TestExamPage'
+export { ExamListPage } from './ExamListPage'
