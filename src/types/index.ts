@@ -12,6 +12,7 @@ export type {
   TestAttempt,
   SubmitTestPayload,
   TestResult,
+  CreateTestPayload,
 } from './test'
 
 // API types

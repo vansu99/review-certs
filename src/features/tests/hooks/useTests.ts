@@ -7,6 +7,7 @@ export const TEST_QUERY_KEYS = {
   detail: (id: string) => ['tests', id] as const,
   byCategory: (categoryId: string) => ['tests', 'category', categoryId] as const,
   attempt: (attemptId: string) => ['attempts', attemptId] as const,
+  tests: () => ['tests'] as const,
 }
 
 export const useTest = (testId: string) => {

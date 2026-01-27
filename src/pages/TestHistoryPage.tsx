@@ -151,7 +151,7 @@ export const TestHistoryPage = () => {
               to={`/tests/${item.testId}/result?attemptId=${item.attemptId}`}
               className="block bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md hover:border-indigo-200 transition-all duration-200"
             >
-              <div className="flex items-start justify-between gap-4">
+              <div className="flex items-start justify-between gap-4 gap-4">
                 <div className="flex-1 min-w-0">
                   {/* Status indicator + Title */}
                   <div className="flex items-center gap-3 mb-2">

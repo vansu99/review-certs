@@ -169,104 +169,106 @@ export const CreateGoalModal = ({ isOpen, onClose }: CreateGoalModalProps) => {
           </DialogTitle>
         </DialogHeader>
 
-        <ScrollArea className="max-h-[min(80vh,600px)] px-6">
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 py-2">
-            <RHFInput
-              name="name"
-              control={control}
-              label="Goal Name *"
-              maxLength={191}
-              placeholder="e.g., Master AWS Solutions Architect"
-            />
-
-            <RHFTextArea
-              name="description"
-              control={control}
-              label="Description"
-              maxLength={500}
-              placeholder="Describe your goal..."
-              rows={2}
-            />
-
-            <RHFRadio
-              name="targetType"
-              control={control}
-              label="Target Type *"
-              direction="horizontal"
-              options={[
-                { label: 'Category', value: 'category' },
-                { label: 'Specific Exams', value: 'exams' },
-              ]}
-            />
-
-            {targetType === 'category' && (
-              <RHFSelect
-                name="categoryId"
+        <ScrollArea className="max-h-[min(80vh,600px)]">
+          <div className="px-6">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 py-2">
+              <RHFInput
+                name="name"
                 control={control}
-                label="Select Category *"
-                placeholder="Choose a category..."
-                options={
-                  categories?.map((cat) => ({
-                    label: `${cat.icon} ${cat.name}`,
-                    value: cat.id,
-                  })) || []
-                }
+                label="Goal Name *"
+                maxLength={191}
+                placeholder="e.g., Master AWS Solutions Architect"
               />
-            )}
 
-            <div className="grid grid-cols-2 gap-4">
-              <RHFSelect
-                name="passingScore"
+              <RHFTextArea
+                name="description"
                 control={control}
-                label="Passing Score *"
+                label="Description"
+                maxLength={500}
+                placeholder="Describe your goal..."
+                rows={2}
+              />
+
+              <RHFRadio
+                name="targetType"
+                control={control}
+                label="Target Type *"
+                direction="horizontal"
                 options={[
-                  { label: '60%', value: 60 },
-                  { label: '70%', value: 70 },
-                  { label: '80%', value: 80 },
-                  { label: '90%', value: 90 },
+                  { label: 'Category', value: 'category' },
+                  { label: 'Specific Exams', value: 'exams' },
                 ]}
               />
-              <RHFSelect
-                name="priority"
-                control={control}
-                label="Priority"
-                options={[
-                  { label: 'Low', value: 'low' },
-                  { label: 'Medium', value: 'medium' },
-                  { label: 'High', value: 'high' },
-                ]}
-              />
-            </div>
 
-            <div className="grid grid-cols-2 gap-4">
-              <RHFDatepicker name="startDate" control={control} label="Start Date *" />
-              <RHFDatepicker
-                name="endDate"
-                control={control}
-                label="End Date *"
-                minDate={startDate}
-              />
-            </div>
+              {targetType === 'category' && (
+                <RHFSelect
+                  name="categoryId"
+                  control={control}
+                  label="Select Category *"
+                  placeholder="Choose a category..."
+                  options={
+                    categories?.map((cat) => ({
+                      label: `${cat.icon} ${cat.name}`,
+                      value: cat.id,
+                    })) || []
+                  }
+                />
+              )}
 
-            <div className="p-4 bg-gradient-to-r from-yellow-50 to-amber-50 rounded-lg border border-yellow-200">
-              <h4 className="text-sm font-medium text-yellow-800 mb-2">🏆 Award Tiers</h4>
-              <div className="grid grid-cols-2 gap-2 text-xs text-yellow-700">
-                <span>Bronze: Avg score 60-79%</span>
-                <span>Silver: Avg score 80-89%</span>
-                <span>Gold: Avg score 90-94%</span>
-                <span>Diamond: Avg score ≥95%</span>
+              <div className="grid grid-cols-2 gap-4">
+                <RHFSelect
+                  name="passingScore"
+                  control={control}
+                  label="Passing Score *"
+                  options={[
+                    { label: '60%', value: 60 },
+                    { label: '70%', value: 70 },
+                    { label: '80%', value: 80 },
+                    { label: '90%', value: 90 },
+                  ]}
+                />
+                <RHFSelect
+                  name="priority"
+                  control={control}
+                  label="Priority"
+                  options={[
+                    { label: 'Low', value: 'low' },
+                    { label: 'Medium', value: 'medium' },
+                    { label: 'High', value: 'high' },
+                  ]}
+                />
               </div>
-            </div>
 
-            <DialogFooter className="gap-2 pt-2 pb-6 px-6">
-              <Button type="button" variant="outline" onClick={onClose}>
-                Cancel
-              </Button>
-              <Button type="submit" disabled={isPending}>
-                {isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Create Goal'}
-              </Button>
-            </DialogFooter>
-          </form>
+              <div className="grid grid-cols-2 gap-4">
+                <RHFDatepicker name="startDate" control={control} label="Start Date *" />
+                <RHFDatepicker
+                  name="endDate"
+                  control={control}
+                  label="End Date *"
+                  minDate={startDate}
+                />
+              </div>
+
+              <div className="p-4 bg-gradient-to-r from-yellow-50 to-amber-50 rounded-lg border border-yellow-200">
+                <h4 className="text-sm font-medium text-yellow-800 mb-2">🏆 Award Tiers</h4>
+                <div className="grid grid-cols-2 gap-2 text-xs text-yellow-700">
+                  <span>Bronze: Avg score 60-79%</span>
+                  <span>Silver: Avg score 80-89%</span>
+                  <span>Gold: Avg score 90-94%</span>
+                  <span>Diamond: Avg score ≥95%</span>
+                </div>
+              </div>
+
+              <DialogFooter className="gap-2 pt-2 pb-6 px-6">
+                <Button type="button" variant="outline" onClick={onClose}>
+                  Cancel
+                </Button>
+                <Button type="submit" disabled={isPending}>
+                  {isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Create Goal'}
+                </Button>
+              </DialogFooter>
+            </form>
+          </div>
         </ScrollArea>
       </DialogContent>
     </Dialog>

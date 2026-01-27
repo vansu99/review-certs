@@ -1,5 +1,11 @@
 // Components
-export { QuestionCard, ExamHeader, QuestionPanel, QuestionNavGrid } from './components'
+export {
+  QuestionCard,
+  ExamHeader,
+  QuestionPanel,
+  QuestionNavGrid,
+  CreateExamModal,
+} from './components'
 
 // Hooks
 export {

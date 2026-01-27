@@ -61,7 +61,7 @@ export const ExamListPage = () => {
               to={`/test/${test.id}/exam`}
               className="block p-6 bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md hover:border-indigo-200 transition-all duration-200"
             >
-              <div className="flex items-start justify-between">
+              <div className="flex items-start justify-between gap-4">
                 <div className="flex-1">
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">{test.title}</h3>
                   <p className="text-sm text-gray-600 mb-4 line-clamp-2">{test.description}</p>

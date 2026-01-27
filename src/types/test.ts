@@ -20,8 +20,19 @@ export interface Test {
   duration: number // minutes
   questionCount: number
   questions: Question[]
+  videoUrl?: string
+  imageUrl?: string
   createdAt?: string
   updatedAt?: string
+}
+
+export interface CreateTestPayload {
+  categoryId: string
+  title: string
+  description: string
+  duration: number
+  videoFile?: File
+  imageFile?: File
 }
 
 export interface TestAttempt {

@@ -6,6 +6,7 @@ import type {
   TestHistoryFilters,
   TestHistoryResponse,
   TestHistoryItem,
+  CreateTestPayload,
 } from '@/types'
 
 // Mock delay for simulating API calls
@@ -367,5 +368,26 @@ export const testService = {
       totalPages,
       currentPage: page,
     }
+  },
+
+  /**
+   * Create a new test (Mock)
+   */
+  createTest: async (payload: CreateTestPayload): Promise<Test> => {
+    await mockDelay(1000)
+    const newTest: Test = {
+      id: 'test-' + Date.now(),
+      categoryId: payload.categoryId,
+      title: payload.title,
+      description: payload.description,
+      duration: Number(payload.duration),
+      questionCount: 0,
+      questions: [],
+      imageUrl: payload.imageFile ? URL.createObjectURL(payload.imageFile) : undefined,
+      videoUrl: payload.videoFile ? URL.createObjectURL(payload.videoFile) : undefined,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    }
+    return newTest
   },
 }
