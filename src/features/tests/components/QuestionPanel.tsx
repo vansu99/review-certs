@@ -1,10 +1,5 @@
 import { useState } from 'react'
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  ArrowsPointingOutIcon,
-  EyeIcon,
-} from '@heroicons/react/24/outline'
+import { ChevronLeftIcon, ChevronRightIcon, PencilSquareIcon } from '@heroicons/react/24/outline'
 import type { Question } from '@/types'
 import { Eye, EyeOff } from 'lucide-react'
 
@@ -30,6 +25,8 @@ export const QuestionPanel = ({
   showAnswerEnabled = true,
 }: QuestionPanelProps) => {
   const [showAnswer, setShowAnswer] = useState(false)
+  const [showNote, setShowNote] = useState(false)
+  const [note, setNote] = useState('')
 
   const optionLabels = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
 
@@ -58,7 +55,12 @@ export const QuestionPanel = ({
             } else if (isSelected) {
               optionStyles += ' border-indigo-500 bg-indigo-50'
             } else {
-              optionStyles += ' border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+              optionStyles += ' border-gray-200'
+              if (!showAnswer) {
+                optionStyles += ' hover:border-gray-300 hover:bg-gray-50 cursor-pointer'
+              } else {
+                optionStyles += ' cursor-default'
+              }
             }
 
             return (
@@ -66,6 +68,7 @@ export const QuestionPanel = ({
                 key={option.id}
                 onClick={() => onAnswerSelect(option.id)}
                 className={optionStyles}
+                disabled={showAnswer}
               >
                 {/* Radio circle */}
                 <div
@@ -96,38 +99,62 @@ export const QuestionPanel = ({
       </div>
 
       {/* Footer Actions */}
-      <div className="mt-6 pt-4 border-t border-gray-100">
-        {/* Show Answer Button */}
-        {showAnswerEnabled && (
-          <button
-            onClick={handleToggleShowAnswer}
-            className="flex items-center gap-2 text-indigo-600 hover:text-indigo-700 font-medium mb-4"
-          >
-            {showAnswer ? <Eye className="size-5" /> : <EyeOff className="size-5" />}
-            {showAnswer ? 'Hide Answer' : 'Show Answer'}
-          </button>
-        )}
+      <div className="mt-6 pt-6 border-t border-gray-100">
+        <div className="flex flex-col gap-6">
+          {showNote && (
+            <textarea
+              value={note}
+              onChange={(e) => setNote(e.target.value)}
+              placeholder="Type your notes for this question here..."
+              className="w-full h-32 p-4 rounded-lg border-2 border-gray-200 focus:border-indigo-500 focus:outline-none resize-none text-sm text-gray-700 transition-all duration-200"
+            />
+          )}
 
-        {/* Navigation */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <button
-              onClick={onPrev}
-              disabled={!hasPrev}
-              className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
-            >
-              <ChevronLeftIcon className="w-4 h-4" />
-              Previous
-            </button>
+          <div className="flex items-center justify-between">
+            {/* Tool buttons */}
+            <div className="flex items-center gap-4">
+              {showAnswerEnabled && (
+                <button
+                  onClick={handleToggleShowAnswer}
+                  className="flex items-center gap-2 text-gray-400 hover:text-indigo-600 font-medium transition-colors"
+                  title={showAnswer ? 'Hide Answer' : 'Show Answer'}
+                >
+                  {showAnswer ? <Eye className="size-5" /> : <EyeOff className="size-5" />}
+                  <span className="text-sm">Answer</span>
+                </button>
+              )}
 
-            <button
-              onClick={onNext}
-              disabled={!hasNext}
-              className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1"
-            >
-              Next question
-              <ChevronRightIcon className="w-4 h-4" />
-            </button>
+              <button
+                onClick={() => setShowNote(!showNote)}
+                className={`flex items-center gap-2 font-medium transition-colors ${
+                  showNote ? 'text-indigo-600' : 'text-gray-400 hover:text-indigo-600'
+                }`}
+                title={showNote ? 'Hide Note' : 'Add Note'}
+              >
+                <PencilSquareIcon className="size-5" />
+                <span className="text-sm">Note</span>
+              </button>
+            </div>
+
+            {/* Navigation buttons */}
+            <div className="flex items-center gap-3">
+              <button
+                onClick={onPrev}
+                disabled={!hasPrev}
+                className="p-2 border border-gray-200 rounded-lg text-gray-400 hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+              >
+                <ChevronLeftIcon className="w-5 h-5" />
+              </button>
+
+              <button
+                onClick={onNext}
+                disabled={!hasNext}
+                className="px-6 py-2.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 font-medium shadow-sm hover:shadow-md transition-all active:scale-95"
+              >
+                Next question
+                <ChevronRightIcon className="w-4 h-4" />
+              </button>
+            </div>
           </div>
         </div>
       </div>

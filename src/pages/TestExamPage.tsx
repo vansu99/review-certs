@@ -119,7 +119,7 @@ export const TestExamPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="h-screen bg-gray-50 flex flex-col overflow-hidden">
       {/* Header */}
       <ExamHeader
         currentQuestion={currentQuestionIndex + 1}
@@ -132,10 +132,10 @@ export const TestExamPage = () => {
       />
 
       {/* Main Content */}
-      <div className="flex-1 p-6">
-        <div className="max-w-7xl mx-auto h-full flex gap-6">
+      <div className="flex-1 flex overflow-hidden p-6">
+        <div className="max-w-7xl mx-auto w-full h-full flex gap-6 overflow-hidden">
           {/* Question Panel - Left side (approx 70%) */}
-          <div className="flex-1 min-w-0">
+          <div className="flex-1 min-w-0 h-full overflow-y-auto">
             <QuestionPanel
               question={currentQuestion}
               selectedAnswerId={answers[currentQuestion.id] || null}
@@ -148,7 +148,7 @@ export const TestExamPage = () => {
           </div>
 
           {/* Question Navigation Grid - Right side (approx 30%) */}
-          <div className="w-80 shrink-0">
+          <div className="w-80 shrink-0 h-full overflow-y-auto">
             <QuestionNavGrid
               totalQuestions={totalQuestions}
               currentQuestion={currentQuestionIndex + 1}

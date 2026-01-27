@@ -6,11 +6,11 @@ import { NProgressProvider } from '@/lib/nprogress'
 export const MainLayout = () => {
   return (
     <NProgressProvider>
-      <div className="min-h-screen bg-gray-50">
+      <div className="h-screen flex flex-col bg-gray-50 overflow-hidden">
         <Header />
-        <div className="flex">
+        <div className="flex flex-1 overflow-hidden">
           <Sidebar />
-          <main className="flex-1 p-6">
+          <main className="flex-1 overflow-y-auto p-6">
             <Outlet />
           </main>
         </div>

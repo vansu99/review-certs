@@ -75,10 +75,10 @@ export const TestTakingPage = () => {
         <h1 className="text-2xl font-bold text-gray-900 mb-2">{test.title}</h1>
         <p className="text-gray-600 mb-4">{test.description}</p>
         <div className="flex items-center gap-6 text-sm text-gray-500">
-          <span>⏱️ {test.duration} minutes</span>
-          <span>📝 {totalQuestions} questions</span>
+          <span>{test.duration} minutes</span>
+          <span>{totalQuestions} questions</span>
           <span className="text-indigo-600 font-medium">
-            ✅ {answeredCount}/{totalQuestions} answered
+            {answeredCount}/{totalQuestions} answered
           </span>
         </div>
       </div>
