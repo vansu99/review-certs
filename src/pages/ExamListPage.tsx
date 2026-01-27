@@ -1,7 +1,12 @@
 import { useParams, Link } from 'react-router-dom'
 import { useTestsByCategory } from '@/features/tests'
 import { useCategories } from '@/features/categories'
-import { ChevronLeftIcon, ClockIcon, DocumentTextIcon } from '@heroicons/react/24/outline'
+import {
+  ChevronLeftIcon,
+  ClockIcon,
+  DocumentTextIcon,
+  BookmarkIcon,
+} from '@heroicons/react/24/outline'
 import { ROUTES } from '@/constants'
 
 export const ExamListPage = () => {
@@ -73,9 +78,22 @@ export const ExamListPage = () => {
                   </div>
                 </div>
 
-                <span className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors">
-                  Start Exam
-                </span>
+                <div className="flex flex-col items-end gap-3">
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      // UI only: toggle bookmark
+                    }}
+                    className="p-2 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors"
+                    title="Bookmark exam"
+                  >
+                    <BookmarkIcon className="w-6 h-6" />
+                  </button>
+                  <span className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors">
+                    Start Exam
+                  </span>
+                </div>
               </div>
             </Link>
           ))

@@ -6,7 +6,7 @@ export const Sidebar = () => {
   const { data: categories, isLoading } = useCategories()
 
   return (
-    <aside className="w-64 bg-white border-r border-gray-200 min-h-[calc(100vh-73px)] p-4">
+    <aside className="w-64 bg-white border-r border-gray-200 h-full overflow-y-auto p-4 shrink-0">
       <div className="mb-6">
         <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
           Navigation
@@ -37,6 +37,19 @@ export const Sidebar = () => {
           >
             <ChartBarStacked className="size-5" />
             All Categories
+          </NavLink>
+          <NavLink
+            to="/bookmarks"
+            className={({ isActive }) =>
+              `flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                isActive
+                  ? 'bg-indigo-50 text-indigo-600'
+                  : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+              }`
+            }
+          >
+            <span className="text-xl">🔖</span>
+            Bookmarks
           </NavLink>
         </nav>
       </div>

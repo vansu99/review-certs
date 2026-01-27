@@ -12,6 +12,7 @@ import {
   ProfilePage,
   TestHistoryPage,
   GoalsPage,
+  BookmarksPage,
 } from '@/pages'
 
 export const router = createBrowserRouter([
@@ -63,6 +64,10 @@ export const router = createBrowserRouter([
           {
             path: '/goals',
             element: <GoalsPage />,
+          },
+          {
+            path: '/bookmarks',
+            element: <BookmarksPage />,
           },
         ],
       },
