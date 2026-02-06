@@ -1,6 +1,8 @@
 import { useParams, Link } from 'react-router-dom'
 import { useTestsByCategory } from '@/features/tests'
 import { useCategories } from '@/features/categories'
+import { usePermissions } from '@/hooks/usePermissions'
+import { Permission } from '@/lib/permissions'
 import {
   ChevronLeftIcon,
   ClockIcon,
@@ -13,6 +15,7 @@ export const ExamListPage = () => {
   const { categoryId } = useParams<{ categoryId: string }>()
   const { data: tests, isLoading, error } = useTestsByCategory(categoryId || '')
   const { data: categories } = useCategories()
+  const { hasPermission } = usePermissions()
 
   const category = categories?.find((c) => c.id === categoryId)
 
@@ -48,8 +51,19 @@ export const ExamListPage = () => {
           <ChevronLeftIcon className="w-4 h-4" />
           Back to Categories
         </Link>
-        <h1 className="text-2xl font-bold text-gray-900">{category?.name || 'Exams'}</h1>
-        <p className="text-gray-600 mt-1">{category?.description || 'Choose an exam to start'}</p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900">{category?.name || 'Exams'}</h1>
+            <p className="text-gray-600 mt-1">
+              {category?.description || 'Choose an exam to start'}
+            </p>
+          </div>
+          {hasPermission(Permission.CRUD_EXAMS) && (
+            <button className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors">
+              Create Exam
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Exam list */}

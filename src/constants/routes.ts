@@ -14,6 +14,7 @@ export const ROUTES = {
   HISTORY: '/history',
   GOALS: '/goals',
   PROFILE: '/profile',
+  BOOKMARKS: '/bookmarks',
 
   // Test routes
   TEST: '/tests/:id',

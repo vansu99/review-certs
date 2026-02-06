@@ -5,7 +5,6 @@ import {
   PlayIcon,
   XMarkIcon,
   BookmarkIcon,
-  PencilSquareIcon,
 } from '@heroicons/react/24/outline'
 
 interface ExamHeaderProps {

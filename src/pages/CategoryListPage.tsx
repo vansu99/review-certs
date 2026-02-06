@@ -1,7 +1,10 @@
 import { useCategories, CategoryList } from '@/features/categories'
+import { usePermissions } from '@/hooks/usePermissions'
+import { Permission } from '@/lib/permissions'
 
 export const CategoryListPage = () => {
   const { data: categories, isLoading, error } = useCategories()
+  const { hasPermission } = usePermissions()
 
   if (isLoading) {
     return (
@@ -26,9 +29,16 @@ export const CategoryListPage = () => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-gray-900">Categories</h1>
-        <p className="text-gray-600 mt-1">Choose a category to start practicing</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">Categories</h1>
+          <p className="text-gray-600 mt-1">Choose a category to start practicing</p>
+        </div>
+        {hasPermission(Permission.CRUD_CATEGORIES) && (
+          <button className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors">
+            Create Category
+          </button>
+        )}
       </div>
 
       <CategoryList categories={categories || []} />

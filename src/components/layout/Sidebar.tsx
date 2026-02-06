@@ -1,9 +1,12 @@
 import { NavLink } from 'react-router-dom'
 import { useCategories } from '@/features/categories'
-import { ChartBarStacked, LayoutDashboard } from 'lucide-react'
+import { ChartBarStacked, LayoutDashboard, ShieldCheck } from 'lucide-react'
+import { ROUTES } from '@/constants'
+import { usePermissions } from '@/hooks/usePermissions'
 
 export const Sidebar = () => {
   const { data: categories, isLoading } = useCategories()
+  const { isAdmin } = usePermissions()
 
   return (
     <aside className="w-64 bg-white border-r border-gray-200 h-full overflow-y-auto p-4 shrink-0">
@@ -13,7 +16,7 @@ export const Sidebar = () => {
         </h2>
         <nav className="space-y-1">
           <NavLink
-            to="/dashboard"
+            to={ROUTES.DASHBOARD}
             className={({ isActive }) =>
               `flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                 isActive
@@ -26,7 +29,7 @@ export const Sidebar = () => {
             Dashboard
           </NavLink>
           <NavLink
-            to="/categories"
+            to={ROUTES.CATEGORIES}
             className={({ isActive }) =>
               `flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                 isActive
@@ -39,7 +42,7 @@ export const Sidebar = () => {
             All Categories
           </NavLink>
           <NavLink
-            to="/bookmarks"
+            to={ROUTES.BOOKMARKS}
             className={({ isActive }) =>
               `flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                 isActive
@@ -53,6 +56,29 @@ export const Sidebar = () => {
           </NavLink>
         </nav>
       </div>
+
+      {isAdmin && (
+        <div className="mb-6">
+          <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
+            Settings
+          </h2>
+          <nav className="space-y-1">
+            <NavLink
+              to="/settings/permissions"
+              className={({ isActive }) =>
+                `flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  isActive
+                    ? 'bg-indigo-50 text-indigo-600'
+                    : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+                }`
+              }
+            >
+              <ShieldCheck className="size-5" />
+              Permissions
+            </NavLink>
+          </nav>
+        </div>
+      )}
 
       <div>
         <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">

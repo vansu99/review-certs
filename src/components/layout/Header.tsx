@@ -70,6 +70,7 @@ export const Header = () => {
                       <p className="text-sm font-medium text-gray-900">
                         Hi, {getFirstName(user?.name)}
                       </p>
+                      <p className="text-xs text-gray-500 mt-0.5">{user?.role}</p>
                     </div>
 
                     {/* Profile link */}

@@ -1,5 +1,5 @@
 // User types
-export type { User, AuthResponse, LoginCredentials } from './user'
+export type { User, UserRole, AuthResponse, LoginCredentials } from './user'
 
 // Category types
 export type { Category } from './category'

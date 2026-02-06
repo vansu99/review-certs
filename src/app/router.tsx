@@ -13,6 +13,7 @@ import {
   TestHistoryPage,
   GoalsPage,
   BookmarksPage,
+  SettingsPermissionsPage,
 } from '@/pages'
 
 export const router = createBrowserRouter([
@@ -68,6 +69,16 @@ export const router = createBrowserRouter([
           {
             path: '/bookmarks',
             element: <BookmarksPage />,
+          },
+          {
+            path: '/settings/permissions',
+            element: <ProtectedRoute allowedRoles={['Admin']} />,
+            children: [
+              {
+                index: true,
+                element: <SettingsPermissionsPage />,
+              },
+            ],
           },
         ],
       },

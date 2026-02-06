@@ -5,11 +5,25 @@ import type { AuthResponse, LoginCredentials, User } from '@/types'
 const mockDelay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 // Mock user data
-const mockUser: User = {
-  id: '1',
-  email: 'user@example.com',
-  name: 'Test User',
-  avatar: undefined,
+const mockUsers: Record<string, User> = {
+  'admin@example.com': {
+    id: '1',
+    email: 'admin@example.com',
+    name: 'Admin User',
+    role: 'Admin',
+  },
+  'manager@example.com': {
+    id: '2',
+    email: 'manager@example.com',
+    name: 'Manager User',
+    role: 'Manager',
+  },
+  'user@example.com': {
+    id: '3',
+    email: 'user@example.com',
+    name: 'Regular User',
+    role: 'User',
+  },
 }
 
 export const authService = {
@@ -22,18 +36,15 @@ export const authService = {
     await mockDelay(500)
 
     // Simulate validation
-    if (credentials.email === 'user@example.com' && credentials.password === 'password') {
+    const user = mockUsers[credentials.email]
+    if (user && credentials.password === 'password') {
       return {
-        user: mockUser,
+        user,
         accessToken: 'mock-jwt-token-' + Date.now(),
       }
     }
 
     throw new Error('Invalid email or password')
-
-    // Real API call would be:
-    // const response = await axiosInstance.post<AuthResponse>('/auth/login', credentials)
-    // return response.data
   },
 
   /**
@@ -53,7 +64,7 @@ export const authService = {
   getProfile: async (): Promise<User> => {
     // Mock implementation
     await mockDelay(300)
-    return mockUser
+    return mockUsers['user@example.com']
 
     // Real API call would be:
     // const response = await axiosInstance.get<User>('/auth/profile')

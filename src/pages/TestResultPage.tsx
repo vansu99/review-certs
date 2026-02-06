@@ -100,7 +100,7 @@ export const TestResultPage = () => {
             >
               <div className="flex items-start gap-4 mb-4">
                 <span
-                  className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold ${
+                  className={`shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold ${
                     isCorrect ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'
                   }`}
                 >
