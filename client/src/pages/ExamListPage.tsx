@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { useTestsByCategory } from '@/features/tests'
 import { useCategories } from '@/features/categories'
@@ -12,9 +13,11 @@ import {
   SignalIcon,
   UsersIcon,
   CheckBadgeIcon,
+  ArrowUpTrayIcon,
 } from '@heroicons/react/24/outline'
 import { BookmarkIcon as BookmarkSolidIcon } from '@heroicons/react/24/solid'
 import { ROUTES } from '@/constants'
+import { ImportExamModal } from '@/features/tests'
 
 export const ExamListPage = () => {
   const { categoryId } = useParams<{ categoryId: string }>()
@@ -24,6 +27,7 @@ export const ExamListPage = () => {
   const { data: bookmarks = [] } = useBookmarks()
   const addBookmark = useAddBookmark()
   const removeBookmark = useRemoveBookmark()
+  const [isImportModalOpen, setIsImportModalOpen] = useState(false)
 
   const category = categories?.find((c) => c.id === categoryId)
 
@@ -88,9 +92,18 @@ export const ExamListPage = () => {
             </p>
           </div>
           {hasPermission(Permission.CRUD_EXAMS) && (
-            <button className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors">
-              Create Exam
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setIsImportModalOpen(true)}
+                className="inline-flex items-center gap-1.5 px-4 py-2 border border-indigo-200 text-indigo-600 text-sm font-medium rounded-lg hover:bg-indigo-50 transition-colors"
+              >
+                <ArrowUpTrayIcon className="w-4 h-4" />
+                Import Exam
+              </button>
+              <button className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors">
+                Create Exam
+              </button>
+            </div>
           )}
         </div>
       </div>
@@ -163,6 +176,13 @@ export const ExamListPage = () => {
           </div>
         )}
       </div>
+
+      {/* Import Exam Modal */}
+      <ImportExamModal
+        isOpen={isImportModalOpen}
+        onClose={() => setIsImportModalOpen(false)}
+        categoryId={categoryId}
+      />
     </div>
   )
 }

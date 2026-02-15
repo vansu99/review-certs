@@ -6,6 +6,7 @@ import type {
   TestHistoryFilters,
   TestHistoryResponse,
   CreateTestPayload,
+  ImportExamPayload,
 } from '@/types'
 
 interface ApiResponse<T> {
@@ -98,5 +99,21 @@ export const testService = {
    */
   deleteTest: async (id: string): Promise<void> => {
     await axiosInstance.delete(`/tests/${id}`)
+  },
+
+  /**
+   * Import exam with questions from Excel/CSV (Admin/Manager only)
+   */
+  importExam: async (payload: ImportExamPayload): Promise<Test> => {
+    const response = await axiosInstance.post<ApiResponse<Test>>('/tests', {
+      categoryId: payload.categoryId,
+      title: payload.title,
+      description: payload.description,
+      duration: payload.duration,
+      difficulty: payload.difficulty,
+      passingScore: payload.passingScore,
+      questions: payload.questions,
+    })
+    return response.data.data
   },
 }

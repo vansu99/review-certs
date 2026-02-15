@@ -13,6 +13,9 @@ export type {
   SubmitTestPayload,
   TestResult,
   CreateTestPayload,
+  ImportExamPayload,
+  ImportQuestion,
+  ImportOption,
 } from './test'
 
 // API types
