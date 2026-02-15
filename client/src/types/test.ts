@@ -34,6 +34,8 @@ export interface CreateTestPayload {
   title: string
   description: string
   duration: number
+  difficulty: 'Beginner' | 'Intermediate' | 'Advanced'
+  passingScore: number
   videoFile?: File
   imageFile?: File
 }

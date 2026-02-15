@@ -91,21 +91,29 @@ export async function parseExamFile(file: File): Promise<ParseResult> {
         // Validate headers
         const firstRow = jsonData[0]
         const actualHeaders = Object.keys(firstRow).map((h) => h.toLowerCase().trim())
-        const missingHeaders = EXPECTED_HEADERS.filter(
-          (h) =>
-            !actualHeaders.includes(h) &&
-            [
-              'question_number',
-              'question_content',
-              'question_type',
-              'option_a',
-              'option_b',
-              'correct_answer',
-            ].includes(h)
-        )
+        const REQUIRED_HEADERS = [
+          'question_number',
+          'question_content',
+          'question_type',
+          'option_a',
+          'option_b',
+          'correct_answer',
+        ]
+        const missingHeaders = REQUIRED_HEADERS.filter((h) => !actualHeaders.includes(h))
 
         if (missingHeaders.length > 0) {
           reject(new Error(`Missing required headers: ${missingHeaders.join(', ')}`))
+          return
+        }
+
+        // Check for unrecognized columns
+        const unrecognizedHeaders = actualHeaders.filter((h) => !EXPECTED_HEADERS.includes(h))
+        if (unrecognizedHeaders.length > 0) {
+          reject(
+            new Error(
+              `Unrecognized columns: ${unrecognizedHeaders.join(', ')}. Expected columns: ${EXPECTED_HEADERS.join(', ')}`
+            )
+          )
           return
         }
 
@@ -155,8 +163,26 @@ export async function parseExamFile(file: File): Promise<ParseResult> {
 export function validateImportData(rows: ImportRow[]): ImportError[] {
   const errors: ImportError[] = []
 
+  // Track question content for duplicate detection
+  const seenQuestions = new Map<string, number>() // content -> first row number
+
   rows.forEach((row, index) => {
     const rowNum = index + 2 // +2 because row 1 is header, data starts at row 2
+
+    // Validate question_number format
+    if (row.question_number !== 0 && !Number.isInteger(row.question_number)) {
+      errors.push({
+        row: rowNum,
+        field: 'question_number',
+        message: `Question number must be an integer, got "${row.question_number}"`,
+      })
+    } else if (row.question_number < 0) {
+      errors.push({
+        row: rowNum,
+        field: 'question_number',
+        message: `Question number must be positive, got "${row.question_number}"`,
+      })
+    }
 
     // Required: question_content
     if (!row.question_content) {
@@ -165,10 +191,29 @@ export function validateImportData(rows: ImportRow[]): ImportError[] {
         field: 'question_content',
         message: 'Question content is required',
       })
+    } else {
+      // Check for duplicate question content
+      const normalizedContent = row.question_content.toLowerCase().trim()
+      const firstOccurrence = seenQuestions.get(normalizedContent)
+      if (firstOccurrence !== undefined) {
+        errors.push({
+          row: rowNum,
+          field: 'question_content',
+          message: `Duplicate question — same content as row ${firstOccurrence}`,
+        })
+      } else {
+        seenQuestions.set(normalizedContent, rowNum)
+      }
     }
 
     // Required: question_type must be 'single' or 'multiple'
-    if (!['single', 'multiple'].includes(row.question_type)) {
+    if (!row.question_type) {
+      errors.push({
+        row: rowNum,
+        field: 'question_type',
+        message: 'Question type is required',
+      })
+    } else if (!['single', 'multiple'].includes(row.question_type)) {
       errors.push({
         row: rowNum,
         field: 'question_type',
@@ -184,13 +229,34 @@ export function validateImportData(rows: ImportRow[]): ImportError[] {
       errors.push({ row: rowNum, field: 'option_b', message: 'Option B is required' })
     }
 
-    // Required: correct_answer
+    // Validate correct_answer format and references
     if (!row.correct_answer) {
       errors.push({ row: rowNum, field: 'correct_answer', message: 'Correct answer is required' })
     } else {
-      // Validate correct_answer references existing options
-      const answers = row.correct_answer.split(',').map((a) => a.trim())
+      const rawAnswers = row.correct_answer.split(',').map((a) => a.trim())
       const availableOptions = getAvailableOptionLabels(row)
+
+      // Check for empty entries (e.g., trailing commas like "A,B,")
+      const emptyEntries = rawAnswers.filter((a) => a === '')
+      if (emptyEntries.length > 0) {
+        errors.push({
+          row: rowNum,
+          field: 'correct_answer',
+          message: 'Correct answer has empty entries — check for trailing commas',
+        })
+      }
+
+      const answers = rawAnswers.filter((a) => a !== '')
+
+      // Check for duplicate answer labels (e.g., "A,A")
+      const uniqueAnswers = new Set(answers)
+      if (uniqueAnswers.size !== answers.length) {
+        errors.push({
+          row: rowNum,
+          field: 'correct_answer',
+          message: 'Correct answer contains duplicate labels',
+        })
+      }
 
       for (const answer of answers) {
         if (!OPTION_LABELS.includes(answer as (typeof OPTION_LABELS)[number])) {
@@ -214,6 +280,15 @@ export function validateImportData(rows: ImportRow[]): ImportError[] {
           row: rowNum,
           field: 'correct_answer',
           message: 'Single-choice question must have exactly 1 correct answer',
+        })
+      }
+
+      // Multiple type should have at least 2 correct answers
+      if (row.question_type === 'multiple' && answers.length < 2) {
+        errors.push({
+          row: rowNum,
+          field: 'correct_answer',
+          message: 'Multiple-choice question must have at least 2 correct answers',
         })
       }
     }

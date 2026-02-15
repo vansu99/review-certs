@@ -28,10 +28,9 @@ export async function getTestHistory(req, res, next) {
         t.passing_score,
         (ta.score >= t.passing_score) as isPassed
       FROM test_attempts ta
-      JOIN tests t ON t.id = ta.test_id
-      JOIN categories c ON c.id = t.category_id
-      WHERE ta.user_id = ?
-    `;
+      JOIN tests t ON t.id = ta.test_id AND t.deleted_at IS NULL
+      JOIN categories c ON c.id = t.category_id AND c.deleted_at IS NULL
+      WHERE ta.user_id = ?`;
     const params = [userId];
 
     // Apply filters
@@ -135,7 +134,7 @@ export async function getAttemptById(req, res, next) {
     const [testRows] = await pool.execute(
       `
       SELECT id, category_id, title, description, duration, difficulty, passing_score
-      FROM tests WHERE id = ?
+      FROM tests WHERE id = ? AND deleted_at IS NULL
     `,
       [attemptRow.test_id],
     );
@@ -146,7 +145,7 @@ export async function getAttemptById(req, res, next) {
     const [questionRows] = await pool.execute(
       `
       SELECT id, content, type, explanation, order_index
-      FROM questions WHERE test_id = ?
+      FROM questions WHERE test_id = ? AND deleted_at IS NULL
       ORDER BY order_index ASC
     `,
       [attemptRow.test_id],

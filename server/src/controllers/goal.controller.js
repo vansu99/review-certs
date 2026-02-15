@@ -52,7 +52,7 @@ export async function getGoals(req, res, next) {
     let query = `
       SELECT g.*, c.name as categoryName
       FROM goals g
-      LEFT JOIN categories c ON c.id = g.category_id
+      LEFT JOIN categories c ON c.id = g.category_id AND c.deleted_at IS NULL
       WHERE g.user_id = ?
     `;
     const params = [userId];
@@ -103,7 +103,7 @@ export async function getGoals(req, res, next) {
         try {
           if (examIds.length > 0) {
             const [testRows] = await pool.execute(
-              `SELECT id, title FROM tests WHERE id IN (${examIds.map(() => "?").join(",")})`,
+              `SELECT id, title FROM tests WHERE id IN (${examIds.map(() => "?").join(",")}) AND deleted_at IS NULL`,
               examIds,
             );
             examTitles = testRows.map((t) => t.title);
@@ -193,7 +193,7 @@ export async function getGoalById(req, res, next) {
       `
       SELECT g.*, c.name as categoryName
       FROM goals g
-      LEFT JOIN categories c ON c.id = g.category_id
+      LEFT JOIN categories c ON c.id = g.category_id AND c.deleted_at IS NULL
       WHERE g.id = ? AND g.user_id = ?
     `,
       [id, userId],
@@ -304,7 +304,7 @@ export async function createGoal(req, res, next) {
       }
 
       const [categoryExams] = await pool.execute(
-        "SELECT id FROM tests WHERE category_id = ?",
+        "SELECT id FROM tests WHERE category_id = ? AND deleted_at IS NULL",
         [categoryId],
       );
 

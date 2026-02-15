@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -11,33 +12,32 @@ import {
 } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { RHFInput, RHFSelect, RHFFileUpload } from '@/components/ui/form'
+import { RHFInput, RHFSelect } from '@/components/ui/form'
 import { useCategories } from '@/features/categories'
 import { testService } from '../services/testService'
 import { toast } from 'sonner'
 import { useQueryClient } from '@tanstack/react-query'
 import { TEST_QUERY_KEYS } from '../hooks'
+import type { Test } from '@/types'
 
-const createExamSchema = z.object({
+const editExamSchema = z.object({
   title: z.string().min(1, 'Title is required'),
-  description: z.string().min(1, 'Description is required'),
+  description: z.string(),
   categoryId: z.string().min(1, 'Category is required'),
   duration: z.string().min(1, 'Duration is required'),
   difficulty: z.string().min(1, 'Difficulty is required'),
   passingScore: z.string().min(1, 'Passing score is required'),
-  imageFile: z.any().optional(),
-  videoFile: z.any().optional(),
 })
 
-type CreateExamFormValues = z.infer<typeof createExamSchema>
+type EditExamFormValues = z.infer<typeof editExamSchema>
 
-interface CreateExamModalProps {
+interface EditExamModalProps {
   isOpen: boolean
   onClose: () => void
-  categoryId?: string
+  exam: Test | null
 }
 
-export const CreateExamModal = ({ isOpen, onClose, categoryId }: CreateExamModalProps) => {
+export const EditExamModal = ({ isOpen, onClose, exam }: EditExamModalProps) => {
   const { data: categories } = useCategories()
   const queryClient = useQueryClient()
 
@@ -46,37 +46,53 @@ export const CreateExamModal = ({ isOpen, onClose, categoryId }: CreateExamModal
     handleSubmit,
     reset,
     formState: { isSubmitting },
-  } = useForm<CreateExamFormValues>({
-    resolver: zodResolver(createExamSchema),
+  } = useForm<EditExamFormValues>({
+    resolver: zodResolver(editExamSchema),
     defaultValues: {
       title: '',
       description: '',
-      categoryId: categoryId || '',
+      categoryId: '',
       duration: '60',
       difficulty: 'Beginner',
       passingScore: '70',
     },
   })
 
-  const onSubmit = async (data: CreateExamFormValues) => {
+  // Reset form when exam changes
+  useEffect(() => {
+    if (exam) {
+      reset({
+        title: exam.title,
+        description: exam.description || '',
+        categoryId: exam.categoryId,
+        duration: String(exam.duration),
+        difficulty: exam.difficulty || 'Beginner',
+        passingScore: String(exam.passingScore || 70),
+      })
+    }
+  }, [exam, reset])
+
+  const onSubmit = async (data: EditExamFormValues) => {
+    if (!exam) return
+
     try {
-      await testService.createTest({
+      await testService.updateTest(exam.id, {
         title: data.title,
         description: data.description,
         categoryId: data.categoryId,
         duration: Number(data.duration),
         difficulty: data.difficulty as 'Beginner' | 'Intermediate' | 'Advanced',
         passingScore: Number(data.passingScore),
-        imageFile: data.imageFile,
-        videoFile: data.videoFile,
       })
 
-      toast.success('Exam created successfully!')
+      toast.success('Exam updated successfully!')
       queryClient.invalidateQueries({ queryKey: [TEST_QUERY_KEYS.tests] })
+      queryClient.invalidateQueries({
+        queryKey: TEST_QUERY_KEYS.byCategory(data.categoryId),
+      })
       onClose()
-      reset()
     } catch (error) {
-      toast.error('Failed to create exam')
+      toast.error('Failed to update exam')
     }
   }
 
@@ -85,7 +101,7 @@ export const CreateExamModal = ({ isOpen, onClose, categoryId }: CreateExamModal
       <DialogContent className="max-w-xl p-0 bg-white overflow-hidden sm:max-w-xl">
         <DialogHeader className="px-6 pt-6">
           <DialogTitle className="text-xl font-semibold text-gray-900 flex items-center gap-2">
-            Create New Exam
+            Edit Exam
           </DialogTitle>
         </DialogHeader>
 
@@ -153,25 +169,6 @@ export const CreateExamModal = ({ isOpen, onClose, categoryId }: CreateExamModal
                     placeholder="Provide a brief description of the exam..."
                   />
                 </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <RHFFileUpload
-                    name="imageFile"
-                    control={control}
-                    label="Thumbnail Image"
-                    type="image"
-                    accept="image/*"
-                    helperText="Recommended size: 1280x720"
-                  />
-                  <RHFFileUpload
-                    name="videoFile"
-                    control={control}
-                    label="Intro Video"
-                    type="video"
-                    accept="video/mp4,video/x-m4v,video/*"
-                    helperText="Intro video for the exam"
-                  />
-                </div>
               </div>
 
               <DialogFooter className="gap-2 pt-2 pb-6">
@@ -186,10 +183,10 @@ export const CreateExamModal = ({ isOpen, onClose, categoryId }: CreateExamModal
                   {isSubmitting ? (
                     <>
                       <Loader2 className="w-4 h-4 animate-spin mr-2" />
-                      Creating...
+                      Saving...
                     </>
                   ) : (
-                    'Create Exam'
+                    'Save Changes'
                   )}
                 </Button>
               </DialogFooter>

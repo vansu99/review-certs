@@ -82,6 +82,8 @@ export const testService = {
       title: payload.title,
       description: payload.description,
       duration: payload.duration,
+      difficulty: payload.difficulty,
+      passingScore: payload.passingScore,
     })
     return response.data.data
   },

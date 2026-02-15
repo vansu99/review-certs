@@ -35,7 +35,8 @@ CREATE TABLE categories (
   description TEXT,
   icon VARCHAR(50) DEFAULT '📚',
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  deleted_at TIMESTAMP NULL DEFAULT NULL
 );
 
 -- Tests table
@@ -51,6 +52,7 @@ CREATE TABLE tests (
   video_url VARCHAR(500),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  deleted_at TIMESTAMP NULL DEFAULT NULL,
   FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE,
   INDEX idx_tests_category (category_id)
 );
@@ -63,6 +65,7 @@ CREATE TABLE questions (
   type ENUM('single', 'multiple') DEFAULT 'single',
   explanation TEXT,
   order_index INT DEFAULT 0,
+  deleted_at TIMESTAMP NULL DEFAULT NULL,
   FOREIGN KEY (test_id) REFERENCES tests(id) ON DELETE CASCADE,
   INDEX idx_questions_test (test_id)
 );
