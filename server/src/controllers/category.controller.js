@@ -13,7 +13,8 @@ export async function getCategories(req, res, next) {
         c.id, c.name, c.description, c.icon, c.created_at, c.updated_at,
         COUNT(t.id) as testCount
       FROM categories c
-      LEFT JOIN tests t ON t.category_id = c.id
+      LEFT JOIN tests t ON t.category_id = c.id AND t.deleted_at IS NULL
+      WHERE c.deleted_at IS NULL
       GROUP BY c.id
       ORDER BY c.name ASC
     `);
@@ -48,8 +49,8 @@ export async function getCategoryById(req, res, next) {
         c.id, c.name, c.description, c.icon, c.created_at, c.updated_at,
         COUNT(t.id) as testCount
       FROM categories c
-      LEFT JOIN tests t ON t.category_id = c.id
-      WHERE c.id = ?
+      LEFT JOIN tests t ON t.category_id = c.id AND t.deleted_at IS NULL
+      WHERE c.id = ? AND c.deleted_at IS NULL
       GROUP BY c.id
     `,
       [id],
@@ -122,7 +123,7 @@ export async function updateCategory(req, res, next) {
 
     // Check if category exists
     const [existing] = await pool.execute(
-      "SELECT id FROM categories WHERE id = ?",
+      "SELECT id FROM categories WHERE id = ? AND deleted_at IS NULL",
       [id],
     );
     if (existing.length === 0) {
@@ -141,8 +142,8 @@ export async function updateCategory(req, res, next) {
         c.id, c.name, c.description, c.icon, c.created_at, c.updated_at,
         COUNT(t.id) as testCount
       FROM categories c
-      LEFT JOIN tests t ON t.category_id = c.id
-      WHERE c.id = ?
+      LEFT JOIN tests t ON t.category_id = c.id AND t.deleted_at IS NULL
+      WHERE c.id = ? AND c.deleted_at IS NULL
       GROUP BY c.id
     `,
       [id],
@@ -175,14 +176,22 @@ export async function deleteCategory(req, res, next) {
 
     // Check if category exists
     const [existing] = await pool.execute(
-      "SELECT id FROM categories WHERE id = ?",
+      "SELECT id FROM categories WHERE id = ? AND deleted_at IS NULL",
       [id],
     );
     if (existing.length === 0) {
       return errorResponse(res, "Category not found", 404);
     }
 
-    await pool.execute("DELETE FROM categories WHERE id = ?", [id]);
+    // Soft delete category and its tests
+    await pool.execute(
+      "UPDATE categories SET deleted_at = NOW() WHERE id = ?",
+      [id],
+    );
+    await pool.execute(
+      "UPDATE tests SET deleted_at = NOW() WHERE category_id = ? AND deleted_at IS NULL",
+      [id],
+    );
 
     return successResponse(res, null, "Category deleted successfully");
   } catch (error) {

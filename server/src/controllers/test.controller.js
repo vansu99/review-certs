@@ -20,7 +20,7 @@ export async function getTestById(req, res, next) {
         COUNT(DISTINCT ta.id) as participants
       FROM tests t
       LEFT JOIN test_attempts ta ON ta.test_id = t.id
-      WHERE t.id = ?
+      WHERE t.id = ? AND t.deleted_at IS NULL
       GROUP BY t.id
     `,
       [id],
@@ -37,7 +37,7 @@ export async function getTestById(req, res, next) {
       `
       SELECT id, content, type, explanation, order_index
       FROM questions
-      WHERE test_id = ?
+      WHERE test_id = ? AND deleted_at IS NULL
       ORDER BY order_index ASC
     `,
       [id],
@@ -121,9 +121,9 @@ export async function getTestsByCategory(req, res, next) {
         COUNT(DISTINCT q.id) as questionCount,
         COUNT(DISTINCT ta.id) as participants
       FROM tests t
-      LEFT JOIN questions q ON q.test_id = t.id
+      LEFT JOIN questions q ON q.test_id = t.id AND q.deleted_at IS NULL
       LEFT JOIN test_attempts ta ON ta.test_id = t.id
-      WHERE t.category_id = ?
+      WHERE t.category_id = ? AND t.deleted_at IS NULL
       GROUP BY t.id
       ORDER BY t.created_at DESC
     `,
@@ -170,7 +170,7 @@ export async function submitTest(req, res, next) {
     const [testRows] = await pool.execute(
       `
       SELECT id, category_id, title, description, duration, difficulty, passing_score
-      FROM tests WHERE id = ?
+      FROM tests WHERE id = ? AND deleted_at IS NULL
     `,
       [testId],
     );
@@ -186,7 +186,7 @@ export async function submitTest(req, res, next) {
       `
       SELECT q.id, q.content, q.type, q.explanation
       FROM questions q
-      WHERE q.test_id = ?
+      WHERE q.test_id = ? AND q.deleted_at IS NULL
     `,
       [testId],
     );
@@ -442,9 +442,10 @@ export async function updateTest(req, res, next) {
     const { id } = req.params;
     const { title, description, duration, difficulty, passingScore } = req.body;
 
-    const [existing] = await pool.execute("SELECT id FROM tests WHERE id = ?", [
-      id,
-    ]);
+    const [existing] = await pool.execute(
+      "SELECT id FROM tests WHERE id = ? AND deleted_at IS NULL",
+      [id],
+    );
     if (existing.length === 0) {
       return errorResponse(res, "Test not found", 404);
     }
@@ -477,14 +478,22 @@ export async function deleteTest(req, res, next) {
   try {
     const { id } = req.params;
 
-    const [existing] = await pool.execute("SELECT id FROM tests WHERE id = ?", [
-      id,
-    ]);
+    const [existing] = await pool.execute(
+      "SELECT id FROM tests WHERE id = ? AND deleted_at IS NULL",
+      [id],
+    );
     if (existing.length === 0) {
       return errorResponse(res, "Test not found", 404);
     }
 
-    await pool.execute("DELETE FROM tests WHERE id = ?", [id]);
+    // Soft delete test and its questions
+    await pool.execute("UPDATE tests SET deleted_at = NOW() WHERE id = ?", [
+      id,
+    ]);
+    await pool.execute(
+      "UPDATE questions SET deleted_at = NOW() WHERE test_id = ? AND deleted_at IS NULL",
+      [id],
+    );
 
     return successResponse(res, null, "Test deleted successfully");
   } catch (error) {

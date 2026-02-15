@@ -25,8 +25,8 @@ export async function getBookmarks(req, res, next) {
         (SELECT COUNT(*) FROM questions q WHERE q.test_id = t.id) as question_count,
         (SELECT COUNT(*) FROM test_attempts ta WHERE ta.test_id = t.id) as participants
       FROM bookmarks b
-      JOIN tests t ON b.test_id = t.id
-      JOIN categories c ON t.category_id = c.id
+      JOIN tests t ON b.test_id = t.id AND t.deleted_at IS NULL
+      JOIN categories c ON t.category_id = c.id AND c.deleted_at IS NULL
       WHERE b.user_id = ?
       ORDER BY b.created_at DESC`,
       [userId],
@@ -67,9 +67,10 @@ export async function addBookmark(req, res, next) {
     }
 
     // Check if test exists
-    const [testRows] = await pool.execute("SELECT id FROM tests WHERE id = ?", [
-      testId,
-    ]);
+    const [testRows] = await pool.execute(
+      "SELECT id FROM tests WHERE id = ? AND deleted_at IS NULL",
+      [testId],
+    );
     if (testRows.length === 0) {
       return errorResponse(res, "Test not found", 404);
     }
