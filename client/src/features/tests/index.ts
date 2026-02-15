@@ -5,6 +5,7 @@ export {
   QuestionPanel,
   QuestionNavGrid,
   CreateExamModal,
+  ImportExamModal,
 } from './components'
 
 // Hooks

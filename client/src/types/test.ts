@@ -38,6 +38,28 @@ export interface CreateTestPayload {
   imageFile?: File
 }
 
+export interface ImportOption {
+  content: string
+  isCorrect: boolean
+}
+
+export interface ImportQuestion {
+  content: string
+  type: 'single' | 'multiple'
+  explanation?: string
+  options: ImportOption[]
+}
+
+export interface ImportExamPayload {
+  categoryId: string
+  title: string
+  description: string
+  duration: number
+  difficulty: 'Beginner' | 'Intermediate' | 'Advanced'
+  passingScore: number
+  questions: ImportQuestion[]
+}
+
 export interface TestAttempt {
   id: string
   testId: string
