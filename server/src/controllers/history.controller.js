@@ -200,7 +200,11 @@ export async function getAttemptById(req, res, next) {
 
     const answers = {};
     answerRows.forEach((a) => {
-      answers[a.question_id] = JSON.parse(a.selected_option_ids || "[]");
+      // MySQL JSON columns may return already-parsed objects via mysql2 driver
+      const ids = a.selected_option_ids;
+      answers[a.question_id] = Array.isArray(ids)
+        ? ids
+        : JSON.parse(ids || "[]");
     });
 
     // Build response

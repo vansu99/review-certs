@@ -1,6 +1,6 @@
 // Hooks
-export { useDashboardStats, useRecentActivity } from './hooks'
+export { useDashboardStats, useRecentActivity, useHeatmapData, useStreakData } from './hooks'
 
 // Services
-export { dashboardService } from './services'
-export type { DashboardStats, RecentActivity } from './services'
+export { dashboardService, activityService } from './services'
+export type { DashboardStats, RecentActivity, HeatmapEntry, StreakData } from './services'

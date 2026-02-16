@@ -1,7 +1,13 @@
 import { useState } from 'react'
-import { ChevronLeftIcon, ChevronRightIcon, PencilSquareIcon } from '@heroicons/react/24/outline'
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  PencilSquareIcon,
+  PaperAirplaneIcon,
+} from '@heroicons/react/24/outline'
+import { CheckCircleIcon } from '@heroicons/react/24/solid'
 import type { Question } from '@/types'
-import { Eye, EyeOff } from 'lucide-react'
+import { Eye, EyeOff, Lightbulb } from 'lucide-react'
 
 interface QuestionPanelProps {
   question: Question
@@ -11,6 +17,7 @@ interface QuestionPanelProps {
   onNext: () => void
   hasPrev: boolean
   hasNext: boolean
+  onSubmit?: () => void
   showAnswerEnabled?: boolean
 }
 
@@ -22,6 +29,7 @@ export const QuestionPanel = ({
   onNext,
   hasPrev,
   hasNext,
+  onSubmit,
   showAnswerEnabled = true,
 }: QuestionPanelProps) => {
   const [showAnswer, setShowAnswer] = useState(false)
@@ -30,131 +38,166 @@ export const QuestionPanel = ({
 
   const optionLabels = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
 
-  const handleToggleShowAnswer = () => {
-    setShowAnswer(!showAnswer)
-  }
-
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 flex flex-col h-full">
+    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col h-full">
       {/* Question Content */}
-      <div className="flex-1 overflow-auto">
-        <p className="text-gray-800 leading-relaxed mb-6">{question.content}</p>
+      <div className="flex-1 overflow-auto p-7">
+        <p className="text-[16px] text-gray-800 leading-relaxed mb-7 font-medium">
+          {question.content}
+        </p>
 
-        {/* Options */}
+        {/* Answer Options */}
         <div className="space-y-3">
           {question.options.map((option, index) => {
             const isSelected = selectedAnswerId === option.id
             const isCorrect = option.isCorrect
             const showCorrectHighlight = showAnswer && isCorrect
-
-            let optionStyles =
-              'w-full text-left p-4 rounded-lg border-2 transition-all duration-200 flex items-start gap-3'
-
-            if (showCorrectHighlight) {
-              optionStyles += ' border-green-500 bg-green-50'
-            } else if (isSelected) {
-              optionStyles += ' border-indigo-500 bg-indigo-50'
-            } else {
-              optionStyles += ' border-gray-200'
-              if (!showAnswer) {
-                optionStyles += ' hover:border-gray-300 hover:bg-gray-50 cursor-pointer'
-              } else {
-                optionStyles += ' cursor-default'
-              }
-            }
+            const showWrong = showAnswer && isSelected && !isCorrect
 
             return (
               <button
                 key={option.id}
                 onClick={() => onAnswerSelect(option.id)}
-                className={optionStyles}
                 disabled={showAnswer}
+                className={`
+                  w-full text-left px-4 py-3.5 rounded-xl border-2 transition-all duration-200
+                  flex items-center gap-3 group
+                  ${
+                    showCorrectHighlight
+                      ? 'border-emerald-400 bg-emerald-50/70'
+                      : showWrong
+                        ? 'border-red-300 bg-red-50/50'
+                        : isSelected
+                          ? 'border-indigo-500 bg-indigo-50/60 shadow-sm'
+                          : 'border-gray-100 hover:border-indigo-200 hover:bg-gray-50/80 cursor-pointer'
+                  }
+                  ${showAnswer && !showCorrectHighlight && !showWrong ? 'opacity-60' : ''}
+                `}
               >
-                {/* Radio circle */}
+                {/* Option label badge */}
                 <div
-                  className={`w-5 h-5 rounded-full border-2 shrink-0 flex items-center justify-center mt-0.5 ${
-                    isSelected ? 'border-indigo-500 bg-indigo-500' : 'border-gray-300'
-                  }`}
+                  className={`
+                    w-8 h-8 rounded-lg flex items-center justify-center text-sm font-bold shrink-0 transition-colors
+                    ${
+                      showCorrectHighlight
+                        ? 'bg-emerald-500 text-white'
+                        : showWrong
+                          ? 'bg-red-400 text-white'
+                          : isSelected
+                            ? 'bg-indigo-500 text-white'
+                            : 'bg-gray-100 text-gray-500 group-hover:bg-indigo-100 group-hover:text-indigo-600'
+                    }
+                  `}
                 >
-                  {isSelected && <div className="w-2 h-2 bg-white rounded-full" />}
+                  {showCorrectHighlight ? (
+                    <CheckCircleIcon className="w-5 h-5" />
+                  ) : (
+                    optionLabels[index]
+                  )}
                 </div>
 
-                {/* Option label and content */}
-                <span className="text-gray-800">
-                  <span className="font-medium">{optionLabels[index]}.</span> {option.content}
+                {/* Option text */}
+                <span
+                  className={`text-[15px] leading-relaxed ${
+                    showCorrectHighlight
+                      ? 'text-emerald-800 font-medium'
+                      : showWrong
+                        ? 'text-red-700'
+                        : isSelected
+                          ? 'text-indigo-900 font-medium'
+                          : 'text-gray-700'
+                  }`}
+                >
+                  {option.content}
                 </span>
               </button>
             )
           })}
         </div>
 
-        {/* Explanation (when showing answer) */}
+        {/* Explanation */}
         {showAnswer && question.explanation && (
-          <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-            <p className="text-sm text-blue-800">
-              <span className="font-medium">Explanation:</span> {question.explanation}
-            </p>
+          <div className="mt-5 p-4 bg-amber-50/80 border border-amber-200/60 rounded-xl flex gap-3">
+            <Lightbulb className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
+            <div>
+              <p className="text-sm font-semibold text-amber-800 mb-1">Explanation</p>
+              <p className="text-sm text-amber-700 leading-relaxed">{question.explanation}</p>
+            </div>
           </div>
         )}
       </div>
 
-      {/* Footer Actions */}
-      <div className="mt-6 pt-6 border-t border-gray-100">
-        <div className="flex flex-col gap-6">
-          {showNote && (
-            <textarea
-              value={note}
-              onChange={(e) => setNote(e.target.value)}
-              placeholder="Type your notes for this question here..."
-              className="w-full h-32 p-4 rounded-lg border-2 border-gray-200 focus:border-indigo-500 focus:outline-none resize-none text-sm text-gray-700 transition-all duration-200"
-            />
-          )}
+      {/* Footer */}
+      <div className="px-7 pb-5 pt-4 border-t border-gray-100">
+        {/* Note textarea */}
+        {showNote && (
+          <textarea
+            value={note}
+            onChange={(e) => setNote(e.target.value)}
+            placeholder="Write your notes for this question…"
+            className="w-full h-28 p-4 mb-4 rounded-xl border border-gray-200 bg-gray-50/50 focus:border-indigo-400 focus:bg-white focus:ring-2 focus:ring-indigo-100 focus:outline-none resize-none text-sm text-gray-700 transition-all placeholder:text-gray-400"
+          />
+        )}
 
-          <div className="flex items-center justify-between">
-            {/* Tool buttons */}
-            <div className="flex items-center gap-4">
-              {showAnswerEnabled && (
-                <button
-                  onClick={handleToggleShowAnswer}
-                  className="flex items-center gap-2 text-gray-400 hover:text-indigo-600 font-medium transition-colors"
-                  title={showAnswer ? 'Hide Answer' : 'Show Answer'}
-                >
-                  {showAnswer ? <Eye className="size-5" /> : <EyeOff className="size-5" />}
-                  <span className="text-sm">Answer</span>
-                </button>
-              )}
-
+        <div className="flex items-center justify-between">
+          {/* Tool buttons */}
+          <div className="flex items-center gap-1">
+            {showAnswerEnabled && (
               <button
-                onClick={() => setShowNote(!showNote)}
-                className={`flex items-center gap-2 font-medium transition-colors ${
-                  showNote ? 'text-indigo-600' : 'text-gray-400 hover:text-indigo-600'
+                onClick={() => setShowAnswer(!showAnswer)}
+                className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                  showAnswer
+                    ? 'text-indigo-600 bg-indigo-50'
+                    : 'text-gray-400 hover:text-gray-600 hover:bg-gray-50'
                 }`}
-                title={showNote ? 'Hide Note' : 'Add Note'}
+                title={showAnswer ? 'Hide Answer' : 'Show Answer'}
               >
-                <PencilSquareIcon className="size-5" />
-                <span className="text-sm">Note</span>
+                {showAnswer ? <Eye className="size-[18px]" /> : <EyeOff className="size-[18px]" />}
+                <span>Answer</span>
               </button>
-            </div>
+            )}
 
-            {/* Navigation buttons */}
-            <div className="flex items-center gap-3">
-              <button
-                onClick={onPrev}
-                disabled={!hasPrev}
-                className="p-2 border border-gray-200 rounded-lg text-gray-400 hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
-              >
-                <ChevronLeftIcon className="w-5 h-5" />
-              </button>
+            <button
+              onClick={() => setShowNote(!showNote)}
+              className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                showNote
+                  ? 'text-indigo-600 bg-indigo-50'
+                  : 'text-gray-400 hover:text-gray-600 hover:bg-gray-50'
+              }`}
+              title={showNote ? 'Hide Note' : 'Add Note'}
+            >
+              <PencilSquareIcon className="size-[18px]" />
+              <span>Note</span>
+            </button>
+          </div>
 
+          {/* Navigation */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={onPrev}
+              disabled={!hasPrev}
+              className="p-2.5 border border-gray-200 rounded-xl text-gray-400 hover:bg-gray-50 hover:text-gray-600 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+            >
+              <ChevronLeftIcon className="w-5 h-5" />
+            </button>
+
+            {hasNext ? (
               <button
                 onClick={onNext}
-                disabled={!hasNext}
-                className="px-6 py-2.5 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 font-medium shadow-sm hover:shadow-md transition-all active:scale-95"
+                className="px-5 py-2.5 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 flex items-center gap-1.5 text-sm font-medium shadow-sm hover:shadow transition-all active:scale-[0.97]"
               >
-                Next question
-                <ChevronRightIcon className="w-4 h-4" />
+                Next
+                <ChevronRightIcon className="w-4 h-4 stroke-2" />
               </button>
-            </div>
+            ) : (
+              <button
+                onClick={onSubmit}
+                className="px-5 py-2.5 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 flex items-center gap-1.5 text-sm font-semibold shadow-sm hover:shadow transition-all active:scale-[0.97]"
+              >
+                Submit
+                <PaperAirplaneIcon className="w-4 h-4 stroke-2" />
+              </button>
+            )}
           </div>
         </div>
       </div>
