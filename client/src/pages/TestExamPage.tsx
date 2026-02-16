@@ -1,15 +1,17 @@
 import { useState, useMemo, useCallback } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { useTest } from '@/features/tests'
+import { useTest, useSubmitTest } from '@/features/tests'
 import { ExamHeader } from '@/features/tests/components/ExamHeader'
 import { QuestionPanel } from '@/features/tests/components/QuestionPanel'
 import { QuestionNavGrid } from '@/features/tests/components/QuestionNavGrid'
 import { useExamTimer } from '@/features/tests/hooks/useExamTimer'
+import { toast } from 'sonner'
 
 export const TestExamPage = () => {
   const { id: testId } = useParams<{ id: string }>()
   const navigate = useNavigate()
   const { data: test, isLoading, error } = useTest(testId || '')
+  const submitTestMutation = useSubmitTest()
 
   // Current question index (0-based internally, displayed as 1-based)
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
@@ -79,11 +81,35 @@ export const TestExamPage = () => {
     [currentQuestion]
   )
 
-  // End exam handler
+  // End exam handler — submit answers to API
   const handleEndExam = useCallback(() => {
-    // TODO: Submit answers and navigate to results
-    navigate(`/test/${testId}/result`)
-  }, [navigate, testId])
+    if (!testId) return
+
+    const answeredCount = Object.keys(answers).length
+    const unanswered = totalQuestions - answeredCount
+
+    const message =
+      unanswered > 0
+        ? `You have ${unanswered} unanswered question(s). Are you sure you want to submit?`
+        : 'Are you sure you want to submit your exam?'
+
+    if (!window.confirm(message)) return
+
+    // Convert answers from Record<string, string> to Record<string, string[]>
+    const formattedAnswers: Record<string, string[]> = {}
+    for (const [questionId, optionId] of Object.entries(answers)) {
+      formattedAnswers[questionId] = [optionId]
+    }
+
+    submitTestMutation.mutate(
+      { testId, answers: formattedAnswers },
+      {
+        onError: () => {
+          toast.error('Failed to submit exam. Please try again.')
+        },
+      }
+    )
+  }, [testId, answers, totalQuestions, submitTestMutation])
 
   // Close handler
   const handleClose = useCallback(() => {
@@ -144,6 +170,7 @@ export const TestExamPage = () => {
               onNext={goToNext}
               hasPrev={currentQuestionIndex > 0}
               hasNext={currentQuestionIndex < totalQuestions - 1}
+              onSubmit={handleEndExam}
             />
           </div>
 
