@@ -5,19 +5,6 @@ import { useCategories } from '@/features/categories'
 import { usePermissions } from '@/hooks/usePermissions'
 import { Permission } from '@/lib/permissions'
 import { useBookmarks, useAddBookmark, useRemoveBookmark } from '@/features/bookmarks'
-import {
-  ChevronLeftIcon,
-  ClockIcon,
-  DocumentTextIcon,
-  BookmarkIcon,
-  SignalIcon,
-  UsersIcon,
-  CheckBadgeIcon,
-  ArrowUpTrayIcon,
-  PencilSquareIcon,
-  TrashIcon,
-} from '@heroicons/react/24/outline'
-import { BookmarkIcon as BookmarkSolidIcon } from '@heroicons/react/24/solid'
 import { ROUTES } from '@/constants'
 import { ImportExamModal, CreateExamModal, EditExamModal } from '@/features/tests'
 import { testService } from '@/features/tests/services/testService'
@@ -34,6 +21,20 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
+import {
+  ArrowLeft,
+  Clock,
+  HelpCircle,
+  Bookmark,
+  Users,
+  Trophy,
+  Upload,
+  Plus,
+  Pencil,
+  Trash2,
+  Play,
+  FolderOpen,
+} from 'lucide-react'
 
 export const ExamListPage = () => {
   const { categoryId } = useParams<{ categoryId: string }>()
@@ -53,16 +54,11 @@ export const ExamListPage = () => {
 
   const category = categories?.find((c) => c.id === categoryId)
 
-  // Check if a test is bookmarked
-  const isBookmarked = (testId: string) => {
-    return bookmarks.some((b) => b.id === testId)
-  }
+  const isBookmarked = (testId: string) => bookmarks.some((b) => b.id === testId)
 
-  // Toggle bookmark
   const handleToggleBookmark = async (testId: string, e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
-
     try {
       if (isBookmarked(testId)) {
         await removeBookmark.mutateAsync(testId)
@@ -74,10 +70,8 @@ export const ExamListPage = () => {
     }
   }
 
-  // Delete exam
   const handleDeleteExam = async () => {
     if (!deletingExam) return
-
     setIsDeleting(true)
     try {
       await testService.deleteTest(deletingExam.id)
@@ -87,20 +81,34 @@ export const ExamListPage = () => {
         queryClient.invalidateQueries({ queryKey: ['tests', 'category', categoryId] })
       }
       setDeletingExam(null)
-    } catch (err) {
+    } catch {
       toast.error('Failed to delete exam')
     } finally {
       setIsDeleting(false)
     }
   }
 
+  const getDifficultyStyle = (difficulty: string) => {
+    const d = difficulty?.toLowerCase()
+    if (d === 'beginner' || d === 'easy') return 'bg-emerald-100 text-emerald-700'
+    if (d === 'intermediate' || d === 'medium') return 'bg-amber-100 text-amber-700'
+    return 'bg-red-100 text-red-600'
+  }
+
   if (isLoading) {
     return (
       <div className="space-y-6">
-        <div className="h-8 w-48 bg-gray-200 rounded animate-pulse" />
-        <div className="space-y-4">
+        <div className="h-5 w-24 bg-gray-200 rounded animate-pulse" />
+        <div className="space-y-1">
+          <div className="h-8 w-56 bg-gray-200 rounded-lg animate-pulse" />
+          <div className="h-4 w-80 bg-gray-100 rounded animate-pulse" />
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="h-24 bg-gray-100 rounded-xl animate-pulse" />
+            <div
+              key={i}
+              className="h-56 bg-white rounded-xl border border-gray-100 animate-pulse"
+            />
           ))}
         </div>
       </div>
@@ -109,169 +117,186 @@ export const ExamListPage = () => {
 
   if (error) {
     return (
-      <div className="text-center py-12">
-        <p className="text-red-600">Failed to load exams. Please try again.</p>
+      <div className="text-center py-20">
+        <div className="w-14 h-14 rounded-full bg-red-50 flex items-center justify-center mx-auto mb-4">
+          <FolderOpen className="w-6 h-6 text-red-400" />
+        </div>
+        <p className="text-gray-700 font-medium">Failed to load exams</p>
+        <p className="text-sm text-gray-400 mt-1">Please try again later</p>
       </div>
     )
   }
 
   return (
     <div className="space-y-6">
-      {/* Back link and header */}
-      <div>
-        <Link
-          to={ROUTES.CATEGORIES}
-          className="inline-flex items-center gap-1 text-indigo-600 hover:text-indigo-700 mb-4"
-        >
-          <ChevronLeftIcon className="w-4 h-4" />
-          Back to Categories
-        </Link>
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">{category?.name || 'Exams'}</h1>
-            <p className="text-gray-600 mt-1">
-              {category?.description || 'Choose an exam to start'}
-            </p>
-          </div>
-          {hasPermission(Permission.CRUD_EXAMS) && (
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => setIsImportModalOpen(true)}
-                className="inline-flex items-center gap-1.5 px-4 py-2 border border-indigo-200 text-indigo-600 text-sm font-medium rounded-lg hover:bg-indigo-50 transition-colors"
-              >
-                <ArrowUpTrayIcon className="w-4 h-4" />
-                Import Exam
-              </button>
-              <button
-                onClick={() => setIsCreateModalOpen(true)}
-                className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors"
-              >
-                Create Exam
-              </button>
-            </div>
+      {/* Breadcrumb */}
+      <Link
+        to={ROUTES.CATEGORIES}
+        className="inline-flex items-center gap-1.5 text-sm text-gray-400 hover:text-indigo-600 transition-colors"
+      >
+        <ArrowLeft className="w-3.5 h-3.5" />
+        Categories
+      </Link>
+
+      {/* Page header */}
+      <div className="flex items-start justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2.5">
+            <span className="text-2xl">{category?.icon || '📂'}</span>
+            {category?.name || 'Exams'}
+          </h1>
+          {category?.description && (
+            <p className="text-sm text-gray-500 mt-1">{category.description}</p>
           )}
         </div>
+
+        {hasPermission(Permission.CRUD_EXAMS) && (
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setIsImportModalOpen(true)}
+              className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+            >
+              <Upload className="w-4 h-4" />
+              Import
+            </button>
+            <button
+              onClick={() => setIsCreateModalOpen(true)}
+              className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors"
+            >
+              <Plus className="w-4 h-4" />
+              New Exam
+            </button>
+          </div>
+        )}
       </div>
 
-      {/* Exam list */}
-      <div className="space-y-4">
-        {tests && tests.length > 0 ? (
-          tests.map((test) => (
-            <Link
+      {/* Exam cards */}
+      {tests && tests.length > 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+          {tests.map((test) => (
+            <div
               key={test.id}
-              to={`/test/${test.id}/exam`}
-              className="block p-6 bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md hover:border-indigo-200 transition-all duration-200"
+              className="bg-white rounded-xl border border-gray-200 hover:border-indigo-300 hover:shadow-md transition-all duration-200 overflow-hidden flex flex-col"
             >
-              <div className="flex items-start justify-between gap-4">
-                <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">{test.title}</h3>
-                  <p className="text-sm text-gray-600 mb-4 line-clamp-2">{test.description}</p>
-
-                  <div className="flex items-center gap-6 text-sm text-gray-500">
-                    <div className="flex items-center gap-1.5">
-                      <DocumentTextIcon className="w-4 h-4" />
-                      <span>{test.questionCount} questions</span>
-                    </div>
-                    <div className="flex items-center gap-1.5">
-                      <ClockIcon className="w-4 h-4" />
-                      <span>{test.duration} minutes</span>
-                    </div>
-                    <div className="flex items-center gap-1.5">
-                      <SignalIcon className="w-4 h-4" />
-                      <span>{test.difficulty}</span>
-                    </div>
-                    <div className="flex items-center gap-1.5">
-                      <UsersIcon className="w-4 h-4" />
-                      <span>{test.participants.toLocaleString()} participants</span>
-                    </div>
-                    <div className="flex items-center gap-1.5">
-                      <CheckBadgeIcon className="w-4 h-4" />
-                      <span>Passing: {test.passingScore}%</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex flex-col items-end gap-3">
-                  <div className="flex items-center gap-1">
+              {/* Card body */}
+              <div className="p-5 flex-1">
+                {/* Title row with bookmark */}
+                <div className="flex items-start justify-between gap-2 mb-1">
+                  <h3 className="font-bold text-gray-900 leading-snug line-clamp-2 text-[15px]">
+                    {test.title}
+                  </h3>
+                  <div className="flex items-center shrink-0 -mt-0.5 -mr-1">
                     {hasPermission(Permission.CRUD_EXAMS) && (
                       <>
                         <button
-                          onClick={(e) => {
-                            e.preventDefault()
-                            e.stopPropagation()
-                            setEditingExam(test)
-                          }}
-                          className="p-2 rounded-lg text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 transition-colors"
-                          title="Edit exam"
+                          onClick={() => setEditingExam(test)}
+                          className="p-1.5 rounded-md text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 transition-colors"
+                          title="Edit"
                         >
-                          <PencilSquareIcon className="w-5 h-5" />
+                          <Pencil className="w-3.5 h-3.5" />
                         </button>
                         <button
-                          onClick={(e) => {
-                            e.preventDefault()
-                            e.stopPropagation()
-                            setDeletingExam(test)
-                          }}
-                          className="p-2 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 transition-colors"
-                          title="Delete exam"
+                          onClick={() => setDeletingExam(test)}
+                          className="p-1.5 rounded-md text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors"
+                          title="Delete"
                         >
-                          <TrashIcon className="w-5 h-5" />
+                          <Trash2 className="w-3.5 h-3.5" />
                         </button>
                       </>
                     )}
                     <button
                       onClick={(e) => handleToggleBookmark(test.id, e)}
                       disabled={addBookmark.isPending || removeBookmark.isPending}
-                      className={`p-2 rounded-lg transition-colors ${
+                      className={`p-1.5 rounded-md transition-colors ${
                         isBookmarked(test.id)
-                          ? 'text-indigo-600 hover:bg-indigo-50'
-                          : 'text-gray-400 hover:text-indigo-600 hover:bg-indigo-50'
+                          ? 'text-indigo-600'
+                          : 'text-gray-400 hover:text-indigo-600'
                       } disabled:opacity-50`}
-                      title={isBookmarked(test.id) ? 'Remove bookmark' : 'Bookmark exam'}
                     >
-                      {isBookmarked(test.id) ? (
-                        <BookmarkSolidIcon className="w-6 h-6" />
-                      ) : (
-                        <BookmarkIcon className="w-6 h-6" />
-                      )}
+                      <Bookmark
+                        className="w-4 h-4"
+                        fill={isBookmarked(test.id) ? 'currentColor' : 'none'}
+                      />
                     </button>
                   </div>
-                  <span className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors">
-                    Start Challenge
-                  </span>
                 </div>
-              </div>
-            </Link>
-          ))
-        ) : (
-          <div className="text-center py-12 bg-gray-50 rounded-xl">
-            <p className="text-gray-500">No exams available in this category.</p>
-          </div>
-        )}
-      </div>
 
-      {/* Import Exam Modal */}
+                {/* Description */}
+                {test.description && (
+                  <p className="text-[13px] text-gray-400 mb-4 line-clamp-2 leading-relaxed">
+                    {test.description}
+                  </p>
+                )}
+
+                {/* Stats grid — 2x2 */}
+                <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-[13px] mb-4">
+                  <div className="flex items-center gap-1.5 text-gray-500">
+                    <HelpCircle className="w-3.5 h-3.5 text-gray-400" />
+                    <span>{test.questionCount} questions</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 text-gray-500">
+                    <Clock className="w-3.5 h-3.5 text-gray-400" />
+                    <span>{test.duration} minutes</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 text-gray-500">
+                    <Users className="w-3.5 h-3.5 text-gray-400" />
+                    <span>{test.participants.toLocaleString()} taken</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 text-gray-500">
+                    <Trophy className="w-3.5 h-3.5 text-gray-400" />
+                    <span>Pass: {test.passingScore}%</span>
+                  </div>
+                </div>
+
+                {/* Difficulty badge */}
+                <span
+                  className={`inline-block px-2.5 py-1 rounded-md text-xs font-semibold ${getDifficultyStyle(test.difficulty)}`}
+                >
+                  {test.difficulty}
+                </span>
+              </div>
+
+              {/* Card footer — CTA */}
+              <div className="px-5 pb-5">
+                <Link
+                  to={`/test/${test.id}/exam`}
+                  className="flex items-center justify-center gap-2 w-full py-2.5 rounded-lg text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 transition-colors"
+                >
+                  <Play className="w-4 h-4" fill="currentColor" />
+                  Start Exam
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="text-center py-20 bg-white rounded-xl border border-gray-200">
+          <div className="w-14 h-14 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-4">
+            <FolderOpen className="w-6 h-6 text-gray-400" />
+          </div>
+          <p className="text-gray-700 font-medium">No exams yet</p>
+          <p className="text-sm text-gray-400 mt-1">Come back soon for new exams</p>
+        </div>
+      )}
+
+      {/* Modals */}
       <ImportExamModal
         isOpen={isImportModalOpen}
         onClose={() => setIsImportModalOpen(false)}
         categoryId={categoryId}
       />
-
-      {/* Create Exam Modal */}
       <CreateExamModal
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}
         categoryId={categoryId}
       />
-
-      {/* Edit Exam Modal */}
       <EditExamModal
         isOpen={!!editingExam}
         onClose={() => setEditingExam(null)}
         exam={editingExam}
       />
 
-      {/* Delete Confirmation Dialog */}
+      {/* Delete dialog */}
       <AlertDialog open={!!deletingExam} onOpenChange={(open) => !open && setDeletingExam(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
