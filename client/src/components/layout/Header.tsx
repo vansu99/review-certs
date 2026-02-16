@@ -48,7 +48,7 @@ export const Header = () => {
     <header className="bg-white border-b border-gray-200 px-6 py-4">
       <div className="flex items-center justify-between">
         <Link to={ROUTES.HOME} className="flex items-center gap-2">
-          <span className="text-xl font-bold text-indigo-600">ReviewCerts</span>
+          <img src="/logo.png" alt="ReviewCerts" className="size-10" />
         </Link>
 
         <nav className="flex items-center gap-6">

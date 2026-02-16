@@ -17,7 +17,7 @@ export async function login(req, res, next) {
 
     // Find user by email
     const [rows] = await pool.execute(
-      "SELECT id, email, password_hash, name, role, avatar, created_at FROM users WHERE email = ?",
+      "SELECT id, email, password_hash, name, role, avatar, created_at FROM users WHERE email = ? AND deleted_at IS NULL",
       [email],
     );
 
@@ -73,7 +73,7 @@ export async function logout(req, res) {
 export async function getProfile(req, res, next) {
   try {
     const [rows] = await pool.execute(
-      "SELECT id, email, name, role, avatar, phone, gender, date_of_birth, country, facebook, created_at FROM users WHERE id = ?",
+      "SELECT id, email, name, role, avatar, phone, gender, date_of_birth, country, facebook, created_at FROM users WHERE id = ? AND deleted_at IS NULL",
       [req.user.id],
     );
 
@@ -145,7 +145,7 @@ export async function updateProfile(req, res, next) {
 
     // Fetch updated user
     const [rows] = await pool.execute(
-      "SELECT id, email, name, role, avatar, phone, gender, date_of_birth, country, facebook, created_at FROM users WHERE id = ?",
+      "SELECT id, email, name, role, avatar, phone, gender, date_of_birth, country, facebook, created_at FROM users WHERE id = ? AND deleted_at IS NULL",
       [userId],
     );
 
