@@ -53,7 +53,7 @@ export async function getGoals(req, res, next) {
       SELECT g.*, c.name as categoryName
       FROM goals g
       LEFT JOIN categories c ON c.id = g.category_id AND c.deleted_at IS NULL
-      WHERE g.user_id = ?
+      WHERE g.user_id = ? AND g.deleted_at IS NULL
     `;
     const params = [userId];
 
@@ -194,7 +194,7 @@ export async function getGoalById(req, res, next) {
       SELECT g.*, c.name as categoryName
       FROM goals g
       LEFT JOIN categories c ON c.id = g.category_id AND c.deleted_at IS NULL
-      WHERE g.id = ? AND g.user_id = ?
+      WHERE g.id = ? AND g.user_id = ? AND g.deleted_at IS NULL
     `,
       [id, userId],
     );
@@ -442,7 +442,7 @@ export async function deleteGoal(req, res, next) {
     const userId = req.user.id;
 
     const [existing] = await pool.execute(
-      "SELECT id FROM goals WHERE id = ? AND user_id = ?",
+      "SELECT id FROM goals WHERE id = ? AND user_id = ? AND deleted_at IS NULL",
       [id, userId],
     );
 
@@ -450,10 +450,10 @@ export async function deleteGoal(req, res, next) {
       return errorResponse(res, "Goal not found", 404);
     }
 
-    await pool.execute("DELETE FROM goals WHERE id = ? AND user_id = ?", [
-      id,
-      userId,
-    ]);
+    await pool.execute(
+      "UPDATE goals SET deleted_at = NOW() WHERE id = ? AND user_id = ?",
+      [id, userId],
+    );
 
     return successResponse(res, null, "Goal deleted successfully");
   } catch (error) {
