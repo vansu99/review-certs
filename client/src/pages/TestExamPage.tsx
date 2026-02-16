@@ -5,7 +5,9 @@ import { ExamHeader } from '@/features/tests/components/ExamHeader'
 import { QuestionPanel } from '@/features/tests/components/QuestionPanel'
 import { QuestionNavGrid } from '@/features/tests/components/QuestionNavGrid'
 import { useExamTimer } from '@/features/tests/hooks/useExamTimer'
+import { ConfirmDialog } from '@/components/common/ConfirmDialog'
 import { toast } from 'sonner'
+import { AlertTriangle, Send } from 'lucide-react'
 
 export const TestExamPage = () => {
   const { id: testId } = useParams<{ id: string }>()
@@ -19,6 +21,10 @@ export const TestExamPage = () => {
   // Track answers: questionId -> selected option id
   const [answers, setAnswers] = useState<Record<string, string>>({})
 
+  // Dialog states
+  const [showSubmitDialog, setShowSubmitDialog] = useState(false)
+  const [showExitDialog, setShowExitDialog] = useState(false)
+
   // Timer: default 2 hours 30 minutes
   const {
     formattedTime,
@@ -27,7 +33,7 @@ export const TestExamPage = () => {
   } = useExamTimer({
     initialSeconds: 150 * 60, // 2:30:00
     onTimeUp: () => {
-      handleEndExam()
+      handleConfirmSubmit()
     },
   })
 
@@ -46,6 +52,8 @@ export const TestExamPage = () => {
   // Current question (0-based index)
   const currentQuestion = test?.questions[currentQuestionIndex]
   const totalQuestions = test?.questions.length || 0
+  const answeredCount = Object.keys(answers).length
+  const unansweredCount = totalQuestions - answeredCount
 
   // Navigation handlers
   const goToQuestion = useCallback(
@@ -81,19 +89,14 @@ export const TestExamPage = () => {
     [currentQuestion]
   )
 
-  // End exam handler — submit answers to API
+  // Open submit dialog
   const handleEndExam = useCallback(() => {
+    setShowSubmitDialog(true)
+  }, [])
+
+  // Actual submit logic
+  const handleConfirmSubmit = useCallback(() => {
     if (!testId) return
-
-    const answeredCount = Object.keys(answers).length
-    const unanswered = totalQuestions - answeredCount
-
-    const message =
-      unanswered > 0
-        ? `You have ${unanswered} unanswered question(s). Are you sure you want to submit?`
-        : 'Are you sure you want to submit your exam?'
-
-    if (!window.confirm(message)) return
 
     // Convert answers from Record<string, string> to Record<string, string[]>
     const formattedAnswers: Record<string, string[]> = {}
@@ -106,16 +109,19 @@ export const TestExamPage = () => {
       {
         onError: () => {
           toast.error('Failed to submit exam. Please try again.')
+          setShowSubmitDialog(false)
         },
       }
     )
-  }, [testId, answers, totalQuestions, submitTestMutation])
+  }, [testId, answers, submitTestMutation])
 
-  // Close handler
+  // Close/exit handler
   const handleClose = useCallback(() => {
-    if (window.confirm('Are you sure you want to exit the exam? Your progress will be lost.')) {
-      navigate(-1)
-    }
+    setShowExitDialog(true)
+  }, [])
+
+  const handleConfirmExit = useCallback(() => {
+    navigate(-1)
   }, [navigate])
 
   // Loading state
@@ -185,6 +191,51 @@ export const TestExamPage = () => {
           </div>
         </div>
       </div>
+
+      {/* Submit Confirm Dialog */}
+      <ConfirmDialog
+        open={showSubmitDialog}
+        onClose={() => setShowSubmitDialog(false)}
+        onConfirm={handleConfirmSubmit}
+        title="Submit Exam"
+        description={
+          unansweredCount > 0
+            ? `You still have ${unansweredCount} unanswered question(s) out of ${totalQuestions}. Are you sure you want to submit?`
+            : `You have answered all ${totalQuestions} questions. Ready to submit your exam?`
+        }
+        confirmLabel="Submit Exam"
+        cancelLabel="Continue Exam"
+        variant={unansweredCount > 0 ? 'danger' : 'primary'}
+        loading={submitTestMutation.isPending}
+        icon={
+          unansweredCount > 0 ? (
+            <div className="w-14 h-14 rounded-2xl bg-amber-50 flex items-center justify-center">
+              <AlertTriangle className="w-7 h-7 text-amber-500" />
+            </div>
+          ) : (
+            <div className="w-14 h-14 rounded-2xl bg-indigo-50 flex items-center justify-center">
+              <Send className="w-6 h-6 text-indigo-600" />
+            </div>
+          )
+        }
+      />
+
+      {/* Exit Confirm Dialog */}
+      <ConfirmDialog
+        open={showExitDialog}
+        onClose={() => setShowExitDialog(false)}
+        onConfirm={handleConfirmExit}
+        title="Exit Exam"
+        description="Are you sure you want to exit? All your progress will be lost and your answers won't be saved."
+        confirmLabel="Exit Exam"
+        cancelLabel="Stay"
+        variant="danger"
+        icon={
+          <div className="w-14 h-14 rounded-2xl bg-red-50 flex items-center justify-center">
+            <AlertTriangle className="w-7 h-7 text-red-500" />
+          </div>
+        }
+      />
     </div>
   )
 }
