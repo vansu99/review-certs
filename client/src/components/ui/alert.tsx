@@ -28,6 +28,7 @@ function Alert({
     <div
       data-slot="alert"
       role="alert"
+      aria-label="Alert"
       className={cn(alertVariants({ variant }), className)}
       {...props}
     />

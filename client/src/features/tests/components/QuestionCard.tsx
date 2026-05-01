@@ -31,17 +31,23 @@ export const QuestionCard = ({
           const isSelected = selectedAnswers.includes(option.id)
 
           return (
-            <button
+            <label
               key={option.id}
-              onClick={() => handleOptionClick(option.id)}
-              className={`w-full text-left p-4 rounded-lg border-2 transition-all duration-200 ${
+              className={`block w-full text-left p-4 rounded-lg border-2 transition-all duration-200 cursor-pointer ${
                 isSelected
                   ? 'border-indigo-500 bg-indigo-50 text-indigo-900'
                   : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
               }`}
             >
+              <input
+                type={question.type === 'multiple' ? 'checkbox' : 'radio'}
+                name={question.id}
+                checked={isSelected}
+                onChange={() => handleOptionClick(option.id)}
+                className="sr-only"
+              />
               <span className="font-medium">{option.content}</span>
-            </button>
+            </label>
           )
         })}
       </div>

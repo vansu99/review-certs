@@ -43,7 +43,7 @@ export const LoginPage = () => {
   return (
     <div className="min-h-screen flex">
       {/* Left — Branding panel */}
-      <div className="hidden lg:flex lg:w-1/2 bg-linear-to-br from-indigo-600 via-violet-600 to-purple-700 relative overflow-hidden">
+      <div className="hidden lg:flex lg:w-1/2 bg-linear-to-br from-teal-600 via-cyan-600 to-emerald-700 relative overflow-hidden">
         {/* Decorative shapes */}
         <div className="absolute inset-0">
           <div className="absolute -top-16 -left-16 w-80 h-80 rounded-full bg-white/5" />
@@ -65,7 +65,7 @@ export const LoginPage = () => {
             <br />
             certifications
           </h2>
-          <p className="text-lg text-indigo-200 leading-relaxed max-w-md">
+          <p className="text-lg text-teal-200 leading-relaxed max-w-md">
             Practice with real exam questions, track your progress, and achieve your certification
             goals.
           </p>
@@ -79,7 +79,7 @@ export const LoginPage = () => {
             ].map((item) => (
               <div key={item.text} className="flex items-center gap-3">
                 <span className="text-lg">{item.emoji}</span>
-                <span className="text-indigo-100 text-[15px]">{item.text}</span>
+                <span className="text-teal-100 text-[15px]">{item.text}</span>
               </div>
             ))}
           </div>
@@ -91,10 +91,10 @@ export const LoginPage = () => {
         <div className="w-full max-w-[400px]">
           {/* Mobile logo */}
           <div className="lg:hidden text-center mb-8">
-            <div className="w-14 h-14 rounded-2xl bg-linear-to-br from-indigo-600 to-violet-600 flex items-center justify-center mx-auto mb-3 shadow-lg">
+            <div className="w-14 h-14 rounded-2xl bg-linear-to-br from-teal-600 to-cyan-600 flex items-center justify-center mx-auto mb-3 shadow-lg">
               <BookOpen className="w-7 h-7 text-white" />
             </div>
-            <h1 className="text-2xl font-bold text-gray-900">ReviewCerts</h1>
+            <span className="text-2xl font-bold text-gray-900 block">ReviewCerts</span>
           </div>
 
           {/* Form header */}

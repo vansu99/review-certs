@@ -50,13 +50,11 @@ function RHFDatepickerInner<T extends FieldValues>(
           min={minDate}
           max={maxDate}
           className={`
-            w-full px-4 py-2 rounded-lg border transition-colors duration-200
-            focus:outline-none focus:ring-2 focus:ring-offset-0
-            ${
-              error
-                ? 'border-red-300 focus:border-red-500 focus:ring-red-200'
-                : 'border-gray-300 focus:border-indigo-500 focus:ring-indigo-200'
-            }
+            w-full px-4 h-10 rounded-sm border bg-transparent transition-all duration-200
+            border-slate-200/60 text-sm text-gray-700
+            hover:border-slate-300
+            focus:outline-none focus:ring-1 focus:ring-slate-400/20 focus:border-slate-400
+            ${error ? 'border-red-300 focus:border-red-500 focus:ring-red-200' : ''}
             disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed
             ${className}
           `}
@@ -65,11 +63,11 @@ function RHFDatepickerInner<T extends FieldValues>(
         {/* Calendar icon */}
         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
           <svg
-            className="h-5 w-5 text-gray-400"
+            className="h-4 w-4 text-gray-400/70"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
-            strokeWidth={2}
+            strokeWidth={1.5}
           >
             <path
               strokeLinecap="round"

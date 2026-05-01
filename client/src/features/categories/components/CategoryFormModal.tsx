@@ -114,9 +114,15 @@ export const CategoryFormModal = ({
             />
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+              <label
+                htmlFor="category-description"
+                className="block text-sm font-medium text-gray-700 mb-1"
+              >
+                Description
+              </label>
               <textarea
                 {...control.register('description')}
+                id="category-description"
                 className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 min-h-[80px] resize-none text-sm"
                 placeholder="Brief description of this category..."
                 maxLength={500}
