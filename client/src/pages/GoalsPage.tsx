@@ -3,6 +3,13 @@ import { useGoals } from '@/features/goals'
 import { CreateGoalModal } from '@/components/goals/CreateGoalModal'
 import type { GoalFilters, Goal, GoalStatus, AwardTier } from '@/types'
 import { CalendarIcon, TrophyIcon, PlusIcon } from '@heroicons/react/24/outline'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 
 const statusConfig: Record<GoalStatus, { label: string; color: string; bg: string }> = {
   draft: { label: 'Draft', color: 'text-gray-600', bg: 'bg-gray-100' },
@@ -101,19 +108,21 @@ export const GoalsPage = () => {
       <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
         <div className="flex gap-4">
           <div className="flex-1 max-w-[200px]">
-            <label className="block text-md font-medium text-gray-500 mb-1">Status</label>
-            <select
+            <label className="block text-sm font-medium text-gray-500 mb-1">Status</label>
+            <Select
               value={filters.status || 'all'}
-              onChange={(e) =>
-                setFilters({ ...filters, status: e.target.value as GoalStatus | 'all' })
-              }
-              className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              onValueChange={(v) => setFilters({ ...filters, status: v as GoalStatus | 'all' })}
             >
-              <option value="all">All Status</option>
-              <option value="active">Active</option>
-              <option value="completed">Completed</option>
-              <option value="overdue">Overdue</option>
-            </select>
+              <SelectTrigger className="w-full border-slate-200/60 bg-transparent rounded-sm h-10 px-3 text-sm text-gray-600 hover:border-slate-300 transition-all">
+                <SelectValue placeholder="All Status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Status</SelectItem>
+                <SelectItem value="active">Active</SelectItem>
+                <SelectItem value="completed">Completed</SelectItem>
+                <SelectItem value="overdue">Overdue</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </div>
       </div>

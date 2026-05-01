@@ -11,7 +11,7 @@ interface CategoryCardProps {
 
 export const CategoryCard = ({ category, canEdit, onEdit, onDelete }: CategoryCardProps) => {
   return (
-    <div className="relative group">
+    <div className="relative group" aria-label={`Category: ${category.name}`}>
       <Link
         to={`/categories/${category.id}`}
         className="block p-6 bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md hover:border-indigo-200 transition-all duration-200"

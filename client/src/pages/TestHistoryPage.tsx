@@ -16,6 +16,13 @@ import {
   SlidersHorizontal,
   FileText,
 } from 'lucide-react'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 
 export const TestHistoryPage = () => {
   const [filters, setFilters] = useState<TestHistoryFilters>({
@@ -138,34 +145,42 @@ export const TestHistoryPage = () => {
           <SlidersHorizontal className="w-4 h-4 text-gray-400" />
           <span className="text-sm font-semibold text-gray-500">Filters</span>
         </div>
-        <div className="flex flex-wrap gap-3">
-          <select
-            value={filters.categoryId || ''}
-            onChange={(e) => handleFilterChange('categoryId', e.target.value)}
-            className="flex-1 min-w-[140px] px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition-all"
+        <div className="flex flex-wrap items-center gap-3">
+          <Select
+            value={filters.categoryId || 'all'}
+            onValueChange={(v) => handleFilterChange('categoryId', v === 'all' ? '' : v)}
           >
-            <option value="">All Categories</option>
-            {categoryOptions.map((cat) => (
-              <option key={cat.id} value={cat.id}>
-                {cat.name}
-              </option>
-            ))}
-          </select>
+            <SelectTrigger className="flex-1 min-w-[140px] border-slate-200/60 bg-transparent rounded-sm h-10 px-3 text-sm text-gray-600 hover:border-slate-300 transition-all">
+              <SelectValue placeholder="All Categories" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Categories</SelectItem>
+              {categoryOptions.map((cat) => (
+                <SelectItem key={cat.id} value={cat.id}>
+                  {cat.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
 
-          <select
+          <Select
             value={filters.status || 'all'}
-            onChange={(e) => handleFilterChange('status', e.target.value)}
-            className="flex-1 min-w-[120px] px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition-all"
+            onValueChange={(v) => handleFilterChange('status', v)}
           >
-            <option value="all">All Status</option>
-            <option value="passed">Passed</option>
-            <option value="failed">Failed</option>
-          </select>
+            <SelectTrigger className="flex-1 min-w-[120px] border-slate-200/60 bg-transparent rounded-sm h-10 px-3 text-sm text-gray-600 hover:border-slate-300 transition-all">
+              <SelectValue placeholder="All Status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Status</SelectItem>
+              <SelectItem value="passed">Passed</SelectItem>
+              <SelectItem value="failed">Failed</SelectItem>
+            </SelectContent>
+          </Select>
 
-          <select
+          <Select
             value={`${filters.sortBy}-${filters.sortOrder}`}
-            onChange={(e) => {
-              const [sortBy, sortOrder] = e.target.value.split('-')
+            onValueChange={(v) => {
+              const [sortBy, sortOrder] = v.split('-')
               setFilters((prev) => ({
                 ...prev,
                 sortBy: sortBy as 'date' | 'score',
@@ -173,13 +188,17 @@ export const TestHistoryPage = () => {
               }))
               setPage(1)
             }}
-            className="flex-1 min-w-[160px] px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent transition-all"
           >
-            <option value="date-desc">Date: Newest First</option>
-            <option value="date-asc">Date: Oldest First</option>
-            <option value="score-desc">Score: Highest First</option>
-            <option value="score-asc">Score: Lowest First</option>
-          </select>
+            <SelectTrigger className="flex-1 min-w-[160px] border-slate-200/60 bg-transparent rounded-sm h-10 px-3 text-sm text-gray-600 hover:border-slate-300 transition-all">
+              <SelectValue placeholder="Sort By" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="date-desc">Date: Newest First</SelectItem>
+              <SelectItem value="date-asc">Date: Oldest First</SelectItem>
+              <SelectItem value="score-desc">Score: Highest First</SelectItem>
+              <SelectItem value="score-asc">Score: Lowest First</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </div>
 

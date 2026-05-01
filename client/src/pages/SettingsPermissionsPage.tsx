@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { usePermissionStore } from '@/features/auth/store/permissionStore'
 import { Permission } from '@/lib/permissions'
 import type { UserRole } from '@/types'
@@ -31,6 +32,10 @@ const PERMISSION_LABELS: Record<Permission, string> = {
 
 export const SettingsPermissionsPage = () => {
   const { rolePermissions, updatePermission, resetPermissions } = usePermissionStore()
+
+  useEffect(() => {
+    document.title = 'Permissions | Review Certs'
+  }, [])
 
   const handleToggle = (role: UserRole, permission: Permission, checked: boolean) => {
     updatePermission(role, permission, checked)

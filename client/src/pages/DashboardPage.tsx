@@ -104,14 +104,14 @@ export const DashboardPage = () => {
   return (
     <div className="space-y-6">
       {/* Hero Welcome */}
-      <div className="relative overflow-hidden rounded-2xl bg-linear-to-r from-indigo-600 via-violet-600 to-purple-600 p-8 text-white">
+      <div className="relative overflow-hidden rounded-2xl bg-linear-to-r from-teal-600 via-cyan-600 to-emerald-600 p-8 text-white">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute -right-10 -top-10 h-48 w-48 rounded-full bg-white/20" />
           <div className="absolute -bottom-8 -left-8 h-36 w-36 rounded-full bg-white/15" />
           <div className="absolute right-1/3 top-1/2 h-20 w-20 rounded-full bg-white/10" />
         </div>
         <div className="relative">
-          <p className="text-sm font-medium text-indigo-200 mb-1">
+          <p className="text-sm font-medium text-teal-200 mb-1">
             {new Date().toLocaleDateString('en-US', {
               weekday: 'long',
               month: 'long',
@@ -119,7 +119,7 @@ export const DashboardPage = () => {
             })}
           </p>
           <h1 className="text-2xl font-bold mb-1.5">Welcome back, {user?.name || 'Learner'}! 👋</h1>
-          <p className="text-indigo-200 text-[15px]">
+          <p className="text-teal-200 text-[15px]">
             {displayStats.streak > 0
               ? `You're on a ${displayStats.streak}-day learning streak. Keep going! 🔥`
               : 'Start your learning journey today!'}
