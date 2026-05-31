@@ -1,5 +1,5 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom'
-import { MainLayout } from '@/components/layout'
+import { MainLayout, PublicLayout } from '@/components/layout'
 import { ProtectedRoute } from '@/components/auth'
 import {
   LoginPage,
@@ -13,7 +13,13 @@ import {
   TestHistoryPage,
   GoalsPage,
   BookmarksPage,
+  GroupsPage,
+  GroupDetailPage,
   SettingsPermissionsPage,
+  BlogListPage,
+  BlogDetailPage,
+  BlogManagePage,
+  BlogEditPage,
 } from '@/pages'
 
 export const router = createBrowserRouter([
@@ -21,6 +27,21 @@ export const router = createBrowserRouter([
   {
     path: '/login',
     element: <LoginPage />,
+  },
+
+  // Public blog routes (no auth required)
+  {
+    element: <PublicLayout />,
+    children: [
+      {
+        path: '/blog',
+        element: <BlogListPage />,
+      },
+      {
+        path: '/blog/:slug',
+        element: <BlogDetailPage />,
+      },
+    ],
   },
 
   // Protected routes with MainLayout
@@ -69,6 +90,27 @@ export const router = createBrowserRouter([
           {
             path: '/bookmarks',
             element: <BookmarksPage />,
+          },
+          {
+            path: '/groups',
+            element: <GroupsPage />,
+          },
+          {
+            path: '/groups/:id',
+            element: <GroupDetailPage />,
+          },
+          // Blog management (protected)
+          {
+            path: '/blog/manage',
+            element: <BlogManagePage />,
+          },
+          {
+            path: '/blog/manage/new',
+            element: <BlogEditPage mode="create" />,
+          },
+          {
+            path: '/blog/manage/:id/edit',
+            element: <BlogEditPage mode="edit" />,
           },
           {
             path: '/settings/permissions',

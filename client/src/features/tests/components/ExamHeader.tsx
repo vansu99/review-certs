@@ -63,13 +63,13 @@ export const ExamHeader = ({
 
         <button
           onClick={onEndExam}
-          className="px-4 py-2 bg-red-500 text-white rounded-xl hover:bg-red-600 transition-all text-sm font-semibold shadow-sm hover:shadow active:scale-[0.97]"
+          className="px-5 py-2.5 bg-linear-to-r from-red-500 to-red-600 text-white rounded-lg hover:from-red-600 hover:to-red-700 transition-all text-sm font-bold shadow-[0_2px_10px_-3px_rgba(239,68,68,0.4)] active:scale-[0.98]"
         >
           End Exam
         </button>
 
         <button
-          className="p-2 hover:bg-gray-100 rounded-xl transition-colors border border-gray-200"
+          className="p-2.5 hover:bg-gray-50 rounded-lg transition-colors border border-gray-200 shadow-xs"
           aria-label="Bookmark this question"
           title="Bookmark this question"
         >
@@ -80,7 +80,7 @@ export const ExamHeader = ({
       {/* Right — close */}
       <button
         onClick={onClose}
-        className="p-2 hover:bg-gray-100 rounded-xl transition-colors"
+        className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
         aria-label="Close exam"
       >
         <XMarkIcon className="w-5 h-5 text-gray-500" />

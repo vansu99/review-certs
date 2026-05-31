@@ -33,26 +33,26 @@ export const CategoryCard = ({ category, canEdit, onEdit, onDelete }: CategoryCa
       {/* Edit / Delete buttons */}
       {canEdit && (
         <div className="absolute top-3 right-3 flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-          <button
-            onClick={(e) => {
-              e.preventDefault()
-              e.stopPropagation()
-              onEdit?.(category)
-            }}
-            className="p-1.5 bg-white rounded-lg shadow-sm border border-gray-200 text-gray-500 hover:text-indigo-600 hover:border-indigo-200 transition-colors"
-            title="Edit category"
-          >
+            <button
+              onClick={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                onEdit?.(category)
+              }}
+              className="p-1.5 bg-white rounded-md shadow-sm border border-gray-200 text-gray-500 hover:text-indigo-600 hover:border-indigo-200 transition-colors"
+              title="Edit category"
+            >
             <Pencil className="w-3.5 h-3.5" />
           </button>
-          <button
-            onClick={(e) => {
-              e.preventDefault()
-              e.stopPropagation()
-              onDelete?.(category)
-            }}
-            className="p-1.5 bg-white rounded-lg shadow-sm border border-gray-200 text-gray-500 hover:text-red-600 hover:border-red-200 transition-colors"
-            title="Delete category"
-          >
+            <button
+              onClick={(e) => {
+                e.preventDefault()
+                e.stopPropagation()
+                onDelete?.(category)
+              }}
+              className="p-1.5 bg-white rounded-md shadow-sm border border-gray-200 text-gray-500 hover:text-red-600 hover:border-red-200 transition-colors"
+              title="Delete category"
+            >
             <Trash2 className="w-3.5 h-3.5" />
           </button>
         </div>

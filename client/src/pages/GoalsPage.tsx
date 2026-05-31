@@ -75,7 +75,7 @@ export const GoalsPage = () => {
         </div>
         <button
           onClick={() => setIsModalOpen(true)}
-          className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+          className="flex items-center gap-2 px-6 py-2.5 bg-linear-to-r from-indigo-600 to-indigo-700 text-white rounded-lg hover:from-indigo-700 hover:to-indigo-800 transition-all shadow-[0_2px_10px_-3px_rgba(79,70,229,0.4)] hover:shadow-[0_4px_12px_-2px_rgba(79,70,229,0.5)] text-sm font-bold active:scale-[0.98]"
         >
           <PlusIcon className="w-5 h-5" />
           New Goal
@@ -138,7 +138,7 @@ export const GoalsPage = () => {
             <p className="text-gray-500 mb-4">No goals found. Start by creating your first goal!</p>
             <button
               onClick={() => setIsModalOpen(true)}
-              className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+              className="px-6 py-2.5 bg-linear-to-r from-indigo-600 to-indigo-700 text-white rounded-lg hover:from-indigo-700 hover:to-indigo-800 transition-all shadow-[0_2px_10px_-3px_rgba(79,70,229,0.4)] text-sm font-bold"
             >
               Create Goal
             </button>

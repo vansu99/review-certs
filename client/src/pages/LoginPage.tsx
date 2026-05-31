@@ -127,7 +127,7 @@ export const LoginPage = () => {
               />
 
               {error && (
-                <div className="flex items-center gap-2.5 p-3 bg-red-50 border border-red-200/60 rounded-xl">
+                <div className="flex items-center gap-2.5 p-3 bg-red-50 border border-red-200/60 rounded-lg">
                   <AlertCircle className="w-4 h-4 text-red-500 shrink-0" />
                   <p className="text-sm text-red-600">
                     {error instanceof Error ? error.message : 'Login failed. Please try again.'}
@@ -149,7 +149,7 @@ export const LoginPage = () => {
           </div>
 
           {/* Demo credentials */}
-          <div className="mt-5 flex items-start gap-2.5 p-3.5 bg-indigo-50/60 border border-indigo-100 rounded-xl">
+          <div className="mt-5 flex items-start gap-2.5 p-3.5 bg-indigo-50/60 border border-indigo-100 rounded-lg">
             <Info className="w-4 h-4 text-indigo-500 shrink-0 mt-0.5" />
             <div className="text-xs text-indigo-600/80 leading-relaxed">
               <p className="font-semibold text-indigo-700 mb-0.5">Demo credentials</p>

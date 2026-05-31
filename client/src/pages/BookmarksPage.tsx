@@ -65,7 +65,7 @@ export const BookmarksPage = () => {
 
         <button
           onClick={() => setIsModalOpen(true)}
-          className="flex items-center gap-2 px-4 py-2.5 bg-indigo-600 text-white font-medium rounded-xl hover:bg-indigo-700 transition-all shadow-sm hover:shadow-md hover:-translate-y-0.5"
+          className="flex items-center gap-2 px-5 py-2.5 bg-linear-to-r from-indigo-600 to-indigo-700 text-white font-bold rounded-lg hover:from-indigo-700 hover:to-indigo-800 transition-all shadow-[0_2px_10px_-3px_rgba(79,70,229,0.4)] active:scale-[0.98]"
         >
           <PlusIcon className="w-5 h-5" />
           Create Exam
@@ -125,7 +125,7 @@ export const BookmarksPage = () => {
                   </button>
                   <Link
                     to={`/test/${exam.id}/exam`}
-                    className="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 transition-colors"
+                    className="px-5 py-2 bg-linear-to-r from-indigo-600 to-indigo-700 text-white text-sm font-bold rounded-lg hover:from-indigo-700 hover:to-indigo-800 transition-all shadow-md active:scale-[0.98]"
                   >
                     Start Exam
                   </Link>
@@ -142,7 +142,7 @@ export const BookmarksPage = () => {
             </p>
             <Link
               to={ROUTES.CATEGORIES}
-              className="inline-block mt-4 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors"
+              className="inline-block mt-4 px-6 py-2.5 bg-linear-to-r from-indigo-600 to-indigo-700 text-white rounded-lg hover:from-indigo-700 hover:to-indigo-800 transition-all font-bold shadow-md"
             >
               Browse Categories
             </Link>

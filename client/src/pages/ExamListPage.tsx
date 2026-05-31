@@ -154,14 +154,14 @@ export const ExamListPage = () => {
           <div className="flex items-center gap-2">
             <button
               onClick={() => setIsImportModalOpen(true)}
-              className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-gray-600 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+              className="inline-flex items-center gap-1.5 px-4 py-2.5 text-sm font-bold text-gray-600 border border-gray-100 rounded-lg hover:bg-gray-50 transition-all shadow-xs"
             >
               <Upload className="w-4 h-4" />
               Import
             </button>
             <button
               onClick={() => setIsCreateModalOpen(true)}
-              className="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors"
+              className="inline-flex items-center gap-1.5 px-5 py-2.5 text-sm font-bold text-white bg-linear-to-r from-indigo-600 to-indigo-700 rounded-lg hover:from-indigo-700 hover:to-indigo-800 transition-all shadow-[0_2px_10px_-3px_rgba(79,70,229,0.4)]"
             >
               <Plus className="w-4 h-4" />
               New Exam
@@ -260,7 +260,7 @@ export const ExamListPage = () => {
               <div className="px-5 pb-5">
                 <Link
                   to={`/test/${test.id}/exam`}
-                  className="flex items-center justify-center gap-2 w-full py-2.5 rounded-lg text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 transition-colors"
+                  className="flex items-center justify-center gap-2 w-full py-2.5 rounded-lg text-sm font-bold text-white bg-linear-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 transition-all shadow-[0_4px_12px_-2px_rgba(79,70,229,0.3)] active:scale-[0.98]"
                 >
                   <Play className="w-4 h-4" fill="currentColor" />
                   Start Exam

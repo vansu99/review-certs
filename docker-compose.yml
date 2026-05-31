@@ -15,6 +15,8 @@ services:
       - mysql_data:/var/lib/mysql
       - ./server/database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
       - ./server/database/seed.sql:/docker-entrypoint-initdb.d/02-seed.sql:ro
+      - ./server/database/migrations/groups_schema.sql:/docker-entrypoint-initdb.d/03-groups.sql:ro
+      - ./server/database/migrations/blog_schema.sql:/docker-entrypoint-initdb.d/04-blog.sql:ro
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s

@@ -141,7 +141,7 @@ export const TestExamPage = () => {
           <p className="text-red-600 mb-4">Failed to load test. Please try again.</p>
           <button
             onClick={() => navigate(-1)}
-            className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+            className="px-6 py-2.5 bg-linear-to-r from-indigo-600 to-indigo-700 text-white rounded-lg hover:from-indigo-700 hover:to-indigo-800 transition-all font-bold shadow-md"
           >
             Go Back
           </button>
