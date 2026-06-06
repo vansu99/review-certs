@@ -2,6 +2,7 @@ import { NavLink } from 'react-router-dom'
 import { useCategories } from '@/features/categories'
 import {
   Bookmark,
+  BarChart2,
   ChartBarStacked,
   LayoutDashboard,
   ShieldCheck,
@@ -35,6 +36,10 @@ export const Sidebar = () => {
           <NavLink to={ROUTES.DASHBOARD} className={navLinkClass}>
             <LayoutDashboard className="size-5" />
             Dashboard
+          </NavLink>
+          <NavLink to={ROUTES.ANALYTICS} className={navLinkClass}>
+            <BarChart2 className="size-5" />
+            Analytics
           </NavLink>
           <NavLink to={ROUTES.CATEGORIES} className={navLinkClass}>
             <ChartBarStacked className="size-5" />

@@ -20,6 +20,9 @@ export const ROUTES = {
   TEST: '/tests/:id',
   TEST_RESULT: '/tests/:id/result',
 
+  // Analytics
+  ANALYTICS: '/analytics',
+
   // Blog routes
   BLOG: '/blog',
   BLOG_DETAIL: '/blog/:slug',

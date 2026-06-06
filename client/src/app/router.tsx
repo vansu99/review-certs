@@ -20,6 +20,7 @@ import {
   BlogDetailPage,
   BlogManagePage,
   BlogEditPage,
+  AnalyticsPage,
 } from '@/pages'
 
 export const router = createBrowserRouter([
@@ -58,6 +59,10 @@ export const router = createBrowserRouter([
           {
             path: '/dashboard',
             element: <DashboardPage />,
+          },
+          {
+            path: '/analytics',
+            element: <AnalyticsPage />,
           },
           {
             path: '/categories',

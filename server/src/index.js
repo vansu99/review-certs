@@ -14,6 +14,7 @@ import bookmarkRoutes from "./routes/bookmark.routes.js";
 import dashboardRoutes from "./routes/dashboard.routes.js";
 import groupRoutes from "./routes/group.routes.js";
 import blogRoutes from "./routes/blog.routes.js";
+import analyticsRoutes from "./routes/analytics.routes.js";
 
 dotenv.config();
 
@@ -36,6 +37,7 @@ app.use("/api/bookmarks", bookmarkRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/groups", groupRoutes);
 app.use("/api/blogs", blogRoutes);
+app.use("/api/analytics", analyticsRoutes);
 
 // Health check
 app.get("/api/health", (req, res) => {
