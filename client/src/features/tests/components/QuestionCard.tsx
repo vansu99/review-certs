@@ -18,12 +18,12 @@ export const QuestionCard = ({
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-4">
+    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-4 hover:shadow-md transition-shadow">
       <div className="flex items-start gap-4 mb-4">
-        <span className="flex-shrink-0 w-8 h-8 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center text-sm font-semibold">
+        <span className="flex-shrink-0 w-8 h-8 bg-indigo-100 text-indigo-600 rounded-lg flex items-center justify-center text-sm font-bold">
           {questionNumber}
         </span>
-        <h3 className="text-lg font-medium text-gray-900">{question.content}</h3>
+        <h3 className="text-[17px] font-bold text-gray-900 leading-relaxed">{question.content}</h3>
       </div>
 
       <div className="space-y-3 ml-12">
@@ -35,8 +35,8 @@ export const QuestionCard = ({
               key={option.id}
               className={`block w-full text-left p-4 rounded-lg border-2 transition-all duration-200 cursor-pointer ${
                 isSelected
-                  ? 'border-indigo-500 bg-indigo-50 text-indigo-900'
-                  : 'border-gray-200 hover:border-gray-300 hover:bg-gray-50'
+                  ? 'border-indigo-500 bg-indigo-50/50 text-indigo-900 shadow-sm'
+                  : 'border-gray-100 hover:border-indigo-200 hover:bg-gray-50/80'
               }`}
             >
               <input

@@ -150,7 +150,7 @@ export const TestHistoryPage = () => {
             value={filters.categoryId || 'all'}
             onValueChange={(v) => handleFilterChange('categoryId', v === 'all' ? '' : v)}
           >
-            <SelectTrigger className="flex-1 min-w-[140px] border-slate-200/60 bg-transparent rounded-sm h-10 px-3 text-sm text-gray-600 hover:border-slate-300 transition-all">
+            <SelectTrigger className="flex-1 min-w-[140px] border-slate-200/60 bg-transparent rounded-lg h-10 px-3 text-sm text-gray-600 hover:border-slate-300 transition-all">
               <SelectValue placeholder="All Categories" />
             </SelectTrigger>
             <SelectContent>
@@ -167,7 +167,7 @@ export const TestHistoryPage = () => {
             value={filters.status || 'all'}
             onValueChange={(v) => handleFilterChange('status', v)}
           >
-            <SelectTrigger className="flex-1 min-w-[120px] border-slate-200/60 bg-transparent rounded-sm h-10 px-3 text-sm text-gray-600 hover:border-slate-300 transition-all">
+            <SelectTrigger className="flex-1 min-w-[120px] border-slate-200/60 bg-transparent rounded-lg h-10 px-3 text-sm text-gray-600 hover:border-slate-300 transition-all">
               <SelectValue placeholder="All Status" />
             </SelectTrigger>
             <SelectContent>
@@ -189,7 +189,7 @@ export const TestHistoryPage = () => {
               setPage(1)
             }}
           >
-            <SelectTrigger className="flex-1 min-w-[160px] border-slate-200/60 bg-transparent rounded-sm h-10 px-3 text-sm text-gray-600 hover:border-slate-300 transition-all">
+            <SelectTrigger className="flex-1 min-w-[160px] border-slate-200/60 bg-transparent rounded-lg h-10 px-3 text-sm text-gray-600 hover:border-slate-300 transition-all">
               <SelectValue placeholder="Sort By" />
             </SelectTrigger>
             <SelectContent>
@@ -305,7 +305,7 @@ export const TestHistoryPage = () => {
           <button
             onClick={() => setPage((p) => Math.max(1, p - 1))}
             disabled={page === 1}
-            className="p-2.5 border border-gray-200 rounded-xl text-gray-400 hover:bg-gray-50 hover:text-gray-600 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+            className="p-2.5 border border-gray-200 rounded-lg text-gray-400 hover:bg-gray-50 hover:text-gray-600 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
@@ -314,8 +314,8 @@ export const TestHistoryPage = () => {
             <button
               key={p}
               onClick={() => setPage(p)}
-              className={`w-9 h-9 rounded-xl text-sm font-semibold transition-all ${
-                p === page ? 'bg-indigo-600 text-white shadow-sm' : 'text-gray-500 hover:bg-gray-50'
+              className={`w-9 h-9 rounded-lg text-sm font-bold transition-all ${
+                p === page ? 'bg-gray-900 text-white shadow-md' : 'text-gray-500 hover:bg-gray-50'
               }`}
             >
               {p}
@@ -325,7 +325,7 @@ export const TestHistoryPage = () => {
           <button
             onClick={() => setPage((p) => Math.min(data.totalPages, p + 1))}
             disabled={page === data.totalPages}
-            className="p-2.5 border border-gray-200 rounded-xl text-gray-400 hover:bg-gray-50 hover:text-gray-600 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+            className="p-2.5 border border-gray-200 rounded-lg text-gray-400 hover:bg-gray-50 hover:text-gray-600 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
           >
             <ChevronRight className="w-4 h-4" />
           </button>

@@ -56,7 +56,7 @@ export const SettingsPermissionsPage = () => {
 
         <button
           onClick={resetPermissions}
-          className="inline-flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+          className="inline-flex items-center gap-2 px-5 py-2.5 border border-gray-100 bg-white rounded-lg text-sm font-bold text-gray-700 hover:bg-gray-50 transition-all shadow-xs active:scale-[0.98]"
         >
           <ArrowPathIcon className="w-4 h-4" />
           Reset to Defaults

@@ -12,6 +12,9 @@ import historyRoutes from "./routes/history.routes.js";
 import goalRoutes from "./routes/goal.routes.js";
 import bookmarkRoutes from "./routes/bookmark.routes.js";
 import dashboardRoutes from "./routes/dashboard.routes.js";
+import groupRoutes from "./routes/group.routes.js";
+import blogRoutes from "./routes/blog.routes.js";
+import analyticsRoutes from "./routes/analytics.routes.js";
 
 dotenv.config();
 
@@ -32,6 +35,9 @@ app.use("/api/attempts", historyRoutes);
 app.use("/api/goals", goalRoutes);
 app.use("/api/bookmarks", bookmarkRoutes);
 app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/groups", groupRoutes);
+app.use("/api/blogs", blogRoutes);
+app.use("/api/analytics", analyticsRoutes);
 
 // Health check
 app.get("/api/health", (req, res) => {

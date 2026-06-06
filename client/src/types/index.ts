@@ -42,3 +42,15 @@ export type {
   GoalsStats,
   GoalsResponse,
 } from './goal'
+
+// Blog types
+export type {
+  Blog,
+  BlogListItem,
+  BlogStatus,
+  BlogAuthor,
+  CreateBlogPayload,
+  UpdateBlogPayload,
+  BlogFilters,
+  BlogLikeResponse,
+} from './blog'

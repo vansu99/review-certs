@@ -7,7 +7,9 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
-    "db:setup": "node database/setup.js"
+    "db:setup": "node database/setup.js",
+    "db:migrate": "node database/migrate.js",
+    "db:migrate:blog": "node database/migrate_blog.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

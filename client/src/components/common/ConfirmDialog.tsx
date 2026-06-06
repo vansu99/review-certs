@@ -94,14 +94,14 @@ export const ConfirmDialog = ({
           <button
             onClick={onClose}
             disabled={loading}
-            className="flex-1 px-4 py-2.5 border border-gray-200 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 transition-all disabled:opacity-50"
+            className="flex-1 px-4 py-2.5 border border-gray-100 rounded-lg text-sm font-bold text-gray-700 hover:bg-gray-50 transition-all disabled:opacity-50"
           >
             {cancelLabel}
           </button>
           <button
             onClick={onConfirm}
             disabled={loading}
-            className={`flex-1 px-4 py-2.5 rounded-xl text-sm font-medium text-white transition-all focus:ring-2 disabled:opacity-60 ${confirmBtnClass}`}
+            className={`flex-1 px-4 py-2.5 rounded-lg text-sm font-bold text-white transition-all focus:ring-2 disabled:opacity-60 active:scale-[0.98] ${confirmBtnClass}`}
           >
             {loading ? (
               <span className="flex items-center justify-center gap-2">

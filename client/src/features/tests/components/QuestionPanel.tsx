@@ -60,7 +60,7 @@ export const QuestionPanel = ({
                 onClick={() => onAnswerSelect(option.id)}
                 disabled={showAnswer}
                 className={`
-                  w-full text-left px-4 py-3.5 rounded-xl border-2 transition-all duration-200
+                  w-full text-left px-4 py-3.5 rounded-lg border-2 transition-all duration-200
                   flex items-center gap-3 group
                   ${
                     showCorrectHighlight
@@ -176,7 +176,7 @@ export const QuestionPanel = ({
             <button
               onClick={onPrev}
               disabled={!hasPrev}
-              className="p-2.5 border border-gray-200 rounded-xl text-gray-400 hover:bg-gray-50 hover:text-gray-600 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+              className="p-2.5 border border-gray-200 rounded-lg text-gray-400 hover:bg-gray-50 hover:text-gray-600 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
             >
               <ChevronLeftIcon className="w-5 h-5" />
             </button>
@@ -184,7 +184,7 @@ export const QuestionPanel = ({
             {hasNext ? (
               <button
                 onClick={onNext}
-                className="px-5 py-2.5 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 flex items-center gap-1.5 text-sm font-medium shadow-sm hover:shadow transition-all active:scale-[0.97]"
+                className="px-6 py-2.5 bg-linear-to-r from-indigo-600 to-indigo-700 text-white rounded-lg hover:from-indigo-700 hover:to-indigo-800 flex items-center gap-1.5 text-sm font-bold shadow-[0_2px_10px_-3px_rgba(79,70,229,0.4)] transition-all active:scale-[0.98]"
               >
                 Next
                 <ChevronRightIcon className="w-4 h-4 stroke-2" />
@@ -192,7 +192,7 @@ export const QuestionPanel = ({
             ) : (
               <button
                 onClick={onSubmit}
-                className="px-5 py-2.5 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 flex items-center gap-1.5 text-sm font-semibold shadow-sm hover:shadow transition-all active:scale-[0.97]"
+                className="px-6 py-2.5 bg-linear-to-r from-emerald-600 to-emerald-700 text-white rounded-lg hover:from-emerald-700 hover:to-emerald-800 flex items-center gap-1.5 text-sm font-bold shadow-[0_2px_10px_-3px_rgba(16,185,129,0.4)] transition-all active:scale-[0.98]"
               >
                 Submit
                 <PaperAirplaneIcon className="w-4 h-4 stroke-2" />
