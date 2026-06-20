@@ -10,6 +10,7 @@ export interface ImportRow {
   question_content: string
   question_type: string
   explanation?: string
+  topic?: string
   option_a: string
   option_b: string
   option_c?: string
@@ -39,6 +40,7 @@ const EXPECTED_HEADERS = [
   'question_content',
   'question_type',
   'explanation',
+  'topic',
   'option_a',
   'option_b',
   'option_c',
@@ -131,6 +133,7 @@ export async function parseExamFile(file: File): Promise<ParseResult> {
               .trim()
               .toLowerCase(),
             explanation: String(normalizedRow['explanation'] || '').trim(),
+            topic: String(normalizedRow['topic'] || '').trim(),
             option_a: String(normalizedRow['option_a'] || '').trim(),
             option_b: String(normalizedRow['option_b'] || '').trim(),
             option_c: String(normalizedRow['option_c'] || '').trim(),
@@ -318,6 +321,7 @@ export function transformToQuestions(rows: ImportRow[]): ImportQuestion[] {
       content: row.question_content,
       type: row.question_type as 'single' | 'multiple',
       explanation: row.explanation || undefined,
+      topic: row.topic || undefined,
       options,
     }
   })
@@ -334,6 +338,7 @@ export function downloadTemplate() {
       question_content: 'What is JavaScript?',
       question_type: 'single',
       explanation: 'JavaScript is a programming language used for web development',
+      topic: 'Basics',
       option_a: 'A programming language',
       option_b: 'A markup language',
       option_c: 'A database',
@@ -347,6 +352,7 @@ export function downloadTemplate() {
       question_content: 'Which of the following are JavaScript data types? (Select all that apply)',
       question_type: 'multiple',
       explanation: 'String, Number, and Boolean are all primitive data types in JavaScript',
+      topic: 'Data Types',
       option_a: 'String',
       option_b: 'Number',
       option_c: 'Boolean',
@@ -360,6 +366,7 @@ export function downloadTemplate() {
       question_content: 'What does DOM stand for?',
       question_type: 'single',
       explanation: 'DOM stands for Document Object Model',
+      topic: 'DOM',
       option_a: 'Document Object Model',
       option_b: 'Data Object Model',
       option_c: 'Document Oriented Model',
@@ -378,6 +385,7 @@ export function downloadTemplate() {
     { wch: 60 }, // question_content
     { wch: 16 }, // question_type
     { wch: 60 }, // explanation
+    { wch: 20 }, // topic
     { wch: 30 }, // option_a
     { wch: 30 }, // option_b
     { wch: 30 }, // option_c

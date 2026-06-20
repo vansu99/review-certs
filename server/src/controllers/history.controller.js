@@ -144,7 +144,7 @@ export async function getAttemptById(req, res, next) {
     // Get questions with options
     const [questionRows] = await pool.execute(
       `
-      SELECT id, content, type, explanation, order_index
+      SELECT id, content, type, explanation, topic, order_index
       FROM questions WHERE test_id = ? AND deleted_at IS NULL
       ORDER BY order_index ASC
     `,
@@ -213,6 +213,7 @@ export async function getAttemptById(req, res, next) {
       content: q.content,
       type: q.type,
       explanation: q.explanation,
+      topic: q.topic || null,
       options: optionsMap[q.id] || [],
     }));
 

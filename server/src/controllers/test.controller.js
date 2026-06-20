@@ -35,7 +35,7 @@ export async function getTestById(req, res, next) {
     // Get questions
     const [questionRows] = await pool.execute(
       `
-      SELECT id, content, type, explanation, order_index
+      SELECT id, content, type, explanation, topic, order_index
       FROM questions
       WHERE test_id = ? AND deleted_at IS NULL
       ORDER BY order_index ASC
@@ -78,6 +78,7 @@ export async function getTestById(req, res, next) {
       content: q.content,
       type: q.type,
       explanation: q.explanation,
+      topic: q.topic || null,
       options: optionsMap[q.id] || [],
     }));
 
@@ -184,7 +185,7 @@ export async function submitTest(req, res, next) {
     // Get questions with correct answers
     const [questionRows] = await pool.execute(
       `
-      SELECT q.id, q.content, q.type, q.explanation
+      SELECT q.id, q.content, q.type, q.explanation, q.topic
       FROM questions q
       WHERE q.test_id = ? AND q.deleted_at IS NULL
     `,
@@ -299,6 +300,7 @@ export async function submitTest(req, res, next) {
       content: q.content,
       type: q.type,
       explanation: q.explanation,
+      topic: q.topic || null,
       options: optionsMap[q.id] || [],
     }));
 
@@ -383,8 +385,8 @@ export async function createTest(req, res, next) {
 
         await pool.execute(
           `
-          INSERT INTO questions (id, test_id, content, type, explanation, order_index)
-          VALUES (?, ?, ?, ?, ?, ?)
+          INSERT INTO questions (id, test_id, content, type, explanation, topic, order_index)
+          VALUES (?, ?, ?, ?, ?, ?, ?)
         `,
           [
             questionId,
@@ -392,6 +394,7 @@ export async function createTest(req, res, next) {
             q.content,
             q.type || "single",
             q.explanation || "",
+            q.topic || null,
             i,
           ],
         );

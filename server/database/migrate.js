@@ -17,6 +17,7 @@ dotenv.config({ path: path.join(__dirname, "..", ".env") });
 const MIGRATIONS = [
   "migrations/groups_schema.sql",
   "migrations/blog_schema.sql",
+  "migrations/add_question_topic.sql",
 ];
 
 async function migrate() {
@@ -48,7 +49,7 @@ async function migrate() {
     // (handles databases created before this column was added)
     try {
       await connection.query(
-        "ALTER TABLE `groups` ADD COLUMN reset_at TIMESTAMP NULL DEFAULT NULL"
+        "ALTER TABLE `groups` ADD COLUMN reset_at TIMESTAMP NULL DEFAULT NULL",
       );
       console.log("  ✅ Patched: added reset_at column to groups table");
     } catch (e) {

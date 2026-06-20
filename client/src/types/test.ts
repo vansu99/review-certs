@@ -10,6 +10,7 @@ export interface Question {
   type: 'single' | 'multiple'
   options: AnswerOption[]
   explanation?: string
+  topic?: string | null
 }
 
 export interface Test {
@@ -49,6 +50,7 @@ export interface ImportQuestion {
   content: string
   type: 'single' | 'multiple'
   explanation?: string
+  topic?: string
   options: ImportOption[]
 }
 

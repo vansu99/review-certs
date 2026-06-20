@@ -65,6 +65,7 @@ CREATE TABLE questions (
   content TEXT NOT NULL,
   type ENUM('single', 'multiple') DEFAULT 'single',
   explanation TEXT,
+  topic VARCHAR(100) NULL DEFAULT NULL,
   order_index INT DEFAULT 0,
   deleted_at TIMESTAMP NULL DEFAULT NULL,
   FOREIGN KEY (test_id) REFERENCES tests(id) ON DELETE CASCADE,
