@@ -1,6 +1,19 @@
+# Dependencies
 node_modules/
+
+# Environment (keep .env.example only)
 .env
+.env.local
+.env.*.local
+!.env.example
+
+# Logs
+logs/
 *.log
+
+# Coverage
+coverage/
+
+# OS
 .DS_Store
-.kiro 
-.agents
+Thumbs.db

@@ -16,6 +16,8 @@ export {
   useSubmitTest,
   useTestAttempt,
   useTestHistory,
+  useTestAttemptHistory,
+  useTestParticipants,
   TEST_QUERY_KEYS,
   useExamTimer,
 } from './hooks'

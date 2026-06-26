@@ -1,0 +1,7 @@
+node_modules
+dist
+coverage
+database/debug_*.js
+database/fix_*.js
+database/gen_*.js
+package-lock.json

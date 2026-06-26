@@ -7,6 +7,10 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix",
+    "format": "prettier --write \"src/**/*.js\" \"database/**/*.js\"",
+    "format:check": "prettier --check \"src/**/*.js\"",
     "db:setup": "node database/setup.js",
     "db:migrate": "node database/migrate.js",
     "db:migrate:blog": "node database/migrate_blog.js"
@@ -21,7 +25,10 @@
     "uuid": "^11.0.5"
   },
   "devDependencies": {
-    "nodemon": "^3.1.9"
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "nodemon": "^3.1.9",
+    "prettier": "^3.3.0"
   },
   "engines": {
     "node": ">=18.0.0"

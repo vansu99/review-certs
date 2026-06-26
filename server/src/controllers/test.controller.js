@@ -244,10 +244,7 @@ export async function submitTest(req, res, next) {
       }
     });
 
-    const score =
-      totalQuestions > 0
-        ? Math.round((correctAnswers / totalQuestions) * 100)
-        : 0;
+    const score = totalQuestions > 0 ? Math.round((correctAnswers / totalQuestions) * 100) : 0;
 
     // Create attempt record
     const attemptId = uuidv4();
@@ -259,16 +256,7 @@ export async function submitTest(req, res, next) {
       INSERT INTO test_attempts (id, test_id, user_id, score, total_questions, correct_answers, started_at, completed_at)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     `,
-      [
-        attemptId,
-        testId,
-        userId,
-        score,
-        totalQuestions,
-        correctAnswers,
-        startedAt,
-        completedAt,
-      ],
+      [attemptId, testId, userId, score, totalQuestions, correctAnswers, startedAt, completedAt],
     );
 
     // Save individual answers
@@ -284,13 +272,7 @@ export async function submitTest(req, res, next) {
         INSERT INTO test_attempt_answers (id, attempt_id, question_id, selected_option_ids, is_correct)
         VALUES (?, ?, ?, ?, ?)
       `,
-        [
-          uuidv4(),
-          attemptId,
-          questionId,
-          JSON.stringify(selectedIds),
-          isCorrect,
-        ],
+        [uuidv4(), attemptId, questionId, JSON.stringify(selectedIds), isCorrect],
       );
     }
 
@@ -345,15 +327,8 @@ export async function submitTest(req, res, next) {
  */
 export async function createTest(req, res, next) {
   try {
-    const {
-      categoryId,
-      title,
-      description,
-      duration,
-      difficulty,
-      passingScore,
-      questions,
-    } = req.body;
+    const { categoryId, title, description, duration, difficulty, passingScore, questions } =
+      req.body;
 
     if (!categoryId || !title) {
       return errorResponse(res, "Category ID and title are required", 400);
@@ -490,15 +465,83 @@ export async function deleteTest(req, res, next) {
     }
 
     // Soft delete test and its questions
-    await pool.execute("UPDATE tests SET deleted_at = NOW() WHERE id = ?", [
-      id,
-    ]);
+    await pool.execute("UPDATE tests SET deleted_at = NOW() WHERE id = ?", [id]);
     await pool.execute(
       "UPDATE questions SET deleted_at = NOW() WHERE test_id = ? AND deleted_at IS NULL",
       [id],
     );
 
     return successResponse(res, null, "Test deleted successfully");
+  } catch (error) {
+    next(error);
+  }
+}
+
+/**
+ * Get all participants who attempted a specific test (Admin only)
+ * GET /api/tests/:testId/participants
+ */
+export async function getTestParticipants(req, res, next) {
+  try {
+    const { testId } = req.params;
+    const { page = 1, limit = 20 } = req.query;
+
+    // Verify test exists
+    const [testRows] = await pool.execute(
+      "SELECT id, passing_score FROM tests WHERE id = ? AND deleted_at IS NULL",
+      [testId],
+    );
+
+    if (testRows.length === 0) {
+      return errorResponse(res, "Test not found", 404);
+    }
+
+    const passingScore = testRows[0].passing_score;
+
+    // Get participants with aggregated stats
+    const baseQuery = `
+      SELECT 
+        u.id as userId,
+        u.name,
+        u.email,
+        u.avatar,
+        COUNT(ta.id) as totalAttempts,
+        MAX(ta.score) as bestScore,
+        ROUND(AVG(ta.score)) as averageScore,
+        MAX(ta.completed_at) as lastAttemptAt,
+        MAX(ta.score >= ${passingScore}) as hasPassed
+      FROM test_attempts ta
+      JOIN users u ON u.id = ta.user_id AND u.deleted_at IS NULL
+      WHERE ta.test_id = ?
+      GROUP BY u.id, u.name, u.email, u.avatar
+      ORDER BY MAX(ta.completed_at) DESC`;
+
+    const [allRows] = await pool.execute(baseQuery, [testId]);
+
+    // Pagination
+    const offset = (parseInt(page) - 1) * parseInt(limit);
+    const limitVal = parseInt(limit);
+    const paginatedQuery = baseQuery + ` LIMIT ${limitVal} OFFSET ${offset}`;
+    const [rows] = await pool.execute(paginatedQuery, [testId]);
+
+    const participants = rows.map((row) => ({
+      userId: row.userId,
+      name: row.name,
+      email: row.email,
+      avatar: row.avatar,
+      totalAttempts: parseInt(row.totalAttempts),
+      bestScore: row.bestScore,
+      averageScore: parseInt(row.averageScore),
+      lastAttemptAt: row.lastAttemptAt,
+      hasPassed: Boolean(row.hasPassed),
+    }));
+
+    return successResponse(res, {
+      participants,
+      total: allRows.length,
+      totalPages: Math.ceil(allRows.length / limitVal),
+      currentPage: parseInt(page),
+    });
   } catch (error) {
     next(error);
   }

@@ -9,6 +9,7 @@ import {
   DashboardPage,
   TestExamPage,
   ExamListPage,
+  ExamDetailPage,
   ProfilePage,
   TestHistoryPage,
   GoalsPage,
@@ -71,6 +72,10 @@ export const router = createBrowserRouter([
           {
             path: '/categories/:categoryId',
             element: <ExamListPage />,
+          },
+          {
+            path: '/exams/:examId',
+            element: <ExamDetailPage />,
           },
           {
             path: '/tests/:id',

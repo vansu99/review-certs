@@ -1,0 +1,26 @@
+{
+  "env": {
+    "node": true,
+    "es2022": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 2022,
+    "sourceType": "module"
+  },
+  "extends": ["eslint:recommended", "prettier"],
+  "rules": {
+    "no-unused-vars": ["warn", { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }],
+    "no-console": ["warn", { "allow": ["warn", "error"] }],
+    "prefer-const": "error",
+    "no-var": "error",
+    "eqeqeq": ["error", "always"],
+    "curly": ["error", "multi-line"],
+    "no-throw-literal": "error",
+    "no-return-await": "warn",
+    "require-await": "warn",
+    "no-param-reassign": ["warn", { "props": false }],
+    "no-duplicate-imports": "error",
+    "sort-imports": ["warn", { "ignoreCase": true, "ignoreDeclarationSort": true }]
+  },
+  "ignorePatterns": ["node_modules/", "database/debug_*.js", "database/fix_*.js", "database/gen_*.js"]
+}

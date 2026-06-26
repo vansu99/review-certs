@@ -5,6 +5,8 @@ import type {
   TestResult,
   TestHistoryFilters,
   TestHistoryResponse,
+  TestAttemptHistoryResponse,
+  TestParticipantsResponse,
   CreateTestPayload,
   ImportExamPayload,
 } from '@/types'
@@ -67,6 +69,42 @@ export const testService = {
 
     const response = await axiosInstance.get<ApiResponse<TestHistoryResponse>>(
       `/history?${params.toString()}`
+    )
+    return response.data.data
+  },
+
+  /**
+   * Get attempt history for a specific test (current user)
+   */
+  getTestAttemptHistory: async (
+    testId: string,
+    page = 1,
+    limit = 10
+  ): Promise<TestAttemptHistoryResponse> => {
+    const params = new URLSearchParams()
+    params.append('page', String(page))
+    params.append('limit', String(limit))
+
+    const response = await axiosInstance.get<ApiResponse<TestAttemptHistoryResponse>>(
+      `/tests/${testId}/history?${params.toString()}`
+    )
+    return response.data.data
+  },
+
+  /**
+   * Get participants for a specific test (Admin only)
+   */
+  getTestParticipants: async (
+    testId: string,
+    page = 1,
+    limit = 20
+  ): Promise<TestParticipantsResponse> => {
+    const params = new URLSearchParams()
+    params.append('page', String(page))
+    params.append('limit', String(limit))
+
+    const response = await axiosInstance.get<ApiResponse<TestParticipantsResponse>>(
+      `/tests/${testId}/participants?${params.toString()}`
     )
     return response.data.data
   },

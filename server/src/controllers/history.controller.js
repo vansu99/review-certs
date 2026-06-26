@@ -62,10 +62,7 @@ export async function getTestHistory(req, res, next) {
       failedTests: allItems.filter((item) => !item.isPassed).length,
       averageScore:
         allItems.length > 0
-          ? Math.round(
-              allItems.reduce((sum, item) => sum + item.score, 0) /
-                allItems.length,
-            )
+          ? Math.round(allItems.reduce((sum, item) => sum + item.score, 0) / allItems.length)
           : 0,
     };
 
@@ -88,6 +85,86 @@ export async function getTestHistory(req, res, next) {
       totalQuestions: row.total_questions,
       correctAnswers: row.correct_answers,
       duration: row.duration || 0,
+      completedAt: row.completed_at,
+      isPassed: Boolean(row.isPassed),
+    }));
+
+    return successResponse(res, {
+      items,
+      stats,
+      totalPages: Math.ceil(allItems.length / parseInt(limit)),
+      currentPage: parseInt(page),
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+/**
+ * Get user's attempt history for a specific test
+ * GET /api/tests/:testId/history
+ */
+export async function getTestHistoryByTestId(req, res, next) {
+  try {
+    const userId = req.user.id;
+    const { testId } = req.params;
+    const { page = 1, limit = 10 } = req.query;
+
+    // Verify test exists
+    const [testRows] = await pool.execute(
+      "SELECT id FROM tests WHERE id = ? AND deleted_at IS NULL",
+      [testId],
+    );
+
+    if (testRows.length === 0) {
+      return errorResponse(res, "Test not found", 404);
+    }
+
+    // Get all attempts for this user and test
+    const baseQuery = `
+      SELECT 
+        ta.id, ta.id as attemptId, ta.test_id, ta.score, 
+        ta.total_questions, ta.correct_answers,
+        TIMESTAMPDIFF(MINUTE, ta.started_at, ta.completed_at) as duration,
+        ta.started_at, ta.completed_at,
+        t.passing_score,
+        (ta.score >= t.passing_score) as isPassed
+      FROM test_attempts ta
+      JOIN tests t ON t.id = ta.test_id AND t.deleted_at IS NULL
+      WHERE ta.user_id = ? AND ta.test_id = ?
+      ORDER BY ta.completed_at DESC`;
+
+    const [allItems] = await pool.execute(baseQuery, [userId, testId]);
+
+    // Calculate stats
+    const stats = {
+      totalAttempts: allItems.length,
+      passedAttempts: allItems.filter((item) => item.isPassed).length,
+      failedAttempts: allItems.filter((item) => !item.isPassed).length,
+      averageScore:
+        allItems.length > 0
+          ? Math.round(allItems.reduce((sum, item) => sum + item.score, 0) / allItems.length)
+          : 0,
+      bestScore: allItems.length > 0 ? Math.max(...allItems.map((item) => item.score)) : 0,
+      lastAttemptAt: allItems.length > 0 ? allItems[0].completed_at : null,
+    };
+
+    // Apply pagination
+    const offset = (parseInt(page) - 1) * parseInt(limit);
+    const limitVal = parseInt(limit);
+    const paginatedQuery = baseQuery + ` LIMIT ${limitVal} OFFSET ${offset}`;
+    const [rows] = await pool.execute(paginatedQuery, [userId, testId]);
+
+    const items = rows.map((row, index) => ({
+      id: row.id,
+      attemptId: row.attemptId,
+      testId: row.test_id,
+      attemptNumber: allItems.length - (offset + index),
+      score: row.score,
+      totalQuestions: row.total_questions,
+      correctAnswers: row.correct_answers,
+      duration: row.duration || 0,
+      startedAt: row.started_at,
       completedAt: row.completed_at,
       isPassed: Boolean(row.isPassed),
     }));
@@ -202,9 +279,7 @@ export async function getAttemptById(req, res, next) {
     answerRows.forEach((a) => {
       // MySQL JSON columns may return already-parsed objects via mysql2 driver
       const ids = a.selected_option_ids;
-      answers[a.question_id] = Array.isArray(ids)
-        ? ids
-        : JSON.parse(ids || "[]");
+      answers[a.question_id] = Array.isArray(ids) ? ids : JSON.parse(ids || "[]");
     });
 
     // Build response

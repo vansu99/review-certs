@@ -32,8 +32,8 @@ import {
   Plus,
   Pencil,
   Trash2,
-  Play,
   FolderOpen,
+  ArrowRight,
 } from 'lucide-react'
 
 export const ExamListPage = () => {
@@ -174,29 +174,38 @@ export const ExamListPage = () => {
       {tests && tests.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
           {tests.map((test) => (
-            <div
+            <Link
               key={test.id}
-              className="bg-white rounded-xl border border-gray-200 hover:border-indigo-300 hover:shadow-md transition-all duration-200 overflow-hidden flex flex-col"
+              to={`/exams/${test.id}`}
+              className="bg-white rounded-xl border border-gray-200 hover:border-indigo-300 hover:shadow-md transition-all duration-200 overflow-hidden flex flex-col group"
             >
               {/* Card body */}
               <div className="p-5 flex-1">
                 {/* Title row with bookmark */}
                 <div className="flex items-start justify-between gap-2 mb-1">
-                  <h3 className="font-bold text-gray-900 leading-snug line-clamp-2 text-[15px]">
+                  <h3 className="font-bold text-gray-900 leading-snug line-clamp-2 text-[15px] group-hover:text-indigo-600 transition-colors">
                     {test.title}
                   </h3>
                   <div className="flex items-center shrink-0 -mt-0.5 -mr-1">
                     {hasPermission(Permission.CRUD_EXAMS) && (
                       <>
                         <button
-                          onClick={() => setEditingExam(test)}
+                          onClick={(e) => {
+                            e.preventDefault()
+                            e.stopPropagation()
+                            setEditingExam(test)
+                          }}
                           className="p-1.5 rounded-md text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 transition-colors"
                           title="Edit"
                         >
                           <Pencil className="w-3.5 h-3.5" />
                         </button>
                         <button
-                          onClick={() => setDeletingExam(test)}
+                          onClick={(e) => {
+                            e.preventDefault()
+                            e.stopPropagation()
+                            setDeletingExam(test)
+                          }}
                           className="p-1.5 rounded-md text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors"
                           title="Delete"
                         >
@@ -258,15 +267,12 @@ export const ExamListPage = () => {
 
               {/* Card footer — CTA */}
               <div className="px-5 pb-5">
-                <Link
-                  to={`/test/${test.id}/exam`}
-                  className="flex items-center justify-center gap-2 w-full py-2.5 rounded-lg text-sm font-bold text-white bg-linear-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 transition-all shadow-[0_4px_12px_-2px_rgba(79,70,229,0.3)] active:scale-[0.98]"
-                >
-                  <Play className="w-4 h-4" fill="currentColor" />
-                  Start Exam
-                </Link>
+                <span className="flex items-center justify-center gap-2 w-full py-2.5 rounded-lg text-sm font-bold text-white bg-linear-to-r from-indigo-600 to-indigo-700 group-hover:from-indigo-700 group-hover:to-indigo-800 transition-all shadow-[0_4px_12px_-2px_rgba(79,70,229,0.3)]">
+                  <ArrowRight className="w-4 h-4" />
+                  View Details
+                </span>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       ) : (

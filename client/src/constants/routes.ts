@@ -19,6 +19,7 @@ export const ROUTES = {
   // Test routes
   TEST: '/tests/:id',
   TEST_RESULT: '/tests/:id/result',
+  EXAM_DETAIL: '/exams/:examId',
 
   // Analytics
   ANALYTICS: '/analytics',
@@ -36,6 +37,8 @@ export const ROUTES = {
  */
 export const generateRoute = {
   categoryDetail: (categoryId: string | number) => `/categories/${categoryId}`,
+
+  examDetail: (examId: string | number) => `/exams/${examId}`,
 
   test: (id: string | number) => `/tests/${id}`,
 

@@ -5,7 +5,9 @@ import {
   createTest,
   updateTest,
   deleteTest,
+  getTestParticipants,
 } from "../controllers/test.controller.js";
+import { getTestHistoryByTestId } from "../controllers/history.controller.js";
 import { authenticate } from "../middleware/auth.js";
 import { authorize } from "../middleware/rbac.js";
 
@@ -16,6 +18,12 @@ router.use(authenticate);
 
 // POST /api/tests/submit - Submit test answers
 router.post("/submit", submitTest);
+
+// GET /api/tests/:id/history - Get user's attempt history for a specific test
+router.get("/:testId/history", getTestHistoryByTestId);
+
+// GET /api/tests/:testId/participants - Get participants (Admin only)
+router.get("/:testId/participants", authorize("Admin"), getTestParticipants);
 
 // GET /api/tests/:id - Get test by ID
 router.get("/:id", getTestById);

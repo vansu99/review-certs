@@ -27,6 +27,11 @@ export type {
   TestHistoryFilters,
   TestHistoryStats,
   TestHistoryResponse,
+  TestAttemptHistoryItem,
+  TestAttemptHistoryStats,
+  TestAttemptHistoryResponse,
+  TestParticipant,
+  TestParticipantsResponse,
 } from './history'
 
 // Goal types
