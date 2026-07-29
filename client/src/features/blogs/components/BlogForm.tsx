@@ -93,9 +93,7 @@ export const BlogForm = ({ blog, onSubmit, isLoading, onCancel }: BlogFormProps)
           </p>
         </div>
         {currentStatus && (
-          <Badge className={`ml-auto ${currentStatus.color} border-0`}>
-            {currentStatus.label}
-          </Badge>
+          <Badge className={`ml-auto ${currentStatus.color} border-0`}>{currentStatus.label}</Badge>
         )}
       </div>
 
@@ -119,7 +117,11 @@ export const BlogForm = ({ blog, onSubmit, isLoading, onCancel }: BlogFormProps)
               <p className="text-xs text-gray-400">
                 Slug:{' '}
                 <span className="font-mono text-indigo-600">
-                  {titleValue.toLowerCase().replace(/[^\w\s-]/g, '').replace(/\s+/g, '-').substring(0, 60)}
+                  {titleValue
+                    .toLowerCase()
+                    .replace(/[^\w\s-]/g, '')
+                    .replace(/\s+/g, '-')
+                    .substring(0, 60)}
                 </span>
               </p>
             )}
@@ -141,11 +143,15 @@ export const BlogForm = ({ blog, onSubmit, isLoading, onCancel }: BlogFormProps)
                     {STATUS_OPTIONS.map((opt) => (
                       <SelectItem key={opt.value} value={opt.value}>
                         <span className="flex items-center gap-2">
-                          <span className={`inline-block w-2 h-2 rounded-full ${
-                            opt.value === 'published' ? 'bg-green-500'
-                            : opt.value === 'draft' ? 'bg-gray-400'
-                            : 'bg-orange-400'
-                          }`} />
+                          <span
+                            className={`inline-block w-2 h-2 rounded-full ${
+                              opt.value === 'published'
+                                ? 'bg-green-500'
+                                : opt.value === 'draft'
+                                  ? 'bg-gray-400'
+                                  : 'bg-orange-400'
+                            }`}
+                          />
                           {opt.label}
                         </span>
                       </SelectItem>
@@ -201,7 +207,9 @@ export const BlogForm = ({ blog, onSubmit, isLoading, onCancel }: BlogFormProps)
       <div className="space-y-4">
         <div className="flex items-center gap-2">
           <Search className="w-4 h-4 text-gray-400" />
-          <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wider">SEO Settings</h3>
+          <h3 className="text-sm font-semibold text-gray-700 uppercase tracking-wider">
+            SEO Settings
+          </h3>
         </div>
         <div className="bg-gray-50 rounded-lg p-4 space-y-4">
           <div className="space-y-1.5">
@@ -231,10 +239,21 @@ export const BlogForm = ({ blog, onSubmit, isLoading, onCancel }: BlogFormProps)
             Cancel
           </Button>
         )}
-        <Button type="submit" disabled={isLoading} className="bg-indigo-600 hover:bg-indigo-700 min-w-[120px]">
+        <Button
+          type="submit"
+          disabled={isLoading}
+          className="bg-indigo-600 hover:bg-indigo-700 min-w-[120px]"
+        >
           {isLoading ? (
-            <><Loader2 className="w-4 h-4 mr-2 animate-spin" />Saving...</>
-          ) : blog ? 'Update Post' : 'Create Post'}
+            <>
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              Saving...
+            </>
+          ) : blog ? (
+            'Update Post'
+          ) : (
+            'Create Post'
+          )}
         </Button>
       </div>
     </form>

@@ -12,7 +12,8 @@ export const usePermissions = () => {
     role: user?.role,
     hasPermission: (permission: Permission) => hasPermission(user, permission, rolePermissions),
     hasRole: (roles: UserRole | UserRole[]) => hasRole(user, roles),
-    isAdmin: user?.role === 'Admin',
+    isSuperAdmin: user?.role === 'Super Admin',
+    isAdmin: user?.role === 'Admin' || user?.role === 'Super Admin',
     isManager: user?.role === 'Manager',
     isUser: user?.role === 'User',
   }

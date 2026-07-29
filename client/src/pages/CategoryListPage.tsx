@@ -21,6 +21,7 @@ import {
 } from '@/components/ui/alert-dialog'
 import { toast } from 'sonner'
 import type { Category } from '@/types'
+import type { CategoryPayload } from '@/features/categories/services/categoryService'
 
 export const CategoryListPage = () => {
   const { data: categories, isLoading, error } = useCategories()
@@ -52,7 +53,7 @@ export const CategoryListPage = () => {
     setDeletingCategory(category)
   }
 
-  const handleFormSubmit = async (data: { name: string; description?: string; icon?: string }) => {
+  const handleFormSubmit = async (data: CategoryPayload) => {
     try {
       if (editingCategory) {
         await updateMutation.mutateAsync({ id: editingCategory.id, data })
@@ -72,10 +73,10 @@ export const CategoryListPage = () => {
     if (!deletingCategory) return
     try {
       await deleteMutation.mutateAsync(deletingCategory.id)
-      toast.success(`"${deletingCategory.name}" deleted successfully`)
+      toast.success(`"${deletingCategory.name}" archived successfully`)
       setDeletingCategory(null)
     } catch {
-      toast.error('Failed to delete category')
+      toast.error('Failed to archive category')
     }
   }
 
@@ -104,13 +105,15 @@ export const CategoryListPage = () => {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Categories</h1>
-          <p className="text-gray-600 mt-1">Choose a category to start practicing</p>
+          <h1 className="text-2xl font-bold text-gray-900">Certification Tracks</h1>
+          <p className="text-gray-600 mt-1">
+            Choose a track to practice toward a certification goal
+          </p>
         </div>
         {canEdit && (
           <Button onClick={handleCreate} className="bg-indigo-600 hover:bg-indigo-700 gap-1.5">
             <Plus className="w-4 h-4" />
-            Create Category
+            Create Track
           </Button>
         )}
       </div>
@@ -141,11 +144,12 @@ export const CategoryListPage = () => {
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Delete Category</AlertDialogTitle>
+            <AlertDialogTitle>Archive Certification Track</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to delete{' '}
-              <span className="font-semibold text-gray-900">"{deletingCategory?.name}"</span>? This
-              will also delete all tests in this category. This action cannot be undone.
+              Archive{' '}
+              <span className="font-semibold text-gray-900">"{deletingCategory?.name}"</span>? The
+              track will be hidden from learners, but its tests, history, goals, and analytics stay
+              intact.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -155,7 +159,7 @@ export const CategoryListPage = () => {
               disabled={deleteMutation.isPending}
               className="bg-red-600 hover:bg-red-700"
             >
-              {deleteMutation.isPending ? 'Deleting...' : 'Delete'}
+              {deleteMutation.isPending ? 'Archiving…' : 'Archive'}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

@@ -12,7 +12,9 @@ Review Certs is designed for organizations, study groups, and individuals who ne
 
 ## Key Features
 
-- **Exam Management** — Create categories, tests with multiple question types (single/multiple choice), set passing scores and difficulty levels
+- **Certification Catalog** — Manage certification tracks with provider, level, version, status, passing score, and practice exams
+- **Review Center** — Recommend mistakes, weak topics, bookmarked material, and readiness for certification preparation
+- **Exam Management** — Create tests with multiple question types (single/multiple choice), set passing scores and difficulty levels
 - **Test Taking** — Timed exam interface, instant scoring, detailed result breakdowns with explanations
 - **Study Groups** — Create groups, assign mandatory exams, track collective progress, leaderboards, and group discussions
 - **Learning Goals** — Set personal certification goals with deadlines and track completion
@@ -218,6 +220,8 @@ We welcome contributions. Please read [CONTRIBUTING.md](./docs/CONTRIBUTING.md) 
 | Document                                           | Description                                       |
 | -------------------------------------------------- | ------------------------------------------------- |
 | [Architecture](./docs/ARCHITECTURE.md)             | System design, data flow, and technical decisions |
+| [Category Business Rules](./docs/CATEGORY_BUSINESS_RULES.md) | Category lifecycle and certification catalog rules |
+| [Review Business Rules](./docs/REVIEW_BUSINESS_RULES.md) | Review Center, readiness, weak topics, and review modes |
 | [Codebase Overview](./docs/CODEBASE_OVERVIEW.md)   | High-level code walkthrough                       |
 | [Folder Structure](./docs/FOLDER_STRUCTURE.md)     | Directory layout explained                        |
 | [Coding Conventions](./docs/CODING_CONVENTIONS.md) | Style guide and patterns                          |

@@ -26,7 +26,6 @@ import { useDeleteBlog } from '@/features/blogs'
 import { toast } from 'sonner'
 import { useDebounce } from 'react-use'
 import type { BlogListItem, BlogStatus } from '@/types'
-import { Badge } from '@/components/ui/badge'
 
 export const BlogManagePage = () => {
   const navigate = useNavigate()

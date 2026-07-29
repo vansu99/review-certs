@@ -112,9 +112,7 @@ export function CategoryPerformanceChart({
             tickLine={false}
           />
           <Tooltip content={<CustomTooltip />} />
-          <Legend
-            wrapperStyle={{ fontSize: '12px', paddingTop: '12px' }}
-          />
+          <Legend wrapperStyle={{ fontSize: '12px', paddingTop: '12px' }} />
           <Bar dataKey="averageScore" name="Avg Score" fill="#6366f1" radius={[4, 4, 0, 0]} />
           <Bar dataKey="passRate" name="Pass Rate" fill="#10b981" radius={[4, 4, 0, 0]} />
         </BarChart>

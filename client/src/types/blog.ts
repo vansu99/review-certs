@@ -22,7 +22,7 @@ export interface Blog {
   author: BlogAuthor
 }
 
-export interface BlogListItem extends Omit<Blog, 'description'> {}
+export type BlogListItem = Omit<Blog, 'description'>
 
 export interface CreateBlogPayload {
   title: string
@@ -34,7 +34,7 @@ export interface CreateBlogPayload {
   meta_description?: string | null
 }
 
-export interface UpdateBlogPayload extends Partial<CreateBlogPayload> {}
+export type UpdateBlogPayload = Partial<CreateBlogPayload>
 
 export interface BlogFilters {
   search?: string

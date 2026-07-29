@@ -51,11 +51,7 @@ export const BlogEditPage = ({ mode }: BlogEditPageProps) => {
     return (
       <div className="text-center py-24">
         <p className="text-gray-500">Blog post not found.</p>
-        <Button
-          variant="outline"
-          className="mt-4 gap-2"
-          onClick={() => navigate('/blog/manage')}
-        >
+        <Button variant="outline" className="mt-4 gap-2" onClick={() => navigate('/blog/manage')}>
           <ArrowLeft className="w-4 h-4" />
           Back to Management
         </Button>

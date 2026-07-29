@@ -13,6 +13,14 @@ interface PermissionActions {
 }
 
 const DEFAULT_PERMISSIONS: Record<UserRole, Permission[]> = {
+  'Super Admin': [
+    Permission.MANAGE_SYSTEM,
+    Permission.MANAGE_USERS,
+    Permission.CRUD_CATEGORIES,
+    Permission.CRUD_EXAMS,
+    Permission.TAKE_EXAMS,
+    Permission.VIEW_ALL,
+  ],
   Admin: [
     Permission.MANAGE_USERS,
     Permission.CRUD_CATEGORIES,

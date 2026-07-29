@@ -1,6 +1,20 @@
 import axiosInstance from '@/lib/axios'
 import type { Category } from '@/types'
 
+export type CategoryPayload = {
+  name: string
+  description?: string
+  icon?: string
+  provider?: string
+  certificationCode?: string
+  level?: Category['level']
+  version?: string
+  status?: Category['status']
+  displayOrder?: number
+  defaultPassingScore?: number
+  estimatedHours?: number
+}
+
 interface ApiResponse<T> {
   success: boolean
   data: T
@@ -27,11 +41,7 @@ export const categoryService = {
   /**
    * Create a new category (Admin/Manager only)
    */
-  createCategory: async (data: {
-    name: string
-    description?: string
-    icon?: string
-  }): Promise<Category> => {
+  createCategory: async (data: CategoryPayload): Promise<Category> => {
     const response = await axiosInstance.post<ApiResponse<Category>>('/categories', data)
     return response.data.data
   },
@@ -39,10 +49,7 @@ export const categoryService = {
   /**
    * Update a category (Admin/Manager only)
    */
-  updateCategory: async (
-    id: string,
-    data: Partial<{ name: string; description: string; icon: string }>
-  ): Promise<Category> => {
+  updateCategory: async (id: string, data: Partial<CategoryPayload>): Promise<Category> => {
     const response = await axiosInstance.put<ApiResponse<Category>>(`/categories/${id}`, data)
     return response.data.data
   },

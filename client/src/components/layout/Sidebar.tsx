@@ -3,8 +3,10 @@ import { useCategories } from '@/features/categories'
 import {
   Bookmark,
   BarChart2,
+  BookOpenCheck,
   ChartBarStacked,
   LayoutDashboard,
+  Settings2,
   ShieldCheck,
   Users,
   Rss,
@@ -16,14 +18,12 @@ import { cn } from '@/utils'
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   cn(
     'flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors',
-    isActive
-      ? 'bg-indigo-50 text-indigo-600'
-      : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
+    isActive ? 'bg-indigo-50 text-indigo-600' : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
   )
 
 export const Sidebar = () => {
   const { data: categories, isLoading } = useCategories()
-  const { isAdmin } = usePermissions()
+  const { isAdmin, isSuperAdmin } = usePermissions()
 
   return (
     <aside className="w-64 bg-white border-r border-gray-200 h-full overflow-y-auto p-4 shrink-0">
@@ -36,6 +36,10 @@ export const Sidebar = () => {
           <NavLink to={ROUTES.DASHBOARD} className={navLinkClass}>
             <LayoutDashboard className="size-5" />
             Dashboard
+          </NavLink>
+          <NavLink to={ROUTES.REVIEW} className={navLinkClass}>
+            <BookOpenCheck className="size-5" />
+            Review
           </NavLink>
           <NavLink to={ROUTES.ANALYTICS} className={navLinkClass}>
             <BarChart2 className="size-5" />
@@ -73,6 +77,12 @@ export const Sidebar = () => {
               <ShieldCheck className="size-5" />
               Permissions
             </NavLink>
+            {isSuperAdmin && (
+              <NavLink to="/settings/features" className={navLinkClass}>
+                <Settings2 className="size-5" />
+                Features
+              </NavLink>
+            )}
           </nav>
         </div>
       )}

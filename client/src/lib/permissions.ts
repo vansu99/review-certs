@@ -1,6 +1,7 @@
 import type { User, UserRole } from '@/types'
 
 export const Permission = {
+  MANAGE_SYSTEM: 'MANAGE_SYSTEM',
   MANAGE_USERS: 'MANAGE_USERS',
   CRUD_CATEGORIES: 'CRUD_CATEGORIES',
   CRUD_EXAMS: 'CRUD_EXAMS',

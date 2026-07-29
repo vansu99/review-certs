@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useGroups, useCreateGroup, type Group } from '@/features/groups'
 import { Plus, Users, Search, Filter, ArrowRight, MessageSquare, Award } from 'lucide-react'
-import { Input } from '@/components/ui/Input'
+import { Input } from '@/components/ui/input'
 
 export const GroupsPage = () => {
   const { data: groups, isLoading, error } = useGroups()

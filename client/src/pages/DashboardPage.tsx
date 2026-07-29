@@ -102,13 +102,13 @@ export const DashboardPage = () => {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8 max-w-7xl mx-auto pb-12">
       {/* Hero Welcome */}
-      <div className="relative overflow-hidden rounded-2xl bg-linear-to-r from-teal-600 via-cyan-600 to-emerald-600 p-8 text-white">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute -right-10 -top-10 h-48 w-48 rounded-full bg-white/20" />
-          <div className="absolute -bottom-8 -left-8 h-36 w-36 rounded-full bg-white/15" />
-          <div className="absolute right-1/3 top-1/2 h-20 w-20 rounded-full bg-white/10" />
+      <div className="relative overflow-hidden rounded-3xl bg-linear-to-r from-primary via-primary/90 to-primary/80 p-10 text-white shadow-[0_8px_30px_rgb(0,0,0,0.08)]">
+        <div className="absolute inset-0 opacity-15">
+          <div className="absolute -right-10 -top-10 h-64 w-64 rounded-full bg-white/20 blur-2xl" />
+          <div className="absolute -bottom-8 -left-8 h-48 w-48 rounded-full bg-white/15 blur-2xl" />
+          <div className="absolute right-1/3 top-1/2 h-32 w-32 rounded-full bg-white/10 blur-xl" />
         </div>
         <div className="relative">
           <p className="text-sm font-medium text-teal-200 mb-1">
@@ -128,19 +128,21 @@ export const DashboardPage = () => {
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-5">
         {statCards.map((card) => (
           <div
             key={card.label}
-            className="bg-white rounded-2xl border border-gray-100 p-5 flex flex-col gap-3 hover:shadow-md transition-shadow"
+            className="bg-white rounded-3xl border border-gray-100 p-6 flex flex-col gap-4 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300"
           >
-            <div className={`w-10 h-10 rounded-xl ${card.iconBg} flex items-center justify-center`}>
-              <card.icon className={`w-5 h-5 ${card.iconColor}`} />
+            <div
+              className={`w-12 h-12 rounded-2xl ${card.iconBg} flex items-center justify-center`}
+            >
+              <card.icon className={`w-6 h-6 ${card.iconColor}`} />
             </div>
             {statsLoading ? (
               <div className="h-8 w-16 bg-gray-100 rounded-lg animate-pulse" />
             ) : (
-              <p className={`text-2xl font-bold ${card.textColor}`}>{card.value}</p>
+              <p className={`text-3xl font-bold ${card.textColor} tracking-tight`}>{card.value}</p>
             )}
             <p className="text-sm text-gray-500 -mt-1">{card.label}</p>
           </div>
@@ -148,11 +150,11 @@ export const DashboardPage = () => {
       </div>
 
       {/* Bottom row: Activity + Quick Actions */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Recent Activity — takes 2/3 */}
-        <div className="lg:col-span-2 bg-white rounded-2xl border border-gray-100 overflow-hidden">
-          <div className="flex items-center justify-between px-6 pt-5 pb-4">
-            <h2 className="text-lg font-semibold text-gray-900">Recent Activity</h2>
+        <div className="lg:col-span-2 bg-white rounded-3xl border border-gray-100 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] overflow-hidden">
+          <div className="flex items-center justify-between px-8 pt-7 pb-5">
+            <h2 className="text-xl font-bold text-gray-900 tracking-tight">Recent Activity</h2>
             <Link
               to={ROUTES.HISTORY}
               className="flex items-center gap-1 text-sm text-indigo-600 hover:text-indigo-700 font-medium transition-colors"
@@ -219,18 +221,18 @@ export const DashboardPage = () => {
         </div>
 
         {/* Quick Actions — takes 1/3 */}
-        <div className="space-y-3">
-          <h2 className="text-lg font-semibold text-gray-900 px-1">Quick Actions</h2>
+        <div className="space-y-4">
+          <h2 className="text-xl font-bold text-gray-900 px-1 tracking-tight">Quick Actions</h2>
           {quickActions.map((action) => (
             <Link
               key={action.to}
               to={action.to}
-              className="flex items-center gap-4 bg-white rounded-2xl border border-gray-100 p-4 hover:shadow-md transition-all group"
+              className="flex items-center gap-4 bg-white rounded-3xl border border-gray-100 p-5 shadow-[0_4px_20px_-10px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_30px_rgba(0,0,0,0.08)] hover:-translate-y-1 transition-all duration-300 group"
             >
               <div
-                className={`w-11 h-11 rounded-xl bg-linear-to-br ${action.gradient} flex items-center justify-center shrink-0`}
+                className={`w-12 h-12 rounded-2xl bg-linear-to-br ${action.gradient} flex items-center justify-center shrink-0 shadow-sm`}
               >
-                <action.icon className="w-5 h-5 text-white" />
+                <action.icon className="w-6 h-6 text-white" />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="font-semibold text-gray-900 text-[15px] group-hover:text-indigo-600 transition-colors">

@@ -4,7 +4,7 @@ import { z } from 'zod'
 import { Navigate } from 'react-router-dom'
 import { useLogin, useAuthStore } from '@/features/auth'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/Input'
+import { Input } from '@/components/ui/input'
 import { ROUTES } from '@/constants'
 import { AlertCircle, BookOpen, Info } from 'lucide-react'
 

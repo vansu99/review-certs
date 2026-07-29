@@ -15,6 +15,9 @@ import dashboardRoutes from "./routes/dashboard.routes.js";
 import groupRoutes from "./routes/group.routes.js";
 import blogRoutes from "./routes/blog.routes.js";
 import analyticsRoutes from "./routes/analytics.routes.js";
+import configRoutes from "./routes/config.routes.js";
+import reviewRoutes from "./routes/review.routes.js";
+import gamificationRoutes from "./routes/gamification.routes.js";
 
 dotenv.config();
 
@@ -38,6 +41,9 @@ app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/groups", groupRoutes);
 app.use("/api/blogs", blogRoutes);
 app.use("/api/analytics", analyticsRoutes);
+app.use("/api/admin/config", configRoutes);
+app.use("/api/review", reviewRoutes);
+app.use("/api/gamification", gamificationRoutes);
 
 // Health check
 app.get("/api/health", (req, res) => {
@@ -52,9 +58,7 @@ async function startServer() {
   const dbConnected = await testConnection();
 
   if (!dbConnected) {
-    console.error(
-      "Failed to connect to database. Please check your configuration.",
-    );
+    console.error("Failed to connect to database. Please check your configuration.");
     process.exit(1);
   }
 

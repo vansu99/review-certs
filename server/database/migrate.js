@@ -18,6 +18,9 @@ const MIGRATIONS = [
   "migrations/groups_schema.sql",
   "migrations/blog_schema.sql",
   "migrations/add_question_topic.sql",
+  "migrations/category_catalog_fields.sql",
+  "migrations/auth_system.sql",
+  "migrations/add_super_admin_role.sql",
 ];
 
 async function migrate() {

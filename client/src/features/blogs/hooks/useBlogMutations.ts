@@ -42,8 +42,8 @@ export const useToggleBlogLike = (blogId: string) => {
       // Update like status cache immediately
       queryClient.setQueryData(BLOG_QUERY_KEYS.likeStatus(blogId), { liked: data.liked })
       // Invalidate blog queries to refresh like count
-      queryClient.invalidateQueries({ queryKey: BLOG_QUERY_KEYS.slug })
-      queryClient.invalidateQueries({ queryKey: BLOG_QUERY_KEYS.published({}) })
+      queryClient.invalidateQueries({ queryKey: ['blogs', 'slug'] })
+      queryClient.invalidateQueries({ queryKey: ['blogs', 'published'] })
     },
   })
 }

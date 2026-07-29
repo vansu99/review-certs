@@ -5,7 +5,7 @@ import {
   createCategory,
   updateCategory,
   deleteCategory,
-} from "../controllers/category.controller.js";
+} from "../controllers/categoryCatalog.controller.js";
 import { getTestsByCategory } from "../controllers/test.controller.js";
 import { authenticate } from "../middleware/auth.js";
 import { authorize } from "../middleware/rbac.js";

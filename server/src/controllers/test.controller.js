@@ -1,6 +1,7 @@
 import pool from "../config/database.js";
 import { successResponse, errorResponse } from "../utils/response.js";
 import { v4 as uuidv4 } from "uuid";
+import { gamificationService } from "../services/gamification.service.js";
 
 /**
  * Get test by ID with questions and options
@@ -276,6 +277,14 @@ export async function submitTest(req, res, next) {
       );
     }
 
+    // Process Gamification
+    let gamification = null;
+    try {
+      gamification = await gamificationService.processTestCompletion(userId, score, totalQuestions);
+    } catch (gErr) {
+      console.error("Gamification error:", gErr);
+    }
+
     // Build response
     const questions = questionRows.map((q) => ({
       id: q.id,
@@ -315,6 +324,7 @@ export async function submitTest(req, res, next) {
       attempt,
       test: testResponse,
       correctAnswerMap,
+      gamification,
     });
   } catch (error) {
     next(error);

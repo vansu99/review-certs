@@ -63,3 +63,4 @@ coverage/
 # Agent skills
 .agents/*
 .github/*
+.codex/*

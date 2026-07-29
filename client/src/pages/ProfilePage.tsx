@@ -11,6 +11,7 @@ import { Loader2, Flame, Trophy, Calendar, Zap, Mail } from 'lucide-react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui'
 import { HeatmapCalendar } from '@/components/common/HeatmapCalendar'
+import { BadgesGallery } from '@/features/gamification/components/BadgesGallery'
 
 const profileSchema = z.object({
   firstName: z.string().min(1, 'First name is required'),
@@ -202,6 +203,11 @@ export const ProfilePage = () => {
             })}
           </div>
         )}
+      </div>
+
+      {/* ── Badges & Achievements ── */}
+      <div className="mb-6">
+        <BadgesGallery />
       </div>
 
       {/* ── Learning Activity ── */}

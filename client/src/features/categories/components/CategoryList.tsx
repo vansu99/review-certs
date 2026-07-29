@@ -12,7 +12,7 @@ export const CategoryList = ({ categories, canEdit, onEdit, onDelete }: Category
   if (categories?.length === 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-500">No categories available</p>
+        <p className="text-gray-500">No certification tracks available</p>
       </div>
     )
   }

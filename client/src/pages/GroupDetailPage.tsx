@@ -31,7 +31,7 @@ import {
   Send,
   MoreVertical,
 } from 'lucide-react'
-import { Input } from '@/components/ui/Input'
+import { Input } from '@/components/ui/input'
 
 type Tab = 'overview' | 'leaderboard' | 'exams' | 'discussion' | 'members'
 

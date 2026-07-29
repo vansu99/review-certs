@@ -29,7 +29,9 @@ export const ScrollToTop = ({ threshold = 300 }: ScrollToTopProps) => {
         'flex items-center justify-center',
         'hover:border-indigo-300 hover:text-indigo-600 hover:shadow-lg active:scale-95',
         'transition-all duration-200',
-        visible ? 'opacity-100 translate-y-0 pointer-events-auto' : 'opacity-0 translate-y-4 pointer-events-none'
+        visible
+          ? 'opacity-100 translate-y-0 pointer-events-auto'
+          : 'opacity-0 translate-y-4 pointer-events-none'
       )}
     >
       <ArrowUp className="w-4 h-4" />

@@ -1,4 +1,4 @@
-export type UserRole = 'Admin' | 'Manager' | 'User'
+export type UserRole = 'Super Admin' | 'Admin' | 'Manager' | 'User'
 
 export interface User {
   id: string
@@ -12,6 +12,10 @@ export interface User {
   dateOfBirth?: string
   country?: string
   facebook?: string
+  xp?: number
+  level?: number
+  current_streak?: number
+  longest_streak?: number
 }
 
 export interface AuthResponse {

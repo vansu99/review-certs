@@ -110,9 +110,7 @@ export const BlogListPage = () => {
                       key={p}
                       onClick={() => setPage(p)}
                       className={`w-8 h-8 rounded text-sm font-medium transition-colors ${
-                        p === page
-                          ? 'bg-indigo-600 text-white'
-                          : 'text-gray-600 hover:bg-gray-100'
+                        p === page ? 'bg-indigo-600 text-white' : 'text-gray-600 hover:bg-gray-100'
                       }`}
                     >
                       {p}

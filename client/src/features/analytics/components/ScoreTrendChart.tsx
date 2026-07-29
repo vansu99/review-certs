@@ -62,7 +62,9 @@ export function ScoreTrendChart({ data, isLoading, error, onRetry }: ScoreTrendC
         <h3 className="text-base font-semibold text-gray-900 mb-1">Score Trend</h3>
         <p className="text-sm text-gray-500 mb-4">Your score progression over time</p>
         <div className="flex flex-col items-center justify-center py-10 gap-3">
-          <p className="text-sm text-red-500">{error.message || 'Failed to load score trend data'}</p>
+          <p className="text-sm text-red-500">
+            {error.message || 'Failed to load score trend data'}
+          </p>
           <button
             onClick={onRetry}
             className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors"
@@ -119,7 +121,12 @@ export function ScoreTrendChart({ data, isLoading, error, onRetry }: ScoreTrendC
             y={lastPoint.passingScore}
             stroke="#ef4444"
             strokeDasharray="3 3"
-            label={{ value: `Pass ${lastPoint.passingScore}`, position: 'insideTopRight', fontSize: 11, fill: '#ef4444' }}
+            label={{
+              value: `Pass ${lastPoint.passingScore}`,
+              position: 'insideTopRight',
+              fontSize: 11,
+              fill: '#ef4444',
+            }}
           />
           <Line
             type="monotone"

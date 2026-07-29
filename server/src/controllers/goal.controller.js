@@ -303,6 +303,15 @@ export async function createGoal(req, res, next) {
         );
       }
 
+      const [categoryRows] = await pool.execute(
+        "SELECT id FROM categories WHERE id = ? AND status = 'published' AND deleted_at IS NULL",
+        [categoryId],
+      );
+
+      if (categoryRows.length === 0) {
+        return errorResponse(res, "Category is not available for goals", 400);
+      }
+
       const [categoryExams] = await pool.execute(
         "SELECT id FROM tests WHERE category_id = ? AND deleted_at IS NULL",
         [categoryId],

@@ -13,6 +13,24 @@ DROP TABLE IF EXISTS users;
 -- Users table
 CREATE TABLE users (
   id VARCHAR(36) PRIMARY KEY,
+-- Review Certs Database Schema
+-- Drop existing tables if they exist (in reverse order of dependencies)
+DROP TABLE IF EXISTS goal_exam_scores;
+DROP TABLE IF EXISTS goals;
+DROP TABLE IF EXISTS test_attempt_answers;
+DROP TABLE IF EXISTS test_attempts;
+DROP TABLE IF EXISTS answer_options;
+DROP TABLE IF EXISTS questions;
+DROP TABLE IF EXISTS tests;
+DROP TABLE IF EXISTS categories;
+DROP TABLE IF EXISTS user_badges;
+DROP TABLE IF EXISTS badges;
+DROP TABLE IF EXISTS bookmarks;
+DROP TABLE IF EXISTS users;
+
+-- Users table
+CREATE TABLE users (
+  id VARCHAR(36) PRIMARY KEY,
   email VARCHAR(191) UNIQUE NOT NULL,
   password_hash VARCHAR(255) NOT NULL,
   name VARCHAR(100) NOT NULL,
@@ -23,6 +41,11 @@ CREATE TABLE users (
   date_of_birth DATE,
   country VARCHAR(50),
   facebook VARCHAR(500),
+  xp INT DEFAULT 0,
+  level INT DEFAULT 1,
+  current_streak INT DEFAULT 0,
+  longest_streak INT DEFAULT 0,
+  last_activity_date DATE,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   deleted_at TIMESTAMP NULL DEFAULT NULL,
@@ -32,12 +55,24 @@ CREATE TABLE users (
 -- Categories table
 CREATE TABLE categories (
   id VARCHAR(36) PRIMARY KEY,
+  slug VARCHAR(120),
   name VARCHAR(100) NOT NULL,
   description TEXT,
   icon VARCHAR(50) DEFAULT '📚',
+  provider VARCHAR(100),
+  certification_code VARCHAR(50),
+  level ENUM('Foundation', 'Associate', 'Professional', 'Specialty') DEFAULT 'Foundation',
+  version VARCHAR(50),
+  status ENUM('draft', 'published', 'archived') DEFAULT 'published',
+  display_order INT DEFAULT 0,
+  default_passing_score INT DEFAULT 70,
+  estimated_hours INT DEFAULT 0,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  deleted_at TIMESTAMP NULL DEFAULT NULL
+  deleted_at TIMESTAMP NULL DEFAULT NULL,
+  UNIQUE KEY unique_categories_slug (slug),
+  INDEX idx_categories_status (status),
+  INDEX idx_categories_display_order (display_order)
 );
 
 -- Tests table
@@ -155,4 +190,28 @@ CREATE TABLE bookmarks (
   FOREIGN KEY (test_id) REFERENCES tests(id) ON DELETE CASCADE,
   UNIQUE KEY unique_user_test_bookmark (user_id, test_id),
   INDEX idx_bookmarks_user (user_id)
+);
+
+-- Badges table
+CREATE TABLE badges (
+  id VARCHAR(36) PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  description TEXT,
+  icon VARCHAR(50) DEFAULT '🏆',
+  condition_type VARCHAR(50) NOT NULL,
+  condition_value VARCHAR(255),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- User Badges table
+CREATE TABLE user_badges (
+  id VARCHAR(36) PRIMARY KEY,
+  user_id VARCHAR(36) NOT NULL,
+  badge_id VARCHAR(36) NOT NULL,
+  earned_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY (badge_id) REFERENCES badges(id) ON DELETE CASCADE,
+  UNIQUE KEY unique_user_badge (user_id, badge_id),
+  INDEX idx_user_badges_user (user_id)
 );

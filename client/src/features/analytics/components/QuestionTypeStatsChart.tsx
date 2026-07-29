@@ -9,7 +9,7 @@ interface QuestionTypeStatsChartProps {
 }
 
 const COLORS = {
-  correct: '#10b981',   // emerald-500
+  correct: '#10b981', // emerald-500
   incorrect: '#f43f5e', // rose-500
 }
 
@@ -37,15 +37,22 @@ function CustomTooltip({ active, payload, item }: CustomTooltipProps) {
 }
 
 interface PieChartLabelProps {
-  cx: number
-  cy: number
-  midAngle: number
-  innerRadius: number
-  outerRadius: number
-  percent: number
+  cx?: number
+  cy?: number
+  midAngle?: number
+  innerRadius?: number
+  outerRadius?: number
+  percent?: number
 }
 
-function renderCustomLabel({ cx, cy, midAngle, innerRadius, outerRadius, percent }: PieChartLabelProps) {
+function renderCustomLabel({
+  cx = 0,
+  cy = 0,
+  midAngle = 0,
+  innerRadius = 0,
+  outerRadius = 0,
+  percent = 0,
+}: PieChartLabelProps) {
   if (percent < 0.05) return null
   const RADIAN = Math.PI / 180
   const radius = innerRadius + (outerRadius - innerRadius) * 0.5
@@ -102,11 +109,17 @@ function SinglePieChart({ item }: SinglePieChartProps) {
       </ResponsiveContainer>
       <div className="flex items-center gap-4 text-xs text-gray-600">
         <span className="flex items-center gap-1.5">
-          <span className="inline-block w-3 h-3 rounded-full" style={{ backgroundColor: COLORS.correct }} />
+          <span
+            className="inline-block w-3 h-3 rounded-full"
+            style={{ backgroundColor: COLORS.correct }}
+          />
           Correct ({item.correctCount})
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="inline-block w-3 h-3 rounded-full" style={{ backgroundColor: COLORS.incorrect }} />
+          <span
+            className="inline-block w-3 h-3 rounded-full"
+            style={{ backgroundColor: COLORS.incorrect }}
+          />
           Incorrect ({item.incorrectCount})
         </span>
       </div>
@@ -134,7 +147,9 @@ export function QuestionTypeStatsChart({
       <div className="bg-white rounded-2xl border border-gray-100 p-6">
         <h2 className="text-base font-semibold text-gray-800 mb-4">Question Type Performance</h2>
         <div className="flex flex-col items-center justify-center gap-3 py-10 text-center">
-          <p className="text-sm text-gray-500">{error.message || 'Failed to load question type data.'}</p>
+          <p className="text-sm text-gray-500">
+            {error.message || 'Failed to load question type data.'}
+          </p>
           <button
             onClick={onRetry}
             className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 transition-colors"

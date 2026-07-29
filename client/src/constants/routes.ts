@@ -9,6 +9,8 @@ export const ROUTES = {
   // Main routes
   HOME: '/',
   DASHBOARD: '/dashboard',
+  REVIEW: '/review',
+  LANDING: '/',
   CATEGORIES: '/categories',
   CATEGORY_DETAIL: '/categories/:categoryId',
   HISTORY: '/history',
@@ -23,6 +25,10 @@ export const ROUTES = {
 
   // Analytics
   ANALYTICS: '/analytics',
+
+  // Settings
+  SETTINGS_PERMISSIONS: '/settings/permissions',
+  SETTINGS_FEATURES: '/settings/features',
 
   // Blog routes
   BLOG: '/blog',

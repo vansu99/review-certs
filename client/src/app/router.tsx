@@ -2,11 +2,13 @@ import { createBrowserRouter, Navigate } from 'react-router-dom'
 import { MainLayout, PublicLayout } from '@/components/layout'
 import { ProtectedRoute } from '@/components/auth'
 import {
+  LandingPage,
   LoginPage,
   CategoryListPage,
   TestTakingPage,
   TestResultPage,
   DashboardPage,
+  ReviewCenterPage,
   TestExamPage,
   ExamListPage,
   ExamDetailPage,
@@ -22,10 +24,17 @@ import {
   BlogManagePage,
   BlogEditPage,
   AnalyticsPage,
+  FeatureConfigPage,
 } from '@/pages'
 
 export const router = createBrowserRouter([
-  // Public routes
+  // Public: Landing page (accessible to everyone)
+  {
+    path: '/',
+    element: <LandingPage />,
+  },
+
+  // Public: Login
   {
     path: '/login',
     element: <LoginPage />,
@@ -54,12 +63,12 @@ export const router = createBrowserRouter([
         element: <MainLayout />,
         children: [
           {
-            path: '/',
-            element: <Navigate to="/categories" replace />,
-          },
-          {
             path: '/dashboard',
             element: <DashboardPage />,
+          },
+          {
+            path: '/review',
+            element: <ReviewCenterPage />,
           },
           {
             path: '/analytics',
@@ -132,6 +141,16 @@ export const router = createBrowserRouter([
               },
             ],
           },
+          {
+            path: '/settings/features',
+            element: <ProtectedRoute allowedRoles={['Super Admin']} />,
+            children: [
+              {
+                index: true,
+                element: <FeatureConfigPage />,
+              },
+            ],
+          },
         ],
       },
     ],
@@ -148,7 +167,7 @@ export const router = createBrowserRouter([
     ],
   },
 
-  // Catch all - redirect to home
+  // Catch all - redirect to landing
   {
     path: '*',
     element: <Navigate to="/" replace />,

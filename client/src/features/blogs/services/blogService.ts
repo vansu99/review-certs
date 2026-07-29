@@ -68,9 +68,7 @@ export const blogService = {
   /**
    * Get all blogs for management
    */
-  getManagedBlogs: async (
-    filters: BlogFilters = {}
-  ): Promise<PaginatedResponse<BlogListItem>> => {
+  getManagedBlogs: async (filters: BlogFilters = {}): Promise<PaginatedResponse<BlogListItem>> => {
     const params = new URLSearchParams()
     if (filters.search) params.set('search', filters.search)
     if (filters.status) params.set('status', filters.status)
